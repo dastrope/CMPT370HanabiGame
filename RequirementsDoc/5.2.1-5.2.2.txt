@@ -4,4 +4,4 @@ The purpose of this document is to provide in-depth information about a software
 
 5.1.2 Scope
 
-This software version of Hanabi will be playable for two to five players at once in a real time environment. The players will cooperate through hints to complete fireworks The game software will include artificial intelligence (AI) to support computer players to along with human players at the same time. The game will be playable online through a dedicated server. 
+This software version of Hanabi will be playable for two to five players at once in a real time environment. The players will cooperate through hints to complete fireworks. The game software will include artificial intelligence (AI) to support computer players to along with human players at the same time. The game will be playable online through a dedicated server. 
