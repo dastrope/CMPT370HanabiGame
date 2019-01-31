@@ -1,0 +1,17 @@
+Jan 31, 2019
+1:50 pm
+Spinks S371
+Meeting Agenda for group G3
+
+1. Team will meet before the meeting at 1pm to update group of their status on the document. Following that the team should discuss and elaborate on any concerns they have with their own or another section. 
+	- done
+
+2. Any concerns with the UI we've currently decided to go with should be raised here.
+	- we're fairly happy with the look of the UI
+
+3. At 1:50 when the meeting with the TA begins, any specific questions people have for the TA about their sections of the document will be gone over with highest priority.
+	- Use case stuff is looking fairly good, could use a bit of polish
+
+4. Time allowing, any additional discussion points or concerns discovered through talking with the TA will be gone over.
+	- voiced frustrations with how the class feels behind the due dates.
+	- do look up other requirements documents for examples
