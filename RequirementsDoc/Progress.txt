@@ -58,7 +58,7 @@ Requirments Document Progress
 	
 		Standard Compliances - "Omit?" 
 	
-	5.3.6 Software System Attributes
+	5.3.6 Software System Attributes - IP Destin
 		Reliability
 		Availability
 		Security
