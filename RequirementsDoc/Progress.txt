@@ -37,11 +37,11 @@ Requirments Document Progress
 	
 	5.2.3 User Characteristics - IP Destin
 	
-	5.2.4 Constraints
+	5.2.4 Constraints - IP Kole
 	
-	5.2.5 Assumptions and Dependencies
+	5.2.5 Assumptions and Dependencies - IP Kole
 	
-	5.2.6 Apportioning of Requirments
+	5.2.6 Apportioning of Requirments - IP Kole
 
 	
 5.3 Specific Requirments
