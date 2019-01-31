@@ -1,4 +1,4 @@
 ﻿5.2.3 User Characteristics
 
 
-To play a game of Hanabi using our system, a person must be able to read and comprehend English, aided by a graphical interface to increase understanding. To play the game as it is intended, they must also be able to think logically and make informed predictions.
+To play a game of Hanabi using our system, a person must be able to read and comprehend English, aided by a graphical interface to increase understanding. To play the game as it is intended, they must also be able to think logically and make informed predictions. As it is a multiplayer game that connects to a server, computer literacy is also a useful skill. If the user wishes to connect a computer player to a game, they should also be familiar with the use of the command line. 
