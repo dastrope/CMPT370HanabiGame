@@ -17,24 +17,9 @@ Start Application -
 			-Pop up is closed
 		
 	Click "Join Game" button - Input in text box for server address
-		-Player lobby screen is displayed
 		
-		Click "Ready up" toggle -
-			-If not ready, Changed icon to show others that the player is ready to start the game
-			-If ready, Changed icon to show others that the player is not ready to start the game
-		
-		Click "Leave Lobby" button -
-			-Disconnected player from lobby and main application menu is displayed
-			
-	Click "Host Game" button - Connection to the server
-		-Host lobby screen is displayed
-		
-		Click "Start Game" button - All players in lobby must be in the 'Ready' state
-			-Game screen is displayed
-			-Game is started
-		
-		Click a "Kick" button -
-			-Player whose Kick button was pressed is disconnected and removed from lobby
+					
+	Click "Host Game" button - Connection to the server - Input in text box for timeout limit, NSID and # of players.
 			
 
 *** Game Screen Actions ***
@@ -68,14 +53,14 @@ Start Application -
 			-One info token is returned
 			
 	Click "Give Colour Info" - Must be player's turn, must have at least one token
-		-Ability to mouse over cards is enabled
+		-Ability to mouse of cards is enabled
 		
 		Mouse over card - Must be cards in other players' hands, colour information about moused over card must 
 						  not have already been shared
 			-Other cards in the same player's hand which have the same colour as the one moused over one are 'raised'
 			
 		Click card - Must be cards in the other players' hands, colour information about moused over card must 
-					 not have already been shared
+			     not have already been shared
 			-Player whose card was clicked has all cards in their hand with the matching colour flagged to be known
 				to have that colour
 			-Player holding card: All cards in hand with the matching colour visually change to indicate 
@@ -85,7 +70,7 @@ Start Application -
 			-Info token is used
 			
 	Click "Give Number Info" - Must be player's turn, must have at least one token
-		-Ability to mouse over cards is enabled
+		-Ability to mouse of cards is enabled
 		
 		Mouse over card - Must be cards in other players' hands, Number information about moused over card must 
 						  not have already been shared
