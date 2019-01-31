@@ -53,7 +53,7 @@ Start Application -
 		Click a game card -
 			-Card is removed from the player's hand
 			-If card can be properly placed, the appropriate firework pile is increased by 1
-			-If cand cannot be properly placed, card is added to the discard pile and the fuse is burnt one stage
+			-If card cannot be properly placed, card is added to the discard pile and the fuse is burnt one stage
 			-Card(s) remaining in hand are shifted right if necessary
 			-If deck is not empty, top most card from deck is removed and enters the left most spot on the hand
 	
@@ -68,7 +68,7 @@ Start Application -
 			-One info token is returned
 			
 	Click "Give Colour Info" - Must be player's turn, must have at least one token
-		-Ability to mouse of cards is enabled
+		-Ability to mouse over cards is enabled
 		
 		Mouse over card - Must be cards in other players' hands, colour information about moused over card must 
 						  not have already been shared
@@ -85,7 +85,7 @@ Start Application -
 			-Info token is used
 			
 	Click "Give Number Info" - Must be player's turn, must have at least one token
-		-Ability to mouse of cards is enabled
+		-Ability to mouse over cards is enabled
 		
 		Mouse over card - Must be cards in other players' hands, Number information about moused over card must 
 						  not have already been shared
