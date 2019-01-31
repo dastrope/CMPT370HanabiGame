@@ -79,7 +79,7 @@ Requirments Document Progress
 
 	5.4.1 Table of Contents and Index
 	
-	5.4.2 Appendixes
+	5.4.2 Appendices
 	
 
 #SRS sections are detailed in the ISO 830-1998 pgs.11-20
