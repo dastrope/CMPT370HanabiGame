@@ -1,0 +1,10 @@
+Mar 01, 2019
+3:30 pm
+Thorv
+Meeting Agenda for group G3
+
+1. As a group we determined the entirety of fields and methods for the model, interaction model, view and controller for the main part of our game. 
+
+2. We made sure everyone understood how the model, view and controller classes of our design interacts.
+
+3. We still need to finish designing our classes and their methods for the menu.
