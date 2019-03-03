@@ -2,6 +2,8 @@ public class GameModel {
     private int infoTokens; // must be an integer between 0 and 8, these tokens are a resource used to give other players hints.
     private int fuses;      // initialized to 3, the team loses one for each mistake.  once fuses reaches 0, the game ends.
     private int turn;       // marks the player number of the player whose turn it currently is.
+    private int userID;         // this client's player position at the table
+    private int playerCount;    // number of players in the current game
     private int cardsInDeck;    // counts the remaining cards in the deck.  If the deck runs out, each player gets one more turn before the game ends.
     private Table gameTable;    // holds the table state, containing hands, cards, and revealed information for each player.
     private DiscardPile discards;   // keeps track of which cards have been discarded over the course of the game.
@@ -47,4 +49,10 @@ public class GameModel {
     
     public void nextTurn();
         // incrememnts the current player counter.  must only be called after all results from current turn are completed.
+        
+    public int currentTurn();
+        // returns the seat number of the player whose turn it is currently.
+        
+    public int playerSeat();
+        // returns the userID seat number
 }
