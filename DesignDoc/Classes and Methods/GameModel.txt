@@ -9,10 +9,10 @@ public class GameModel {
     private DiscardPile discards;   // keeps track of which cards have been discarded over the course of the game.
     private Fireworks fireworks;    // maintains the firework stacks.
     private int time;               // turn timer
-    private int timeout;            // turn timeout time for this game
+    private int timeLimit;          // turn time limit time for this game
 
-    public GameModel();
-        // constructor.  Will initialize timeout, infoTokens, fuses, and cardsInDeck.
+    public GameModel(int timeout);
+        // constructor.  Will initialize timeLimit, infoTokens, fuses, and cardsInDeck.
 
     public void dealTable(int playercount, Collection startinghands);
         // initializes the table for the game at the start.  playercount will
