@@ -8,9 +8,11 @@ public class GameModel {
     private Table gameTable;    // holds the table state, containing hands, cards, and revealed information for each player.
     private DiscardPile discards;   // keeps track of which cards have been discarded over the course of the game.
     private Fireworks fireworks;    // maintains the firework stacks.
+    private int time;               // turn timer
+    private int timeout;            // turn timeout time for this game
 
     public GameModel();
-        // constructor.  Will initialize infoTokens, fuses, and cardsInDeck.
+        // constructor.  Will initialize timeout, infoTokens, fuses, and cardsInDeck.
 
     public void dealTable(int playercount, Collection startinghands);
         // initializes the table for the game at the start.  playercount will
@@ -52,6 +54,9 @@ public class GameModel {
         
     public int currentTurn();
         // returns the seat number of the player whose turn it is currently.
+        
+    public int getTime();
+        // returns the remaining time for the current turn.
         
     public int playerSeat();
         // returns the userID seat number
