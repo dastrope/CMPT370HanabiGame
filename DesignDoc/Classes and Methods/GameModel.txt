@@ -35,14 +35,14 @@ public class GameModel {
     public void giveCard(String newcard);
         // places newcard into the hand of the current player.
 
-    public void discardCard(int player, int position);
+    public void discardCard(int player, int handPosition);
         // discards the card in the given posiiton in the current player's hand.
 
     public void informCard(int player, char info);
         // marks the chosen card in the chosen player's hand with the the information
-
-    public void buildFirework(char colour, char number);
-        // adds 1 to the firework stack of the given color.
+        
+    public void playCard(int player, int handPosition);
+        // attempts to play the card in the chosen position to the fireworks stack.
 
     public int getFireworkHeight(char color);
         // returns the current height of the firework stack of the given color.
