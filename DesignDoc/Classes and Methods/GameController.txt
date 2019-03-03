@@ -27,4 +27,7 @@ public class GameController {
     
     public void setView(GameView newView);
         // sets up the game view
+        
+    public void endGame();
+        // ends the game, and creates a new window with endgame information
 }
