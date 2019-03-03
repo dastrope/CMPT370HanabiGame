@@ -1,6 +1,4 @@
 public class Table {
-    private int userID;         // this client's current player position at the table
-    private int playerCount;    // number of players in the current game
     private Collection<int,Hand> playerHands;   // collection of player hands, indexed by player seat numbers
 
     public Table();
