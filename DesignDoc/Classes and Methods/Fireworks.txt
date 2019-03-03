@@ -5,7 +5,7 @@ public class Fireworks {
 
     public void addFirework(char colour);
 
-    public Boolean checkBuildValid(char colour);
+    public Boolean checkBuildValid(Card tryme);
 
     public Collection getFireworks();
 }
