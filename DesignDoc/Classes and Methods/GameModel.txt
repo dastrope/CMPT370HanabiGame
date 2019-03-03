@@ -30,16 +30,16 @@ public class GameModel {
     public int getFuses();
         // returns the current number of fuses remaining.
 
-    public void giveCard(card newcard);
+    public void giveCard(String newcard);
         // places newcard into the hand of the current player.
 
-    public void discardCard(int position);
+    public void discardCard(int player, int position);
         // discards the card in the given posiiton in the current player's hand.
 
-    public void informCard(int targetplayer, char info);
+    public void informCard(int player, char info);
         // marks the chosen card in the chosen player's hand with the the information
 
-    public void buildFirework(char color);
+    public void buildFirework(char colour, char number);
         // adds 1 to the firework stack of the given color.
 
     public int getFireworkHeight(char color);
