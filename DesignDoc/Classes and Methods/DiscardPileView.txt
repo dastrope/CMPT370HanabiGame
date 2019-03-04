@@ -1,0 +1,13 @@
+public class DiscardPileView {
+    public DiscardPileView();
+    //constructor for view to display discard pile
+
+    public void setModel();
+    //sets a model for the view to observe
+
+    public void drawCard();
+    //code to draw a discarded card
+
+    public void drawDiscardPile();
+    //method to draw all discarded cards
+}

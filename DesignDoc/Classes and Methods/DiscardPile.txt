@@ -2,7 +2,7 @@ public class DiscardPile {
     private int discardCount;
     //tracks the number of cards in the discard pile
     private Collection<Card,int> discards;
-    //A collection to store the discarded cards
+    //A collection to store the discarded cards and how many of each card has been discarded
 
     public DiscardPile(); 
     //Constructor method instantiates the collection and sets the discardcount to 0
