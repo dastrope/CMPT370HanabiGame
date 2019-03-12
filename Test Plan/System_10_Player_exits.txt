@@ -1,0 +1,7 @@
+End to end Test
+Player exits the game (Use case 10)
+
+Tests wether the program exits when the exit button is pressed.
+
+Test 1 : user presses the exit (X) button.
+The program exits.
