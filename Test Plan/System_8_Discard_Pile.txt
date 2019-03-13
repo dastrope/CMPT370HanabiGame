@@ -5,11 +5,11 @@ Look at Discard Pile (Use case 8)
 Testing this will require to view the UI as additions are made to the discard pile. The screen will close on user input.
 
 Test 1: The player discards a card, this will update the discard pile with the new card added. 
-	- The newly discarded card should be visible in the Duscard Pile Object
+	- The newly discarded card should be visible in the Discard Pile Object
 
 
 Test 2: A different discarding a card will update the discard pile with the new card added. 
-	- The newly discarded card should be visible in the Duscard Pile Object
+	- The newly discarded card should be visible in the Discard Pile Object
 	
 
 Test 3: The View Discard Pile button should be clickable from all 6 game states.
