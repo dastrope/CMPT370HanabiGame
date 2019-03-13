@@ -1,0 +1,9 @@
+DiscardPile class unit testing from design document
+
+Card constructor - verify that after being insantiated the discardCount field is set to 0 and the collection is created
+
+method getDiscards - verify that the collection of discarded cards is returned and accessible
+
+method addDiscard - verify that the given card is successfully added to the discard pile
+
+method getDiscardCount - verify that value of the discardCount field is returned
