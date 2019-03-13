@@ -1,0 +1,11 @@
+Numbering follows steps from Use Case 1 from requirements document
+
+1-2. Verify clicking 'Host Game' button brings up field boxes for timeout limit, NSID, players, token. Player should still be able to click 'Join Game' instead. - visual confirmation
+
+3-5. After user enters appropriate info into fields and clicks ok, verify the connection is established with the server and JSON is marshalled with correct information and sent to create the game. - assert that JSON contains the information entered by the user and that the connection is valid
+
+6. Verify game was correctly created on the server. - visual confirmation when client window shows a popup
+
+7. Verify user has joined game and is presented the game signature to be used to join it, nad how many more players needed. - visual confirmation from same popup as above step
+
+8. Verify GameModel, GameView, GameController, and GameInteraction model have been instantiated with the correct information. - visual confirmation that elements look as they should, initial hands dealt by the server are correct on all clients
