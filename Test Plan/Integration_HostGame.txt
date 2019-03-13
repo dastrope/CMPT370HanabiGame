@@ -1,4 +1,4 @@
-Numbering follows steps from Use Case 1 from requirements document
+Applicable to the Software Requirement Specification section: 3.2.1.1
 
 1-2. Verify clicking 'Host Game' button brings up field boxes for timeout limit, NSID, players, token. Player should still be able to click 'Join Game' instead. - visual confirmation
 
