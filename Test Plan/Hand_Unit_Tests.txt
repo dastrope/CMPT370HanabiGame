@@ -1,0 +1,24 @@
+Tests for class Hand
+
+public Hand(int handSize); //constructor
+	- verify that the collection is of the correct size
+
+
+public void addCard(char colour, char number);
+	- verify that the new card is added to the collection in the first available position
+	- verify that the new card is accurate
+	- verify that a new card without information will be created if no arguments are given
+
+
+public void removeCard(int position);
+	- verify that the correct card is removed from the collection
+	- verify that there is an empty space left in the correct position in the hand
+
+
+public void informColour(char colour);
+	- verify that each card in the hand with a matching colour is marked as known
+
+
+public void informNumber(char number);
+	- verify that each card in the hand with a matching number is marked as known
+
