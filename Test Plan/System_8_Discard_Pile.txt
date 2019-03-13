@@ -8,7 +8,7 @@ Test 1: The player discards a card, this will update the discard pile with the n
 	- The newly discarded card should be visible in the Discard Pile Object
 
 
-Test 2: A different discarding a card will update the discard pile with the new card added. 
+Test 2: A different player discarding a card will update the discard pile with the new card added. 
 	- The newly discarded card should be visible in the Discard Pile Object
 	
 
