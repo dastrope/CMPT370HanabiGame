@@ -1,3 +1,5 @@
+Applicable to the Software Requirement Specification sections: 3.2.1.4 to 3.2.1.7
+
 1. Verify that all clients correctly determine whose turn it is from turn order and JSON interpretation. - Visual confirmation as it requires syncing of multiple clients that don't know about each other.
 
 2. Verify that controller and interaction model are both set to active state for the current active player and that other players are inactive. - Visual confirmation - can also assert and test that way
