@@ -1,0 +1,16 @@
+AI class unit testing from Design Document
+
+method checkAvailableMoves()
+use a mock to verify that canInform and canDiscard are set to the correct boolean for token values 0,1,7,8. It is not possible for both to be false.
+
+method bestPlay()
+use a mock to verify the best play move is returned based on the conventions chosen and statistical weights given to each possible play.
+
+method bestInform()
+use a mock to verify the best inform move is returned based on the conventions chosen and statistical weights given to each possible inform.
+
+method bestDiscard()
+use a mock to verify the best discard move is returned based on the conventions chosen and statistical weights given to each possible discard.
+
+method performBestMove()
+verify proper comparison each of the best moves and invoke the proper function to perform the move.
