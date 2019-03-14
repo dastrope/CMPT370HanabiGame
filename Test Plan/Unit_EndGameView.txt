@@ -1,0 +1,7 @@
+EndGameView class unit testing from DesignDocument
+
+EndGameView constructor(Collection endInfo) - verify that the view is correctly instantiated and game window changes to new view. - Visual confirmation. 
+
+method display() - verify congratulatory message, score and graphical display of fireworks is drawn. - Visual confirmation. 
+
+method closeGame() - verify endGame screen properly closes and user is returned to main menu.
