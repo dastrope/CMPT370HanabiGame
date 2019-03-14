@@ -1,0 +1,20 @@
+GameMenu class unit testing from Design Document
+
+contructor GameMenu()
+visually verify that the menu was contructed
+
+method createGame()
+verify that that connections can be made with the server
+verify that a game can be created
+verify that aModel, iModel, aView, aController, game-id and token were all instantiated
+verify that the text boxes are properly read
+
+method joinGame()
+verify that that connections can be made with the server
+verify that aModel, iModel, aView, aController were all instantiated
+
+method howToPlay()
+verify that the rules windows is presented when pressed
+
+method exit()
+verify that the program is terminated
