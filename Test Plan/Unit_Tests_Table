@@ -1,0 +1,17 @@
+Unit Tests for class Table
+
+contructor Table(int playerCount);
+	- verify that the correct number of hands are created based on the given number of players
+
+method giveCard(int playerID, char colour, char number);
+	- verify that a card was added to the correct player's hand.
+	- verify that a card without any information can be added if no colour and number arguments are given
+
+method removeCard(int playerID, int cardPosition);
+	- verify that a card was removed from the correct player's hand and from the correct position
+	- verify that the position where the card was removed is now empty
+
+method informCard(intplayerID, String type, char info);
+	- verify that the correct Hand method is called depending on the given "type" argument
+	- verify that the information is applied to the correct player's hand
+	- verify that the cards to be informed are marked with the correct known status
