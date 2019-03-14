@@ -1,0 +1,36 @@
+Mar 14, 2019
+1:50 pm
+Spinks S371
+Meeting Minutes for group G3
+
+1. Discuss group member's absence from the complete construction of the test plan.
+	- "we will ffffffffix that" - Parker
+	- 
+
+2. Discuss and decide the order in which we should be constructing code.
+	
+
+3. Parker's discussion on the situations in which aspect oriented programming could be found useful.
+
+4. AOP practice time
+	- problem, Why, concepts and components, applications
+	- problem
+		- cross-cutting concerns
+	- why is that a problem?
+		- complicates maintenance
+		- less organized
+	- concepts and components
+		- joinpoints
+			- method calls
+			- fields (get or set)
+		- advice
+		- pointcuts
+			- a subset of joinpoints
+		- aspect
+	- applications
+		- subject/observer replacement or operation
+		- JSON message sending
+		- logging
+		- performance profiling
+		- security
+		- transactions
