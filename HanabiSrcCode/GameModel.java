@@ -1,0 +1,63 @@
+public class GameModel {
+    private int infoTokens; // must be an integer between 0 and 8, these tokens are a resource used to give other players hints.
+    private int fuses;      // initialized to 3, the team loses one for each mistake.  once fuses reaches 0, the game ends.
+    private int turn;       // marks the player number of the player whose turn it currently is.
+    private int userID;         // this client's player position at the table
+    private int playerCount;    // number of players in the current game
+    private int cardsInDeck;    // counts the remaining cards in the deck.  If the deck runs out, each player gets one more turn before the game ends.
+    private Table gameTable;    // holds the table state, containing hands, cards, and revealed information for each player.
+    private DiscardPile discards;   // keeps track of which cards have been discarded over the course of the game.
+    private Fireworks fireworks;    // maintains the firework stacks.
+    private int time;               // turn timer
+    private int timeLimit;          // turn time limit time for this game
+
+    public GameModel(int timeout);
+        // constructor.  Will initialize timeLimit, infoTokens, fuses, and cardsInDeck.
+
+    public void dealTable(int playercount, Collection startinghands);
+        // initializes the table for the game at the start.  playercount will
+        indicate the number of players for this game, and startinghands
+        will bring in the parsed collection of other players' hands.  
+
+    public void addToken();
+        // increases the available information tokens by one.
+
+    public void removeToken();
+        // reduces the available information tokens by one.
+
+    public int getInfoTokens();
+        // returns the current remaining number of information tokens.
+
+    public void removeFuse();
+        // reduces the number of fuses by one.  If fuse count reaches 0, triggers game end.
+
+    public int getFuses();
+        // returns the current number of fuses remaining.
+
+    public void giveCard(String newcard);
+        // places newcard into the hand of the current player.
+
+    public void discardCard(int player, int handPosition);
+        // discards the card in the given posiiton in the current player's hand.
+
+    public void informCard(int player, char info);
+        // marks the chosen card in the chosen player's hand with the the information
+        
+    public void playCard(int player, int handPosition);
+        // attempts to play the card in the chosen position to the fireworks stack.
+
+    public int getFireworkHeight(char color);
+        // returns the current height of the firework stack of the given color.
+    
+    public void nextTurn();
+        // incrememnts the current player counter.  must only be called after all results from current turn are completed.
+        
+    public int currentTurn();
+        // returns the seat number of the player whose turn it is currently.
+        
+    public int getTime();
+        // returns the remaining time for the current turn.
+        
+    public int playerSeat();
+        // returns the userID seat number
+}
