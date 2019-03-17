@@ -6,7 +6,7 @@ public class Card {
 
     public Card(char colour, char number);
         // object contstructor, takes color and number value and sets both
-        colourKnown and numberKnown to false.
+        // colourKnown and numberKnown to false.
 
     public void numberGiven();
         // sets numberKnown to true.
