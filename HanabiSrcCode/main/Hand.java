@@ -1,6 +1,8 @@
+import java.util.ArrayList;
+
 public class Hand {
     private int handSize; // the amount of cards in the player hands
-    private Collection<Card> cards; //a collecton that will store the current cards in the hand
+    protected Card[] cards; //a collecton that will store the current cards in the hand
 
     public Hand(int handSize); // constructor.  Will initialize collection cards, handSize.
 
