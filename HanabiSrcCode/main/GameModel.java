@@ -16,8 +16,8 @@ public class GameModel {
 
     public void dealTable(int playercount, Collection startinghands);
         // initializes the table for the game at the start.  playercount will
-        indicate the number of players for this game, and startinghands
-        will bring in the parsed collection of other players' hands.  
+        // indicate the number of players for this game, and startinghands
+        // will bring in the parsed collection of other players' hands.
 
     public void addToken();
         // increases the available information tokens by one.
@@ -50,7 +50,7 @@ public class GameModel {
         // returns the current height of the firework stack of the given color.
     
     public void nextTurn();
-        // incrememnts the current player counter.  must only be called after all results from current turn are completed.
+        // increments the current player counter.  must only be called after all results from current turn are completed.
         
     public int currentTurn();
         // returns the seat number of the player whose turn it is currently.
