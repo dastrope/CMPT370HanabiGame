@@ -1,13 +1,15 @@
+import java.util.HashMap;
+
 public class DiscardPile {
     private int discardCount;
     //tracks the number of cards in the discard pile
-    private Collection<Card,int> discards;
+    private HashMap<String,Integer> discards;
     //A collection to store the discarded cards and how many of each card has been discarded
 
     public DiscardPile(); 
     //Constructor method instantiates the collection and sets the discardcount to 0
 
-    public Collection<Card,int> getDiscards(); 
+    public HashMap<String,Integer> getDiscards();
     //returns the collection of discarded cards
 
     public void addDiscard(Card discardedCard); 
