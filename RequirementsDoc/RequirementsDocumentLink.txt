@@ -1,2 +1,0 @@
-Link to G3 Requirements Document:
-https://git.cs.usask.ca/370-19/g3/blob/master/RequirementsDoc/requirements_doc_final_draft/Requirements_doc_final.pdf

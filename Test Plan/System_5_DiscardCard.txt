@@ -1,8 +1,0 @@
-End to end testing
-Use case 3.2.1.5 discard a card
-
-If this is the first turn of the game the player should receive and correctly interpret a JSON message from the server telling them it is their turn. Otherwise, in later turns the player client should infer it is their turn from the turn order of the game. Controller and interaction model should be set to active state. If there are fewer than eight info tokens, discard a card button should be clickable. Otherwise it should be uninteractable. Once clicked it should redraw the players hand with all cards clickable. All other player action buttons (from section 3.2.1 , use cases 4, 6, and 7) should also be clickable so the player may switch their state to those actions. 
-
-When any of the active player's cards are clicked, the card should be discarded. All players will be notified as to which card is discarded. All clients should add one info token to the pool and the card should be added to the discard pile. If any cards are left in the deck, all clients except the active player should be notified of the new card given to the player as a replacement for the discarded card. 
-
-This test will be done through visual inspection of the UI elements throughout the use case, ensuring interactability and visibility changes at each point described. Because it is a MVC system, seeing the cards change in the view should confirm that the model was successfully updated as expected. 
