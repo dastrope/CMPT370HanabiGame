@@ -1,0 +1,10 @@
+Mar 21, 2019
+1:50 pm
+Spinks S371
+Meeting Agenda for group G3
+
+1. Discuss what changes will need to be made to the system to accomodate new sixth suit information from class yesterday.
+
+2. Ask TA for advice on certain git features and when to use them like branching, how to write and resolve issues properly, then make sure everyone is comfortable doing those things.
+
+3. As discussed at our work session on Tuesday, we should do a pair programming session today and at least one more later this week - determine who will attend and what they will do if possible at this time. 
