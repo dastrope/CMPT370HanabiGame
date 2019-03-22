@@ -5,18 +5,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class CardTest {
 
     @Test
-    void numberGiven() {
+    void numberInformed() {
         Card aCard = new Card('b', '2');
         assertFalse(aCard.checkNumberKnown());
-        aCard.numberGiven();
+        aCard.numberInformed();
         assertTrue(aCard.checkNumberKnown());
     }
 
     @Test
-    void colourGiven() {
+    void colourInformed() {
         Card bCard = new Card('g', '4');
         assertFalse(bCard.checkColourKnown());
-        bCard.colourGiven();
+        bCard.colourInformed();
         assertTrue(bCard.checkColourKnown());
     }
 
@@ -36,7 +36,7 @@ class CardTest {
     void checkColourKnown() {
         Card bCard = new Card('g', '4');
         assertFalse(bCard.checkColourKnown());
-        bCard.colourGiven();
+        bCard.colourInformed();
         assertTrue(bCard.checkColourKnown());
     }
 
@@ -44,7 +44,7 @@ class CardTest {
     void checkNumberKnown() {
         Card aCard = new Card('b', '2');
         assertFalse(aCard.checkNumberKnown());
-        aCard.numberGiven();
+        aCard.numberInformed();
         assertTrue(aCard.checkNumberKnown());
     }
 

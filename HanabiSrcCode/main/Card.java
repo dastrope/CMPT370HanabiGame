@@ -4,38 +4,98 @@ public class Card {
     private Boolean colourKnown;    // marker for whether the colour of the card is known
     private Boolean numberKnown;    // marker for whether the rank of the card is known
 
-    public Card(char colour, char number);
-        // object constructor, takes color and number value and sets both
-        // colourKnown and numberKnown to false.
 
-    public Card();
-        // alternate constructor for player's own cards
+    /**
+     * Purpose: Card constructor for other players' cards, takes color and number value
+     *          and sets both colourKnown and numberKnown to false.
+     *
+     * @param colour the colour of the card.
+     * @param number the rank of the card.
+     */
+    public Card(char colour, char number) {
 
-    public void numberGiven();
-        // sets numberKnown to true.
+        this.colour = colour;
+        this.number = number;
 
-    public void colourGiven();
-        // sets colourKnown to true.
+        this.colourKnown = false;
+        this.numberKnown = false;
+    }
 
-    public char getNumber();
-        // returns the ranks of the card.
 
-    public char getColour();
-        // returns the suit of the card.
+    /**
+     * Purpose: Card constructor for the user cards,
+     *          sets both colourKnown and numberKnown to false.
+     *
+     */
+    public Card() {
 
-    public Boolean checkColourKnown();
-        // returns whether the colour of the card has been given as information.
+        /* Assumes colour and number are instantiated to null. */
 
-    public Boolean checkNumberKnown();
-        // returns whether the colour of the card has been given as information.
+        this.colourKnown = false;
+        this.numberKnown = false;
+    }
 
-    public void setNumber(char number);
-        // sets the number of the card to the given value and
-        // marks the card as known
-        // throws an exception if the card already has a number
+    /**
+     * Purpose: sets numberKnown to true, when a number is revealed to the card's owner
+     */
+    public void numberInformed() {
+        this.numberKnown = true;
+    }
 
-    public void setColour(char colour);
-        // sets the colour of the card to the given value
-        // and marks the card as known
-        // throws an exception if the card already has a colour
+    /**
+     * Purpose: sets colourKnown to true, when a number is revealed to the card's owner
+     */
+    public void colourInformed() {
+        this.numberKnown = true;
+    }
+
+    /**
+     * Purpose: returns the rank of the card.
+     * @return the char representing the rank.
+     */
+    public char getNumber() {
+        return this.number;
+    }
+
+    /**
+     * Purpose: returns the colour of the card.
+     * @return the char representing the colour.
+     */
+    public char getColour() {
+        return this.colour;
+    }
+
+    /**
+     * Purpose: returns whether the colour of the card has been given as information.
+     * @return true if it has been informed, false otherwise.
+     */
+    public Boolean checkColourKnown() {
+        return this.colourKnown;
+    }
+
+    /**
+     * Purpose: returns whether the number of the card has been given as information.
+     * @return true if it has been informed, false otherwise.
+     */
+    public Boolean checkNumberKnown() {
+        return this.numberKnown;
+    }
+
+    /**
+     * Purpose: sets the number field of a users card after it has been revealed.
+     * @param number the char representing the rank of the card.
+     */
+    public void setNumber(char number) {
+        this.number = number;
+        this.numberInformed();
+    }
+
+    /**
+     * Purpose: sets the colour field of a users card after it has been revealed.
+     * @param colour the char representing the colour of the card.
+     */
+    public void setColour(char colour) {
+        this.colour = colour;
+        this.colourInformed();
+    }
 }
