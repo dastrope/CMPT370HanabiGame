@@ -1,3 +1,6 @@
+/**
+ * The class representing a single Hanabi card.
+ */
 public class Card {
 
     /**
