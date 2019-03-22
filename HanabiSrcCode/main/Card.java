@@ -1,8 +1,24 @@
 public class Card {
-    private char number;     // number rank of the card
-    private char colour;    // colour suit of the card
-    private Boolean colourKnown;    // marker for whether the colour of the card is known
-    private Boolean numberKnown;    // marker for whether the rank of the card is known
+
+    /**
+     * number rank of the card
+     */
+    private char number;
+
+    /**
+     * colour suit of the card
+     */
+    private char colour;
+
+    /**
+     * marker for whether the colour of the card is known
+     */
+    private Boolean colourKnown;
+
+    /**
+     * marker for whether the rank of the card is known
+     */
+    private Boolean numberKnown;
 
 
     /**
