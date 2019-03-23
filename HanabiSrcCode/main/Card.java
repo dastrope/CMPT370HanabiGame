@@ -88,7 +88,7 @@ public class Card {
      * Purpose: returns whether the colour of the card has been given as information.
      * @return true if it has been informed, false otherwise.
      */
-    public Boolean checkColourKnown() {
+    public boolean checkColourKnown() {
         return this.colourKnown;
     }
 
@@ -96,7 +96,7 @@ public class Card {
      * Purpose: returns whether the number of the card has been given as information.
      * @return true if it has been informed, false otherwise.
      */
-    public Boolean checkNumberKnown() {
+    public boolean checkNumberKnown() {
         return this.numberKnown;
     }
 
