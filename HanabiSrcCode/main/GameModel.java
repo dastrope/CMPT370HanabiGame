@@ -11,58 +11,157 @@ public class GameModel {
     private int time;               // turn timer
     private int timeLimit;          // turn time limit time for this game
 
-    public GameModel(int timeout){
+    /**
+     * Purpose: Instantiates the game model to the appropriate start state based on timeout, numOfPlayer and gameType.
+     *
+     * @param timeout the turn time limit in seconds for each player. Must be 1 =<.
+     * @param numOfPlayers the number of players in the game. Must be 2-5
+     * @param gameType the type of game to be played. Must be "default", "extended", and "wild".
+     */
+    public GameModel(int timeout, int numOfPlayers, String gameType){
+        this.infoTokens = 8;
+        this.fuses = 3;
+        this.timeLimit = timeout;
+        this.playerCount = numOfPlayers;
 
+        this.gameTable = new Table(numOfPlayers);
+        this.discards = new DiscardPile();
+        this.fireworks = new Fireworks(gameType);
+
+        if (gameType.equals("default")){
+            this.cardsInDeck = 50;
+        } else {
+            this.cardsInDeck = 60;
+        }
     }
-        // constructor.  Will initialize timeLimit, infoTokens, fuses, and cardsInDeck.
 
-    public void dealTable(int playercount, String[] startinghands){
-
+    /**
+     * Purpose: Adds all the cards from the deal to each player's respective hand.
+     *
+     * @param startinghands Array of Array of strings representing each player's hand.
+     */
+    public void dealTable(String[][] startinghands){
+        for (int i = 0; i < this.playerCount; i++){
+            if (startinghands[i].length == 0){
+                for (int j = 0; j < 4; j++) {
+                    this.gameTable.giveCard(i + 1);
+                }
+                if (this.playerCount <= 3){
+                    this.gameTable.giveCard(i + 1);
+                }
+                this.userID = i + 1;
+            } else{
+                for( String card : startinghands[i]){
+                    this.gameTable.giveCard(i + 1, card.charAt(0), card.charAt(1));
+                }
+            }
+        }
     }
-        // initializes the table for the game at the start.  playercount will
-        // indicate the number of players for this game, and startinghands
-        // will bring in the parsed collection of other players' hands.
 
+    /**
+     * Purpose: adds a token to the information token pile
+     */
     public void addToken(){
-
+        if (this.infoTokens == 8){
+            // throw new TokensException("tried to add a 9th info token");
+            // TODO create a TokensException
+        }
+        this.infoTokens += 1;
     }
-        // increases the available information tokens by one.
 
+    /**
+     * Purpose: removes a token from the information token pile
+     */
     public void removeToken(){
-
+        if (this.infoTokens == 0){
+            // throw new TokensException("tried to remove a nonexistent token");
+            // TODO create a TokensException
+        }
+        this.infoTokens -= 1;
     }
-        // reduces the available information tokens by one.
 
+    /**
+     * Purpose: returns the current number of available information tokens.
+     *
+     * @return the number of info tokens
+     */
     public int getInfoTokens(){
-        return 0;
+        return this.infoTokens;
     }
-        // returns the current remaining number of information tokens.
 
+    /**
+     * Purpose: removes a fuse from the stack of fuses.  If none are left, game should end.
+     */
     public void removeFuse(){
-
+        this.fuses -= 1;
     }
-        // reduces the number of fuses by one.  If fuse count reaches 0, triggers game end.
 
+    /**
+     * Purpose: returns the current number of available fuses.
+     *
+     * @return the number of fuses remaining
+     */
     public int getFuses(){
-        return 0;
+        return this.fuses;
     }
         // returns the current number of fuses remaining.
 
+    /**
+     * Purpose: adds a new Card to the hand of the current player
+     *
+     * @param newcard a two character string of the card to be added
+     */
     public void giveCard(String newcard){
-
+        if(this.playerSeat() == this.currentTurn()){
+            this.gameTable.giveCard(this.playerSeat());
+        } else {
+            this.gameTable.giveCard(this.currentTurn(), newcard.charAt(0), newcard.charAt(1));
+        }
     }
-        // places newcard into the hand of the current player.
 
-    public void discardCard(int player, int handPosition){
-
+    /**
+     * Purpose: remove a card from the current player's hand from the specified location
+     *
+     * @param handPosition the position of the card to be removed
+     */
+    public void discardCard(int handPosition){
+        this.gameTable.removeCard(this.currentTurn(), handPosition);
     }
-        // discards the card in the given posiiton in the current player's hand.
 
-    public void informCard(int player, char info){
-
+    /**
+     * Purpose: Update the markers for informed cards in other players' hands.
+     *
+     * @param player the player being informed
+     * @param info the information being given
+     */
+    public void informOther(int player, char info){
+        String numarray = "12345";
+        if (numarray.contains(Character.toString(info))){
+            this.gameTable.informCard(player, "number", info);
+        }else{
+            this.gameTable.informCard(player, "colour", info);
+        }
     }
-        // marks the chosen card in the chosen player's hand with the the information
-        
+
+    /**
+     * Purpose: Update the user's cards at the given indexes with the given information.
+     *
+     * @param info the information the player was informed about.
+     * @param index the index of the card that was informed.
+     */
+    public void informSelf(char info, int index) {
+        String numarray = "12345";
+        if (numarray.contains(Character.toString(info))){
+            this.gameTable.informCard(this.playerSeat(), "number", info, index);
+        } else {
+            this.gameTable.informCard(this.playerSeat(), "colour", info, index);
+        }
+    }
+
+    /**
+     * @param player
+     * @param handPosition
+     */
     public void playCard(int player, int handPosition){
 
     }
@@ -83,13 +182,13 @@ public class GameModel {
     }
         // returns the seat number of the player whose turn it is currently.
         
-    public int getTime(){
+    public int showTime(){
         return 0;
     }
         // returns the remaining time for the current turn.
         
     public int playerSeat(){
-        return 0;
+        return userID;
     }
         // returns the userID seat number
 }

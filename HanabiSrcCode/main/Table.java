@@ -15,10 +15,10 @@ public class Table {
     public Table(int players) {
         this.playerHands = new Hand[players];
         int handSize;
-        if (4 <= players) {
-            handSize = 5;
-        } else {
+        if (players >= 4) {
             handSize = 4;
+        } else {
+            handSize = 5;
         }
         for (Hand hand : this.playerHands) {
             hand = new Hand(handSize);
