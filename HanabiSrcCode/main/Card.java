@@ -48,6 +48,8 @@ public class Card {
     public Card() {
 
         /* Assumes colour and number are instantiated to null. */
+        this.colour = 'u';
+        this.number = 'u';
 
         this.colourKnown = false;
         this.numberKnown = false;
