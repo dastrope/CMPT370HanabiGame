@@ -1,6 +1,8 @@
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,6 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import javax.smartcardio.Card;
 import java.util.ArrayList;
 
 public class main extends Application {
@@ -35,7 +38,7 @@ public class main extends Application {
         Button  button2 = new Button( "TEST2" ) ;
         HBox pane_for_buttons = new HBox( 16 ) ; // space between buttons is 16
         HBox hand = new HBox(20);
-        ArrayList<Button> buttonList = new ArrayList<>();
+        ArrayList<Button> cardList = new ArrayList<>();
         for (int i = 0 ; i<5 ; i++){
             char suit;
             char rank;
@@ -44,29 +47,52 @@ public class main extends Application {
             } else{
                 suit = 'r';
             }
-            CardButton card1 = new CardButton(suit, (char)i);
-            ImageView unknown = new ImageView(new Image("cards_set1/unknown.png"));
+//            rank = Integer.toString(i);
+            rank = Character.forDigit(i+1, 10);
+            System.out.println(rank);
+            CardButton card1 = new CardButton(suit, rank);
+            ImageView unknown = new ImageView(new Image(card1.getImageString()));
             unknown.setFitHeight(100);
             unknown.setFitWidth(66);
             card1.setGraphic(unknown);
+            cardList.add(card1);
             card1.setOnMouseEntered(( MouseEvent event ) ->
             {
                 double clicked_point_x = event.getSceneX() ;
                 double clicked_point_y = event.getSceneY() ;
                 System.out.println(clicked_point_x + clicked_point_y);
-                card1.setTranslateY(-15);
+//                card1.setTranslateY(-15);
+                ObservableList<Node> cards = card1.getParent().getChildrenUnmodifiable();
+                for (Node card : cards){
+                    CardButton cd = (CardButton) card;
+                    if (cd.suit == card1.suit){
+                        card.setTranslateY(-15);
+                    }
+                }
             });
             card1.setOnMouseExited(( MouseEvent event ) ->
             {
                 double clicked_point_x = event.getSceneX() ;
                 double clicked_point_y = event.getSceneY() ;
                 System.out.println(clicked_point_x + clicked_point_y);
-                card1.setTranslateY(0);
+//                card1.setTranslateY(0);
+                ObservableList<Node> cards = card1.getParent().getChildrenUnmodifiable();
+                for (Node card : cards){
+                    CardButton cd = (CardButton) card;
+                    if (cd.suit == card1.suit){
+                        card.setTranslateY(0);
+                    }
+                }
             });
-            buttonList.add(card1);
+            card1.setOnMouseClicked((MouseEvent event) ->
+            {
+                double clicked_point_x = event.getSceneX() ;
+                double clicked_point_y = event.getSceneY() ;
+                int position = cardList.indexOf(card1);
+                System.out.println("Player 1 played " + card1.suit +card1.rank +" from position "+position);
+            });
         }
-        hand.getChildren().addAll(buttonList);
-
+        hand.getChildren().addAll(cardList);
         pane_for_buttons.getChildren().addAll( button1, button2 ) ;
 
         pane_for_buttons.setAlignment( Pos.CENTER ) ;
