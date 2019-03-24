@@ -38,13 +38,7 @@ public class CardButton extends Button {
     public String getImageString(){
 
         String address = "cards/";
-
-
         address+= this.card.toString() + ".png";
-        System.out.println(address);
-
-
-
         return address;
     }
 }

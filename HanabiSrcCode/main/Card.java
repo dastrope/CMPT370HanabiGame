@@ -26,7 +26,7 @@ public class Card {
 
     /**
      * Purpose: Card constructor for other players' cards, takes color and number value
-     * and sets both colourKnown and numberKnown to false.
+     *          and sets both colourKnown and numberKnown to false.
      *
      * @param colour the colour of the card.
      * @param number the rank of the card.
@@ -42,7 +42,8 @@ public class Card {
 
     /**
      * Purpose: Card constructor for the user cards,
-     * sets both colourKnown and numberKnown to false.
+     *          sets both colourKnown and numberKnown to false.
+     *
      */
     public Card() {
 
@@ -70,7 +71,6 @@ public class Card {
 
     /**
      * Purpose: returns the rank of the card.
-     *
      * @return the char representing the rank.
      */
     public char getNumber() {
@@ -79,7 +79,6 @@ public class Card {
 
     /**
      * Purpose: returns the colour of the card.
-     *
      * @return the char representing the colour.
      */
     public char getColour() {
@@ -88,7 +87,6 @@ public class Card {
 
     /**
      * Purpose: returns whether the colour of the card has been given as information.
-     *
      * @return true if it has been informed, false otherwise.
      */
     public boolean checkColourKnown() {
@@ -97,7 +95,6 @@ public class Card {
 
     /**
      * Purpose: returns whether the number of the card has been given as information.
-     *
      * @return true if it has been informed, false otherwise.
      */
     public boolean checkNumberKnown() {
@@ -106,7 +103,6 @@ public class Card {
 
     /**
      * Purpose: sets the number field of a users card after it has been revealed.
-     *
      * @param number the char representing the rank of the card.
      */
     public void setNumber(char number) {
@@ -116,7 +112,6 @@ public class Card {
 
     /**
      * Purpose: sets the colour field of a users card after it has been revealed.
-     *
      * @param colour the char representing the colour of the card.
      */
     public void setColour(char colour) {
@@ -129,7 +124,7 @@ public class Card {
      *
      * @return a two character string.
      */
-    public String toString() {
+    public String toString(){
         String out = Character.toString(this.colour);
         out += Character.toString(this.number);
         return out;

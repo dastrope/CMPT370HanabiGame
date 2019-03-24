@@ -128,16 +128,24 @@ public class main extends Application {
 
         /*loop to create all the cards with hardcoded information*/
 
-        Table table1 = new Table(2);
-        for (int i = 1 ; i<3 ; i++){
-            table1.giveCard(i, 'r', '1');
-            table1.giveCard(i, 'r', 'u');
-            table1.giveCard(i);
-            table1.giveCard(i, 'w', '5');
-            table1.giveCard(i, 'u', '5');
-        }
+        GameModel model = new GameModel(15,4,"default");
 
-        Scene scene = createTable(table1);
+        String[][] data = {{"b1", "b2", "b4", "g1"}
+                , {}
+                , {"b1", "b3", "g1", "g2"}
+                , {"b2", "b4", "g1", "g3"}
+        };
+//
+//        Table table1 = new Table(2);
+//        for (int i = 1 ; i<3 ; i++){
+//            table1.giveCard(i, 'r', 'u');
+//            table1.giveCard(i);
+//            table1.giveCard(i, 'w', '5');
+//            table1.giveCard(i, 'u', '5');
+//        }
+        model.dealTable(data);
+
+        Scene scene = createTable(model.gameTable);
 
 
 

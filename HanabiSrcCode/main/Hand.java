@@ -31,7 +31,6 @@ public class Hand {
         Card newCard = new Card(colour,number);
         for (int i = 0; i < this.cards.length; i++){
             if ((this.cards[i] == null) ){
-
                 this.cards[i] = newCard;
                 break;
             }
@@ -110,4 +109,11 @@ public class Hand {
         this.cards[index].setNumber(number);
     }
 
+    /**
+     * Purpose: Gets a card from a specific location.
+     *
+     * @param index the index of the card to return
+     * @return the Card at given index.
+     */
+    public Card getCard(int index) { return this.cards[index]; }
 }

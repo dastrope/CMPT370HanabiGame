@@ -15,17 +15,15 @@ public class Table {
     public Table(int players) {
         this.playerHands = new Hand[players];
         int handSize;
-        if (players == 2 || players == 3) {
-            handSize = 5;
-        } else {
+        if (players >= 4) {
             handSize = 4;
+        } else {
+            handSize = 5;
         }
-        for (int i = 0 ; i < players ; i++){
+        for (int i =0;i<players; i++){
             this.playerHands[i] = new Hand(handSize);
         }
-//        for (Hand hand : this.playerHands) {
-//            hand = new Hand(handSize);
-//        }
+
     }
 
     /**
@@ -93,5 +91,16 @@ public class Table {
             //TODO: make exception class.
             //throw new InvalidInformTypeException("Invalid inform type: " + type);
         }
+    }
+
+    /**
+     * Purpose: Returns the card from the given player's hand at the given index.
+     *
+     * @param playerID the player whose hand contains the desired card.
+     * @param index the position of the card in the hand.
+     * @return the card.
+     */
+    public Card getPlayersCard(int playerID, int index) {
+        return (this.playerHands[playerID].getCard(index));
     }
 }
