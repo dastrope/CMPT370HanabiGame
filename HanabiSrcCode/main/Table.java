@@ -91,4 +91,15 @@ public class Table {
             //throw new InvalidInformTypeException("Invalid inform type: " + type);
         }
     }
+
+    /**
+     * Purpose: Returns the card from the given player's hand at the given index.
+     *
+     * @param playerID the player whose hand contains the desired card.
+     * @param index the position of the card in the hand.
+     * @return the card.
+     */
+    public Card getPlayersCard(int playerID, int index) {
+        return (this.playerHands[playerID].getCard(index));
+    }
 }

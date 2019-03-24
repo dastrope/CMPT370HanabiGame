@@ -8,8 +8,8 @@ public class GameModel {
     private Table gameTable;    // holds the table state, containing hands, cards, and revealed information for each player.
     private DiscardPile discards;   // keeps track of which cards have been discarded over the course of the game.
     private Fireworks fireworks;    // maintains the firework stacks.
-    private int time;               // turn timer
-    private int timeLimit;          // turn time limit time for this game
+    private long timeLimit;          // turn time limit time for this game
+    private long turnStart;          // clock time at start of turn
 
     /**
      * Purpose: Instantiates the game model to the appropriate start state based on timeout, numOfPlayer and gameType.
@@ -21,8 +21,9 @@ public class GameModel {
     public GameModel(int timeout, int numOfPlayers, String gameType){
         this.infoTokens = 8;
         this.fuses = 3;
-        this.timeLimit = timeout;
+        this.timeLimit = timeout * 1000;
         this.playerCount = numOfPlayers;
+        this.turn = 1;
 
         this.gameTable = new Table(numOfPlayers);
         this.discards = new DiscardPile();
@@ -125,7 +126,9 @@ public class GameModel {
      * @param handPosition the position of the card to be removed
      */
     public void discardCard(int handPosition){
+        this.discards.addDiscard(this.gameTable.getPlayersCard(this.currentTurn(),handPosition));
         this.gameTable.removeCard(this.currentTurn(), handPosition);
+        this.addToken();
     }
 
     /**
@@ -141,6 +144,7 @@ public class GameModel {
         }else{
             this.gameTable.informCard(player, "colour", info);
         }
+        this.removeToken();
     }
 
     /**
@@ -156,39 +160,62 @@ public class GameModel {
         } else {
             this.gameTable.informCard(this.playerSeat(), "colour", info, index);
         }
+        this.removeToken();
     }
 
     /**
-     * @param player
-     * @param handPosition
+     * Purpose: Update a player's card after a successful play.
+     *
+     * @param handPosition the Position of the card that was played
      */
-    public void playCard(int player, int handPosition){
-
+    public void playCardSuccess(int handPosition){
+        Card played = this.gameTable.getPlayersCard(this.currentTurn(), handPosition);
+        this.fireworks.addFirework(played.getColour());
+        this.gameTable.removeCard(this.currentTurn(), handPosition);
     }
-        // attempts to play the card in the chosen position to the fireworks stack.
 
-    public int getFireworkHeight(char color){
+    public int getFireworkHeight(char colour){
         return 0;
+        // this may not need to exist
     }
         // returns the current height of the firework stack of the given color.
-    
-    public void nextTurn(){
 
+    /**
+     * Purpose: progresses the turn counter and resets the turn timer
+     */
+    public void nextTurn(){
+        this.turn += 1;
+        this.turnStart = System.currentTimeMillis();
     }
         // increments the current player counter.  must only be called after all results from current turn are completed.
-        
+
+    /**
+     * Purpose: returns the player number whose turn is currently being taken
+     *
+     * @return the current player's seat number
+     */
     public int currentTurn(){
-        return 0;
+        return this.turn % this.playerCount;
     }
         // returns the seat number of the player whose turn it is currently.
-        
-    public int showTime(){
-        return 0;
+
+    /**
+     * Purpose: returns the time remaining of the current player's turn, in milliseconds
+     *
+     * @return a number of milliseconds remaining in the current turn
+     */
+    public long showTime(){
+        return this.timeLimit - (System.currentTimeMillis() - this.turnStart);
     }
         // returns the remaining time for the current turn.
-        
+
+    /**
+     * Purpose: returns the number of the user's seat at the game table
+     *
+     * @return the user's seat number
+     */
     public int playerSeat(){
-        return userID;
+        return this.userID;
     }
         // returns the userID seat number
 }
