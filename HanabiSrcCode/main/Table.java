@@ -15,14 +15,17 @@ public class Table {
     public Table(int players) {
         this.playerHands = new Hand[players];
         int handSize;
-        if (4 <= players) {
+        if (players == 2 || players == 3) {
             handSize = 5;
         } else {
             handSize = 4;
         }
-        for (Hand hand : this.playerHands) {
-            hand = new Hand(handSize);
+        for (int i = 0 ; i < players ; i++){
+            this.playerHands[i] = new Hand(handSize);
         }
+//        for (Hand hand : this.playerHands) {
+//            hand = new Hand(handSize);
+//        }
     }
 
     /**

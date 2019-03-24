@@ -31,6 +31,7 @@ public class Hand {
         Card newCard = new Card(colour,number);
         for (int i = 0; i < this.cards.length; i++){
             if ((this.cards[i] == null) ){
+
                 this.cards[i] = newCard;
                 break;
             }
