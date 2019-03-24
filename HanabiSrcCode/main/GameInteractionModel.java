@@ -1,3 +1,5 @@
+import java.util.Observer;
+
 public class GameInteractionModel {
     private Collection observers;   // collection of observers to be informed of game state changes
     private Card selected;          // marker for which card is hovered over by the user
@@ -13,17 +15,27 @@ public class GameInteractionModel {
     private final int STATE_INFORM_COLOUR;  // user's turn, inform colour action selected.
     private final int STATE_INFORM_NUMBER;  // user's turn, inform number action selected.
 
-    public GameInteractionModel();
+    public GameInteractionModel(){
 
-    public void setSelected(Card selectedCard);
+    }
+
+    public void setSelected(Card selectedCard){
+
+    }
         // sets a card as being hovered over for the view's use.
 
-    public void addObserver(Observer anObserver);
+    public void addObserver(Observer anObserver){
+
+    }
         // add an observer to the list of obvservers
 
-    public void removeObserver(Observer anObserver);
+    public void removeObserver(Observer anObserver){
+
+    }
         // remove an ovserver from the list of observers
 
-    public void notifyObserver(Observer anObserver);
+    public void notifyObserver(Observer anObserver){
+
+    }
         // notify all observers in the observer list of a change.
 }

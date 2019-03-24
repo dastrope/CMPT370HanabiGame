@@ -11,53 +11,85 @@ public class GameModel {
     private int time;               // turn timer
     private int timeLimit;          // turn time limit time for this game
 
-    public GameModel(int timeout);
+    public GameModel(int timeout){
+
+    }
         // constructor.  Will initialize timeLimit, infoTokens, fuses, and cardsInDeck.
 
-    public void dealTable(int playercount, Collection startinghands);
+    public void dealTable(int playercount, String[] startinghands){
+
+    }
         // initializes the table for the game at the start.  playercount will
         // indicate the number of players for this game, and startinghands
         // will bring in the parsed collection of other players' hands.
 
-    public void addToken();
+    public void addToken(){
+
+    }
         // increases the available information tokens by one.
 
-    public void removeToken();
+    public void removeToken(){
+
+    }
         // reduces the available information tokens by one.
 
-    public int getInfoTokens();
+    public int getInfoTokens(){
+        return 0;
+    }
         // returns the current remaining number of information tokens.
 
-    public void removeFuse();
+    public void removeFuse(){
+
+    }
         // reduces the number of fuses by one.  If fuse count reaches 0, triggers game end.
 
-    public int getFuses();
+    public int getFuses(){
+        return 0;
+    }
         // returns the current number of fuses remaining.
 
-    public void giveCard(String newcard);
+    public void giveCard(String newcard){
+
+    }
         // places newcard into the hand of the current player.
 
-    public void discardCard(int player, int handPosition);
+    public void discardCard(int player, int handPosition){
+
+    }
         // discards the card in the given posiiton in the current player's hand.
 
-    public void informCard(int player, char info);
+    public void informCard(int player, char info){
+
+    }
         // marks the chosen card in the chosen player's hand with the the information
         
-    public void playCard(int player, int handPosition);
+    public void playCard(int player, int handPosition){
+
+    }
         // attempts to play the card in the chosen position to the fireworks stack.
 
-    public int getFireworkHeight(char color);
+    public int getFireworkHeight(char color){
+        return 0;
+    }
         // returns the current height of the firework stack of the given color.
     
-    public void nextTurn();
+    public void nextTurn(){
+
+    }
         // increments the current player counter.  must only be called after all results from current turn are completed.
         
-    public int currentTurn();
+    public int currentTurn(){
+        return 0;
+    }
         // returns the seat number of the player whose turn it is currently.
         
-    public int getTime();
+    public int getTime(){
+        return 0;
+    }
         // returns the remaining time for the current turn.
         
-    public int playerSeat();
+    public int playerSeat(){
+        return 0;
+    }
         // returns the userID seat number
 }

@@ -6,7 +6,7 @@ public class GameMenu {
         // These buttons are used to call their respective methods in the class.
     
     
-    private int game-id;
+    private int gameId;
     private String token;
         // These fields are user entered data used for establishing a server connection.
     
@@ -17,18 +17,28 @@ public class GameMenu {
     private Controller aController;
         // These fields will be set by createGame() or joinGame(), these are the main instances of our in-game program.
     
-    public GameMenu(); 
+    public GameMenu(){
+
+    }
         // Constructs the main game menu
     
-    public void createGame(); 
+    public void createGame(){
+
+    }
         // Creates a connection with the server and creates a game as well as instantiates aModel, iModel, aView, aController, game-id and token.
 
-    public void joinGame(); 
+    public void joinGame(){
+
+    }
         // Creates a connection with the server as well as instantiates aModel, iModel, aView and aController.
 
-    public void howToPlay(); 
+    public void howToPlay(){
+
+    }
         // Presents a window with the game rules.
 
-    public void exit(); 
+    public void exit(){
+
+    }
         // Closes the entire program.
 }
