@@ -1,3 +1,6 @@
+import java.awt.*;
+import java.net.Socket;
+
 public class GameMenu {
     private Button createGameButton;
     private Button joinGameButton;
@@ -11,10 +14,10 @@ public class GameMenu {
         // These fields are user entered data used for establishing a server connection.
     
     private Socket serverSocket;
-    private Model aModel;
-    private InteractionModel iModel;
-    private View aView;
-    private Controller aController;
+    private GameModel aModel;
+    private GameInteractionModel iModel;
+    private GameView aView;
+    private GameController aController;
         // These fields will be set by createGame() or joinGame(), these are the main instances of our in-game program.
     
     public GameMenu(){

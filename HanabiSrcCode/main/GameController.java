@@ -1,11 +1,14 @@
+import java.util.Collection;
+import java.util.Dictionary;
+
 public class GameController {
     private GameModel model;        // link to game model
     private GameView view;          // link to game view
     private GameInteractionModel iModel; // link to interaction model
 
     private int state; // current game state, whether or not it is the user's turn
-    private final int STATE_INACTIVE;   // not the user's turn
-    private final int STATE_ACTIVE;     // the user's turn
+    private final int STATE_INACTIVE = 0;   // not the user's turn
+    private final int STATE_ACTIVE = 1;     // the user's turn
 
     public GameController(){
 
@@ -17,8 +20,8 @@ public class GameController {
     }
         // handles a message from the server, adjusting the model as needed.
 
-    public Collection parseJSON(String jsonMessage){
-
+    public Dictionary parseJSON(String jsonMessage){
+        return null;
     }
         // parses a message from the server into a collection of usable information.
         
