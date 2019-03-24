@@ -48,7 +48,7 @@ public class main extends Application {
         ArrayList<Button> cardList = new ArrayList<>();
 
         /*loop to create all the cards with hardcoded information*/
-        for (int i = 0 ; i<5 ; i++){
+        for (int i = 1 ; i<6 ; i++){
             char suit;
             char rank;
             if (i % 2 == 0) {
@@ -56,10 +56,12 @@ public class main extends Application {
             } else{
                 suit = 'r';
             }
-            rank = Character.forDigit(i+1, 10);         //convert rank to char
-            CardButton card1 = new CardButton(suit, rank);          //create a card
+            rank = Character.forDigit(i, 10);         //convert rank to char
+            Card temp = new Card(suit,rank);
+            CardButton card1 = new CardButton(temp);          //create a card
 
             /*set the cards image and add the card to the cardlist*/
+            System.out.println(card1.card.toString());
             ImageView image = new ImageView(new Image(card1.getImageString()));
             image.setFitHeight(100);
             image.setFitWidth(66);
@@ -73,7 +75,7 @@ public class main extends Application {
                 ObservableList<Node> cards = card1.getParent().getChildrenUnmodifiable();
                 for (Node card : cards){
                     CardButton cd = (CardButton) card;
-                    if (cd.suit == card1.suit){
+                    if (cd.getColour() == card1.getColour()){
                         card.setTranslateY(-15);
                     }
                 }
@@ -86,7 +88,7 @@ public class main extends Application {
                 ObservableList<Node> cards = card1.getParent().getChildrenUnmodifiable();
                 for (Node card : cards){
                     CardButton cd = (CardButton) card;
-                    if (cd.suit == card1.suit){
+                    if (cd.getColour() == card1.getColour()){
                         card.setTranslateY(0);
                     }
                 }
@@ -95,10 +97,10 @@ public class main extends Application {
             /*set event for clicking the card to generate a play event*/
             card1.setOnMouseClicked((MouseEvent event) ->
             {
-                int position = cardList.indexOf(card1); //position in the hand based on when it was added to cardlist
+                int position = cardList.indexOf(card1) +1; //position in the hand based on when it was added to cardlist
 
                 /*play event just simple print output with useful info*/
-                System.out.println("Player 1 played " + card1.suit +card1.rank +" from position "+position);
+                System.out.println("Player 1 played " + card1.getColour() +card1.getNumber() +" from position "+position);
             });
         }
         /*add the cardlist to the hand horizontal box object so the cards will be drawn*/
