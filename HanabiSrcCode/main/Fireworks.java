@@ -42,7 +42,7 @@ public class Fireworks {
      */
     public void addFirework(char colour){
         int height = this.fireworks.get(colour);
-        this.fireworks.replace(colour,++height) ;
+        this.fireworks.replace(colour,++height);
     }
 
     /**

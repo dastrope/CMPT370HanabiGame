@@ -40,7 +40,6 @@ public class Card {
         this.numberKnown = false;
     }
 
-
     /**
      * Purpose: Card constructor for the user cards,
      *          sets both colourKnown and numberKnown to false.
@@ -116,5 +115,16 @@ public class Card {
     public void setColour(char colour) {
         this.colour = colour;
         this.colourInformed();
+    }
+
+    /**
+     * Purpose: outputs a string representation of the card object
+     *
+     * @return a two character string.
+     */
+    public String toString(){
+        String out = Character.toString(this.colour);
+        out += Character.toString(this.number);
+        return out;
     }
 }
