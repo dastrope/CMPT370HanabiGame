@@ -51,34 +51,20 @@ class CardTest {
     @Test
     void setNumber() {
         Card nCard = new Card();
-        assertNull(nCard.getNumber());
+        assertEquals('u', nCard.getNumber());
         assertFalse(nCard.checkNumberKnown());
         nCard.setNumber('3');
         assertTrue(nCard.checkNumberKnown());
         assertEquals('3', nCard.getNumber());
-        try{
-            nCard.setNumber('1');
-            assertEquals('3', nCard.getNumber());
-        }
-        catch(Exception E){
-            assertEquals('3', nCard.getNumber());
-        }
     }
 
     @Test
     void setColour() {
         Card nCard = new Card();
-        assertNull(nCard.getColour());
+        assertEquals('u', nCard.getColour());
         assertFalse(nCard.checkColourKnown());
         nCard.setColour('r');
         assertTrue(nCard.checkColourKnown());
         assertEquals('r', nCard.getColour());
-        try{
-            nCard.setColour('w');
-            assertEquals('r', nCard.getColour());
-        }
-        catch(Exception E){
-            assertEquals('r', nCard.getColour());
-        }
     }
 }

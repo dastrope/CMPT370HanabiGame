@@ -59,11 +59,11 @@ public class Hand {
      * @param position the postion of the card to be removed
      */
     public void removeCard(int position){
-        if (this.cards[position] == null){
+        if (this.cards[position - 1] == null){
             // TODO: make an Exception package
             //throw new CardNotFoundException("There was no card at" + position);
         }
-        this.cards[position] = null;
+        this.cards[position - 1] = null;
 
     }
 
@@ -93,27 +93,27 @@ public class Hand {
 
     /**
      * Sets the user's card at the given index to the given colour
-     * @param index the index of the card that has been informed
+     * @param position the index of the card that has been informed
      * @param colour the colour that was informed
      */
-    public void informColourUser(int index, char colour){
-        this.cards[index].setColour(colour);
+    public void informColourUser(int position, char colour){
+        this.cards[position - 1].setColour(colour);
     }
 
     /**
      * Sets the user's card at the given index to the given number
-     * @param index the index of the card that has been informed
+     * @param position the index of the card that has been informed
      * @param number the number that was informed
      */
-    public void informNumberUser(int index, char number){
-        this.cards[index].setNumber(number);
+    public void informNumberUser(int position, char number){
+        this.cards[position - 1].setNumber(number);
     }
 
     /**
      * Purpose: Gets a card from a specific location.
      *
-     * @param index the index of the card to return
+     * @param position the index of the card to return
      * @return the Card at given index.
      */
-    public Card getCard(int index) { return this.cards[index]; }
+    public Card getCard(int position) { return this.cards[position - 1]; }
 }

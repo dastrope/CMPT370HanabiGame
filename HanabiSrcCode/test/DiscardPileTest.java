@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -12,7 +11,7 @@ class DiscardPileTest {
         DiscardPile pile = new DiscardPile();
         HashMap newpile = pile.getDiscards();
 
-        assertEquals(0, newpile.get("r1"));
+        assertNull(newpile.get("r1"));
         assertEquals(0, pile.getDiscardCount());
 
         Card r1 = new Card('r', '1');

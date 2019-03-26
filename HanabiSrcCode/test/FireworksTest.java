@@ -9,7 +9,7 @@ class FireworksTest {
     @Test
     void addFirework() { //tests addFirework and getFireworks
 
-        Fireworks fwork = new Fireworks();
+        Fireworks fwork = new Fireworks("none");
 
         fwork.addFirework('b');
 
@@ -25,16 +25,16 @@ class FireworksTest {
 
         HashMap<String,Integer> currentFwork = fwork.getFireworks();
 
-        assertEquals(1,currentFwork.get("b"));
-        assertEquals(3,currentFwork.get("r"));
-        assertEquals(5,currentFwork.get("g"));
+        assertEquals(1,currentFwork.get('b'));
+        assertEquals(3,currentFwork.get('r'));
+        assertEquals(5,currentFwork.get('g'));
 
 
     }
 
     @Test
     void checkBuildValid() {
-        Fireworks fwork = new Fireworks();
+        Fireworks fwork = new Fireworks("none");
 
         fwork.addFirework('b');
 

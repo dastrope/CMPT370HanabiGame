@@ -15,13 +15,14 @@ public class Table {
     public Table(int players) {
         this.playerHands = new Hand[players];
         int handSize;
+
         if (players >= 4) {
             handSize = 4;
         } else {
             handSize = 5;
         }
-        for (Hand hand : this.playerHands) {
-            hand = new Hand(handSize);
+        for (int i = 0; i < players; i++) {
+            playerHands[i] = new Hand(handSize);
         }
     }
 
@@ -52,7 +53,7 @@ public class Table {
      * @param cardPosition the position of the card in the player's hand.
      */
     public void removeCard(int playerID, int cardPosition) {
-        this.playerHands[playerID - 1].removeCard(cardPosition - 1);
+        this.playerHands[playerID - 1].removeCard(cardPosition);
     }
 
     /**
@@ -81,11 +82,11 @@ public class Table {
      * @param info     the information that was informed.
      * @param index    the position of the card that was informed.
      */
-    public void informCard(int playerID, String type, char info, int index) {
+    public void informCard(int playerID, String type, char info, int position) {
         if (type == "colour") {
-            this.playerHands[playerID - 1].informColourUser(index, info);
+            this.playerHands[playerID - 1].informColourUser(position, info);
         } else if (type == "number") {
-            this.playerHands[playerID - 1].informNumberUser(index, info);
+            this.playerHands[playerID - 1].informNumberUser(position, info);
         } else {
             //TODO: make exception class.
             //throw new InvalidInformTypeException("Invalid inform type: " + type);
@@ -96,10 +97,10 @@ public class Table {
      * Purpose: Returns the card from the given player's hand at the given index.
      *
      * @param playerID the player whose hand contains the desired card.
-     * @param index the position of the card in the hand.
+     * @param position the position of the card in the hand.
      * @return the card.
      */
-    public Card getPlayersCard(int playerID, int index) {
-        return (this.playerHands[playerID].getCard(index));
+    public Card getPlayersCard(int playerID, int position) {
+        return (this.playerHands[playerID - 1].getCard(position));
     }
 }
