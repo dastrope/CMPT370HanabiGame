@@ -161,14 +161,14 @@ public class GameModel {
      * Purpose: Update the user's cards at the given indexes with the given information.
      *
      * @param info the information the player was informed about.
-     * @param position the position of the card that was informed.
+     * @param positions the position of the card that was informed.
      */
-    public void informSelf(char info, int position) {
+    public void informSelf(char info, boolean[] positions) {
         String numarray = "12345";
         if (numarray.contains(Character.toString(info))){
-            this.gameTable.informCard(this.playerSeat(), "number", info, position);
+            this.gameTable.informCard(this.playerSeat(), "number", info, positions);
         } else {
-            this.gameTable.informCard(this.playerSeat(), "colour", info, position);
+            this.gameTable.informCard(this.playerSeat(), "colour", info, positions);
         }
         this.removeToken();
     }

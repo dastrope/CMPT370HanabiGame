@@ -92,11 +92,15 @@ class GameModelTest {
 
     @Test
     void informSelf() {
-        game.informSelf('2', 1);
+        boolean[] pos = {true,false,false,false};
+        game.informSelf('2', pos);
 
         assertEquals('2', game.getGameTable().getPlayersCard(2, 1).getNumber());
         assertTrue(game.getGameTable().getPlayersCard(2,1).checkNumberKnown());
-        game.informSelf('r', 2);
+
+        boolean[] pos2 = {false,true,false,false};
+
+        game.informSelf('r', pos2);
         assertEquals("ru", game.getGameTable().getPlayersCard(2, 2).toString());
     }
 

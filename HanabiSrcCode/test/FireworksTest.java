@@ -23,12 +23,9 @@ class FireworksTest {
         fwork.addFirework('g');
         fwork.addFirework('g');
 
-        HashMap<String,Integer> currentFwork = fwork.getFireworks();
-
-        assertEquals(1,currentFwork.get('b'));
-        assertEquals(3,currentFwork.get('r'));
-        assertEquals(5,currentFwork.get('g'));
-
+        assertEquals(1,fwork.stackSize('b'));
+        assertEquals(3,fwork.stackSize('r'));
+        assertEquals(5,fwork.stackSize('g'));
 
     }
 

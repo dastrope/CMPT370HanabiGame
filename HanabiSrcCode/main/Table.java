@@ -80,16 +80,17 @@ public class Table {
      * @param seat the player who was informed.
      * @param type     the type of the inform done.
      * @param info     the information that was informed.
-     * @param position    the position of the card that was informed.
+     * @param positions    the position of the card that was informed.
      */
-    public void informCard(int seat, String type, char info, int position) {
-        if (type.equals("colour")) {
-            this.playerHands[seat - 1].informColourUser(position, info);
-        } else if (type.equals("number")) {
-            this.playerHands[seat - 1].informNumberUser(position, info);
-        } else {
-            //TODO: make exception class.
-            //throw new InvalidInformTypeException("Invalid inform type: " + type);
+    public void informCard(int seat, String type, char info, boolean[] positions) {
+        for (int i = 0; i < positions.length; i++){
+            if (positions[i]) {
+                if (type.equals("colour")) {
+                    this.playerHands[seat - 1].informColourUser(i + 1, info);
+                } else {
+                    this.playerHands[seat - 1].informNumberUser(i + 1, info);
+                }
+            }
         }
     }
 

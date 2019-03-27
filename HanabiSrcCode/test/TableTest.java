@@ -63,5 +63,24 @@ class TableTest {
         assertFalse(board.getPlayersCard(1,2).checkColourKnown());
         assertFalse(board.getPlayersCard(1,3).checkColourKnown());
         assertTrue(board.getPlayersCard(1,4).checkColourKnown());
+
+        board.giveCard(4);
+        board.giveCard(4);
+        board.giveCard(4);
+        board.giveCard(4);
+
+        boolean[] pos = {true,false,false,true};
+
+        board.informCard(4,"colour",'w',pos);
+
+        assertTrue(board.getPlayersCard(4,1).checkColourKnown());
+        assertFalse(board.getPlayersCard(4,2).checkColourKnown());
+        assertFalse(board.getPlayersCard(4,3).checkColourKnown());
+        assertTrue(board.getPlayersCard(4,4).checkColourKnown());
+
+        assertEquals('w',board.getPlayersCard(4,1).getColour());
+        assertEquals('u',board.getPlayersCard(4,2).getColour());
+        assertEquals('u',board.getPlayersCard(4,3).getColour());
+        assertEquals('w',board.getPlayersCard(4,4).getColour());
     }
 }
