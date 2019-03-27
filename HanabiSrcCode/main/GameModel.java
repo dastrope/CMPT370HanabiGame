@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class GameModel {
     private int infoTokens; // must be an integer between 0 and 8, these tokens are a resource used to give other players hints.
     private int fuses;      // initialized to 3, the team loses one for each mistake.  once fuses reaches 0, the game ends.
@@ -45,18 +47,26 @@ public class GameModel {
         for (int i = 0; i < this.playerCount; i++){
             if (startinghands[i].length == 0){
                 for (int j = 0; j < 4; j++) {
-                    this.gameTable.giveCard(i + 1);
+                    this.gameTable.giveCard(i+1);
                 }
                 if (this.playerCount <= 3){
-                    this.gameTable.giveCard(i + 1);
+                    this.gameTable.giveCard(i+1);
                 }
                 this.userID = i + 1;
             } else{
                 for( String card : startinghands[i]){
-                    this.gameTable.giveCard(i + 1, card.charAt(0), card.charAt(1));
+                    this.gameTable.giveCard(i+1, card.charAt(0), card.charAt(1));
                 }
             }
         }
+    }
+
+    /**
+     * Purpose: returns the table for the given game
+     * @return the game table
+     */
+    public Table getGameTable(){
+        return this.gameTable;
     }
 
     /**
@@ -151,14 +161,14 @@ public class GameModel {
      * Purpose: Update the user's cards at the given indexes with the given information.
      *
      * @param info the information the player was informed about.
-     * @param index the index of the card that was informed.
+     * @param position the position of the card that was informed.
      */
-    public void informSelf(char info, int index) {
+    public void informSelf(char info, int position) {
         String numarray = "12345";
         if (numarray.contains(Character.toString(info))){
-            this.gameTable.informCard(this.playerSeat(), "number", info, index);
+            this.gameTable.informCard(this.playerSeat(), "number", info, position);
         } else {
-            this.gameTable.informCard(this.playerSeat(), "colour", info, index);
+            this.gameTable.informCard(this.playerSeat(), "colour", info, position);
         }
         this.removeToken();
     }
@@ -174,9 +184,13 @@ public class GameModel {
         this.gameTable.removeCard(this.currentTurn(), handPosition);
     }
 
+    /**
+     * Purpose: returns the height of the requested firework stack as an integer
+     * @param colour the colour of the fireworks stack in question
+     * @return the height of the firework stack
+     */
     public int getFireworkHeight(char colour){
-        return 0;
-        // this may not need to exist
+        return this.fireworks.stackSize((colour));
     }
         // returns the current height of the firework stack of the given color.
 
@@ -214,8 +228,17 @@ public class GameModel {
      *
      * @return the user's seat number
      */
+
+    /**
+     * Purpose: returns the discard pile of the current game
+     * @return the DiscardPile object
+     */
     public int playerSeat(){
         return this.userID;
     }
         // returns the userID seat number
+
+    public DiscardPile getDiscards(){
+        return this.discards;
+    }
 }

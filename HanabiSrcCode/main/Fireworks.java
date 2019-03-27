@@ -31,7 +31,7 @@ public class Fireworks {
             this.fireworks.put(colour,0);
         }
 
-        if (gameType == "extended"){
+        if (gameType.equals("extended")){
             this.fireworks.put('m',0);
         }
     }
@@ -41,8 +41,18 @@ public class Fireworks {
      * @param colour The colour of the stack to increase
      */
     public void addFirework(char colour){
-        int height = this.fireworks.get(colour);
-        this.fireworks.replace(colour,++height);
+        Integer height = this.fireworks.get(colour);
+        height += 1;
+        this.fireworks.put(colour, height);
+    }
+
+    /**
+     * Purpose: returns the size of the requested fireworks stack
+     * @param colour the colour whose stack size is needed
+     * @return the size of the firework stack
+     */
+    public int stackSize(char colour){
+        return this.fireworks.get(colour);
     }
 
     /**

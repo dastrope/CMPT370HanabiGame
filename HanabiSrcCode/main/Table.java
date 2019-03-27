@@ -29,45 +29,45 @@ public class Table {
     /**
      * Purpose: Adds a card with the given rank and suit to the chosen player's hand.
      *
-     * @param playerID the player to receive the card.
+     * @param seat the player to receive the card.
      * @param colour   the colour of the new card.
      * @param number   the number of the new card.
      */
-    public void giveCard(int playerID, char colour, char number) {
-        this.playerHands[playerID - 1].addCard(colour, number);
+    public void giveCard(int seat, char colour, char number) {
+        this.playerHands[seat-1].addCard(colour, number);
     }
 
     /**
      * Purpose: Adds a card with the given rank and suit to the user's hand.
      *
-     * @param playerID the player to receive the card.
+     * @param seat the player to receive the card.
      */
-    public void giveCard(int playerID) {
-        this.playerHands[playerID - 1].addCard();
+    public void giveCard(int seat) {
+        this.playerHands[seat - 1].addCard();
     }
 
     /**
      * Purpose: Removes a card at the given position from the given player hand.
      *
-     * @param playerID     the player hand to remove the card from.
+     * @param seat     the player hand to remove the card from.
      * @param cardPosition the position of the card in the player's hand.
      */
-    public void removeCard(int playerID, int cardPosition) {
-        this.playerHands[playerID - 1].removeCard(cardPosition);
+    public void removeCard(int seat, int cardPosition) {
+        this.playerHands[seat - 1].removeCard(cardPosition);
     }
 
     /**
      * Purpose: Set the inform flags on the given player's cards.
      *
-     * @param playerID the player who was informed.
+     * @param seat     the player who was informed.
      * @param type     the type of the inform done.
      * @param info     the information that was informed.
      */
-    public void informCard(int playerID, String type, char info) {
-        if (type == "colour") {
-            this.playerHands[playerID - 1].informColour(info);
-        } else if (type == "number") {
-            this.playerHands[playerID - 1].informNumber(info);
+    public void informCard(int seat, String type, char info) {
+        if (type.equals("colour")) {
+            this.playerHands[seat - 1].informColour(info);
+        } else if (type.equals("number")) {
+            this.playerHands[seat - 1].informNumber(info);
         } else {
             //TODO: make exception class.
             //throw new InvalidInformTypeException("Invalid inform type: " + type);
@@ -77,16 +77,16 @@ public class Table {
     /**
      * Purpose: Set the card information and inform flags on the user's cards.
      *
-     * @param playerID the player who was informed.
+     * @param seat the player who was informed.
      * @param type     the type of the inform done.
      * @param info     the information that was informed.
-     * @param index    the position of the card that was informed.
+     * @param position    the position of the card that was informed.
      */
-    public void informCard(int playerID, String type, char info, int position) {
-        if (type == "colour") {
-            this.playerHands[playerID - 1].informColourUser(position, info);
-        } else if (type == "number") {
-            this.playerHands[playerID - 1].informNumberUser(position, info);
+    public void informCard(int seat, String type, char info, int position) {
+        if (type.equals("colour")) {
+            this.playerHands[seat - 1].informColourUser(position, info);
+        } else if (type.equals("number")) {
+            this.playerHands[seat - 1].informNumberUser(position, info);
         } else {
             //TODO: make exception class.
             //throw new InvalidInformTypeException("Invalid inform type: " + type);
@@ -96,11 +96,11 @@ public class Table {
     /**
      * Purpose: Returns the card from the given player's hand at the given index.
      *
-     * @param playerID the player whose hand contains the desired card.
+     * @param seat the player whose hand contains the desired card.
      * @param position the position of the card in the hand.
      * @return the card.
      */
-    public Card getPlayersCard(int playerID, int position) {
-        return (this.playerHands[playerID - 1].getCard(position));
+    public Card getPlayersCard(int seat, int position) {
+        return (this.playerHands[seat - 1].getCard(position));
     }
 }
