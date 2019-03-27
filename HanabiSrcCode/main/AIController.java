@@ -12,9 +12,7 @@ public class AIController extends GameController {
 
     } //updates the booleans
 
-    public Collection<String> bestPlay(){
-        return null;
-    } //finds the best play card move, returns info about the play
+    public Collection<String> bestPlay(){ return null; } //finds the best play card move, returns info about the play
 
     public Collection<String> bestInform(){
         return null;
