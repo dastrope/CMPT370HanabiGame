@@ -42,20 +42,19 @@ public class main extends Application {
         root.getChildren().add(pane_for_buttons);
 
         playButton.setOnMouseClicked((MouseEvent event) -> {
-            for (HandBox hand : handList) {
-                if (hand.getHand() !=  table.playerHands[model.playerSeat()-1]) {
-                    hand.setDisable(true);
-                }
-            }
+            enableUserCards(table,handList);
         });
 
         discardButton.setOnMouseClicked((MouseEvent event) -> {
+            enableUserCards(table,handList);
         });
 
         informColourButton.setOnMouseClicked((MouseEvent event) -> {
+            enableOtherCards(table,handList);
         });
 
         informNumberButton.setOnMouseClicked((MouseEvent event) -> {
+            enableOtherCards(table,handList);
         });
 
         int i = 0;
@@ -73,6 +72,26 @@ public class main extends Application {
             }
         }
         return scene;
+    }
+
+    public void enableUserCards(Table table, ArrayList<HandBox> handList) {
+        for (HandBox hand : handList) {
+            if (hand.getHand() !=  table.playerHands[model.playerSeat()-1]) {
+                hand.setDisable(true);
+            } else {
+                hand.setDisable(false);
+            }
+        }
+    }
+
+    public void enableOtherCards(Table table, ArrayList<HandBox> handList) {
+        for (HandBox hand : handList) {
+            if (hand.getHand() ==  table.playerHands[model.playerSeat()-1]) {
+                hand.setDisable(true);
+            } else {
+                hand.setDisable(false);
+            }
+        }
     }
 
     public HandBox createHandBox(Hand hand){
