@@ -31,6 +31,11 @@ public class CardButton extends Button {
         return this.card.getNumber();
     }
 
+    public void setCard(Card c){
+        this.card = c;
+    }
+
+
 
     /**
      * Generates an image address based on the suit and rank of the card, if not available sets it to the unknown card
