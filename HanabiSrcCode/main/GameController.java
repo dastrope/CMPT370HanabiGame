@@ -4,6 +4,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.sun.xml.internal.fastinfoset.util.StringArray;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class GameController {
@@ -68,16 +71,47 @@ public class GameController {
 //    }
         // ends the game, and creates a new window with endgame information
 
+    static class Event {
+        private String name;
+        private int source;
+
+        private Event(String name, int source) {
+            this.name = name;
+            this.source = source;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("(name=%s, source=%s)", name, source);
+        }
+    }
+
     public static void main(String[] args){
         GameController c = new GameController();
         Card card = new Card('b', '2');
-        JsonElement j = new JsonParser().parse(c.cardToJson(card));
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("notice", "game starts");
-//        System.out.println(c.cardToJson(card));
-//        String json = c.cardToJson(card);
-//        c.gson;
-        System.out.println(c.gson.fromJson(j, Card.class));
+
+        Gson gson = new Gson();
+        Collection collection = new ArrayList();
+        collection.add("hello");
+        collection.add(5);
+        collection.add(new Event("GREETINGS", 1));
+        String json = gson.toJson(collection);
+        System.out.println("Using Gson.toJson() on a raw collection: " + json);
+
+        JsonParser parser = new JsonParser();
+        JsonArray array = parser.parse(json).getAsJsonArray();
+        String message = gson.fromJson(array.get(0), String.class);
+        int number = gson.fromJson(array.get(1), int.class);
+        Event event = gson.fromJson(array.get(2), Event.class);
+        System.out.printf("Using Gson.fromJson() to get: %s, %d, %s", message, number, event);
+
+//        JsonElement j = new JsonParser().parse(c.cardToJson(card));
+//        HashMap<String, String> map = new HashMap<String, String>();
+//        map.put("notice", "game starts");
+////        System.out.println(c.cardToJson(card));
+////        String json = c.cardToJson(card);
+////        c.gson;
+//        System.out.println(c.gson.fromJson(j, Card.class));
 
     }
 }
