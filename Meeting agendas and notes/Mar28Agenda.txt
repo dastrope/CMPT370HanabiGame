@@ -1,0 +1,14 @@
+Mar 28, 2019
+1:50 pm
+Spinks S371
+Meeting Agenda for group G3
+
+1. All pair programming sessions are completed at this point but a lot of work remains to be done on the project. Discuss areas of responsibility, expectations, scheduling.
+
+2. Speak to TA about advice on Json message conversion and server communication questions:
+    - Troy and Destin tested using Gson yesterday but couldn't figure out how to mock actual Json messages like those that the server would send. 
+    - How to convert custom classes that we're using to Json objects that the server will recognize. 
+
+3. Ask for feedback on Test Plan if its been graded, talk about areas where more testing is needed and correct misunderstandings if there were any previously, specifically about what an end to end test/integration test/unit test should entail if our interpretation was incorrect. 
+
+4. As this is the last scheduled TA meeting, ask for any final feedback and advice. 
