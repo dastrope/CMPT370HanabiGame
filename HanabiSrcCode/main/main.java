@@ -42,19 +42,62 @@ public class main extends Application {
         root.getChildren().add(pane_for_buttons);
 
         playButton.setOnMouseClicked((MouseEvent event) -> {
-            enableUserCards(table,handList);
+            for (HandBox hand : handList) {
+                if (hand.getHand() !=  table.playerHands[model.playerSeat()-1]) {
+                    hand.setDisable(true);
+                } else {
+                    for (int i = 0; i < hand.getCardList().size(); i++) {
+                        CardButton cb = hand.getCardList().get(i);
+                        int position = i + 1;
+                        cb.setOnMouseClicked((MouseEvent e) -> {
+                            System.out.println("Player " + model.playerSeat() + " played " + cb.card +
+                                    " from position " + position);
+                        });
+                    }
+                }
+            }
+        });
+
+        informColourButton.setOnMouseClicked((MouseEvent event) ->{
+            ArrayList<CardButton> raised = new ArrayList<>();
+            for (HandBox hand : handList) {
+                if (hand.getHand() ==  table.playerHands[model.playerSeat()-1]) {
+                    hand.setDisable(true);
+                } else {
+                    for (int i = 0; i < hand.getCardList().size(); i++) {
+                        CardButton cb = hand.getCardList().get(i);
+                        cb.setOnMouseEntered((MouseEvent e) -> {
+                            for (CardButton c : hand.getCardList()){
+                                if (c.card.getColour() == cb.card.getColour()){
+                                    c.setTranslateY(-15);
+                                    raised.add(c);
+                                }
+                            }
+                        });
+                        cb.setOnMouseExited((MouseEvent e) -> {
+                            for (CardButton c : hand.getCardList()){
+                                c.setTranslateY(0);
+                            }
+                            raised.clear();
+                        });
+                        cb.setOnMouseClicked((MouseEvent e) -> {
+                            int informedPlayer = handList.indexOf(hand)+1;
+                            String informedCards = "";
+                            for (CardButton c : raised){
+                                informedCards += " " + c.card + " in position " + (hand.getCardList().indexOf(c)+1);
+                            }
+                            System.out.println("Player " + model.playerSeat() + " informed player " + informedPlayer +
+                                    informedCards);
+                        });
+                    }
+                }
+            }
         });
 
         discardButton.setOnMouseClicked((MouseEvent event) -> {
-            enableUserCards(table,handList);
-        });
-
-        informColourButton.setOnMouseClicked((MouseEvent event) -> {
-            enableOtherCards(table,handList);
         });
 
         informNumberButton.setOnMouseClicked((MouseEvent event) -> {
-            enableOtherCards(table,handList);
         });
 
         int i = 0;
@@ -72,26 +115,6 @@ public class main extends Application {
             }
         }
         return scene;
-    }
-
-    public void enableUserCards(Table table, ArrayList<HandBox> handList) {
-        for (HandBox hand : handList) {
-            if (hand.getHand() !=  table.playerHands[model.playerSeat()-1]) {
-                hand.setDisable(true);
-            } else {
-                hand.setDisable(false);
-            }
-        }
-    }
-
-    public void enableOtherCards(Table table, ArrayList<HandBox> handList) {
-        for (HandBox hand : handList) {
-            if (hand.getHand() ==  table.playerHands[model.playerSeat()-1]) {
-                hand.setDisable(true);
-            } else {
-                hand.setDisable(false);
-            }
-        }
     }
 
     public HandBox createHandBox(Hand hand){
@@ -112,30 +135,30 @@ public class main extends Application {
         c.setGraphic(image);
 
         /*set event for when the mouse hovers over the card*/
-        c.setOnMouseEntered(( MouseEvent event ) ->
-        {
-            /*get all siblings of the card, raise any that match its suit*/
-            ObservableList<Node> cards = c.getParent().getChildrenUnmodifiable();
-            for (Node card : cards){
-                CardButton cd = (CardButton) card;
-                if (cd.getColour() == c.getColour()){
-                    card.setTranslateY(-15);
-                }
-            }
-        });
+//        c.setOnMouseEntered(( MouseEvent event ) ->
+//        {
+//            /*get all siblings of the card, raise any that match its suit*/
+//            ObservableList<Node> cards = c.getParent().getChildrenUnmodifiable();
+//            for (Node card : cards){
+//                CardButton cd = (CardButton) card;
+//                if (cd.getColour() == c.getColour()){
+//                    card.setTranslateY(-15);
+//                }
+//            }
+//        });
 
         /*set event for when the stops hovering over the card*/
-        c.setOnMouseExited(( MouseEvent event ) ->
-        {
-            /*get all siblings of the card, lower any that match its suit*/
-            ObservableList<Node> cards = c.getParent().getChildrenUnmodifiable();
-            for (Node card : cards){
-                CardButton cd = (CardButton) card;
-                if (cd.getColour() == c.getColour()){
-                    card.setTranslateY(0);
-                }
-            }
-        });
+//        c.setOnMouseExited(( MouseEvent event ) ->
+//        {
+//            /*get all siblings of the card, lower any that match its suit*/
+//            ObservableList<Node> cards = c.getParent().getChildrenUnmodifiable();
+//            for (Node card : cards){
+//                CardButton cd = (CardButton) card;
+//                if (cd.getColour() == c.getColour()){
+//                    card.setTranslateY(0);
+//                }
+//            }
+//        });
 
 
         return c;
@@ -165,7 +188,7 @@ public class main extends Application {
 
         model.dealTable(data);
 
-        Scene scene = createTable(model.gameTable);
+        Scene scene = createTable(model.getGameTable());
 
         /*draw the window and scene*/
         stage.setScene( scene ) ;
