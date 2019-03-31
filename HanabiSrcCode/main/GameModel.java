@@ -194,6 +194,11 @@ public class GameModel {
     }
     // returns the current height of the firework stack of the given color.
 
+    public HashMap getFireworks(){
+        return this.fireworks.getFireworks();
+    }
+
+
     /**
      * Purpose: progresses the turn counter and resets the turn timer
      */

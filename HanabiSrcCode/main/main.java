@@ -7,14 +7,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 public class main extends Application {
-    private double[] xHandPositions = {100, 100, 600, 600}; //client is first in array, clockwise order after
-    private double[] yHandPositions = {450, 300, 300, 450}; //client is first in array, clockwise order after
-    private double userPositionX = 350;
+    private double[] xHandPositions = {50, 50, 850, 850}; //client is first in array, clockwise order after
+    private double[] yHandPositions = {500, 200, 200, 500}; //client is first in array, clockwise order after
+    private double userPositionX = 450;
     private double userPositionY = 600;
     private GameModel model;
     private int state;
@@ -29,20 +32,26 @@ public class main extends Application {
         launch(args);
     }
 
-    public Scene createTable(Table table) {
+    public void setModel(GameModel model){
+        this.model = model;
+    }
+
+    public Scene createTable() {
+        Table table = model.getGameTable();
         Pane root = new Pane() ;
         Scene scene = new Scene(root, 1200, 800 );
         ArrayList<HandBox> handList= new ArrayList<>();
 
         /*create background and groups for buttons*/
-        scene.setFill( Color.LAWNGREEN ) ;
+        scene.setFill( Color.DARKGREEN ) ;
         root.setBackground( null );
 
         Button playButton = new Button("Play a card");
         Button discardButton = new Button("Discard a card");
         Button informColourButton = new Button("Inform colour");
         Button informNumberButton = new Button("Inform number");
-        HBox pane_for_buttons = new HBox( 16 ) ;
+        HBox pane_for_buttons = new HBox( 10 ) ;
+        pane_for_buttons.setLayoutX(350);
         pane_for_buttons.getChildren().addAll(playButton,discardButton,informColourButton,informNumberButton);
         root.getChildren().add(pane_for_buttons);
 
@@ -54,20 +63,67 @@ public class main extends Application {
 
         informNumberButton.setOnMouseClicked((MouseEvent event) ->this.setInformNumberState(handList, table));
 
-        int i = 0;
+        int positionsIndex = 0;
         for (Hand hand : table.playerHands) {
             HandBox h = createHandBox(hand);
+
             root.getChildren().add(h);
             handList.add(h);
             if (hand == table.playerHands[model.playerSeat()-1]) {
                 h.setLayoutX(userPositionX);
                 h.setLayoutY(userPositionY);
             } else {
-                h.setLayoutX(xHandPositions[i]);
-                h.setLayoutY(yHandPositions[i]);
-                i++;
+                h.setLayoutX(xHandPositions[positionsIndex]);
+                h.setLayoutY(yHandPositions[positionsIndex]);
+                positionsIndex++;
             }
         }
+        int x = 480;
+        for (int i = 0 ; i < model.getInfoTokens() ; i++){
+            Circle circle = new Circle();
+
+            //Setting the properties of the circle;
+            circle.setCenterX(x);
+            circle.setCenterY(500);
+            circle.setRadius(10);
+            circle.setFill(Color.WHITE);
+            circle.setStroke(Color.BLACK);
+            root.getChildren().add(circle);
+            System.out.println(x);
+            x += 25;
+        }
+        x = 470;
+        for (Object colour : model.getFireworks().keySet()){
+            Rectangle rect = new Rectangle();
+            char c = (char) colour;
+            Paint fill = Color.BLACK;
+            switch (c) {
+                case 'r':
+                    fill = Color.RED;
+                    break;
+                case 'b':
+                    fill = Color.BLUE;
+                    break;
+                case 'g':
+                    fill = Color.GREEN;
+                    break;
+                case 'w':
+                    fill = Color.WHITE;
+                    break;
+                case 'y':
+                    fill = Color.YELLOW;
+                    break;
+            }
+            rect.setX(x);
+            rect.setY(450);
+            rect.setWidth(30);
+            rect.setHeight(5+(50*model.getFireworkHeight(c)));
+            rect.setFill(fill);
+            root.getChildren().add(rect);
+            x+= 40;
+        }
+
+
         return scene;
     }
 
@@ -230,7 +286,7 @@ public class main extends Application {
     }
 
     public HandBox createHandBox(Hand hand){
-        HandBox h = new HandBox(hand,15);
+        HandBox h = new HandBox(hand,5);
         for (Card card : hand.cards) {
             CardButton c = createCardButton(card);
             h.getChildren().add(c);
@@ -242,8 +298,8 @@ public class main extends Application {
     public CardButton createCardButton(Card ncard) {
         CardButton c = new CardButton(ncard);
         ImageView image = new ImageView(new Image(c.getImageString()));
-        image.setFitHeight(100);
-        image.setFitWidth(66);
+        image.setFitHeight(75);
+        image.setFitWidth(50);
         c.setGraphic(image);
         return c;
     }
@@ -265,15 +321,13 @@ public class main extends Application {
 
         String[][] data = {{"b1", "b2", "b4", "g1"}
                 , {}
-                , {"b1", "b3", "g1", "g2"}
-                , {"b2", "b4", "g1", "g3"}
-                , {"r2", "w4", "y5", "g1"}
+                , {"r1", "b3", "g1", "g2"}
+                , {"b2", "b4", "y2", "w3"}
+                , {"r2", "w4", "y5", "g4"}
         };
-
+        this.model = model;
         model.dealTable(data);
-
-        Scene scene = createTable(model.getGameTable());
-
+        Scene scene = createTable();
         /*draw the window and scene*/
         stage.setScene( scene ) ;
         stage.show() ;
