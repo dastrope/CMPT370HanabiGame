@@ -69,7 +69,7 @@ class TableTest {
         board.giveCard(4);
         board.giveCard(4);
 
-        boolean[] pos = {true,false,false,true};
+        String[] pos = {"true","false","false","true"};
 
         board.informCard(4,"colour",'w',pos);
 
