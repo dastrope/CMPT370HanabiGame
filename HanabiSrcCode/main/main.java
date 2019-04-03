@@ -4,13 +4,10 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -29,7 +26,11 @@ public class main extends Application {
     private final int STATE_DISCARDING = 3;
     private final int STATE_INFORMING_COLOUR = 4;
     private final int STATE_INFORMING_NUMBER = 5;
-    private ArrayList<HandBox> handList= new ArrayList<>();
+    private double cardHeight = 75;
+    private double cardWidth = 50;
+    private ArrayList<HandBox> handList = new ArrayList<>();
+    private ArrayList<Circle> tokenList = new ArrayList<>();
+    private ArrayList<FireworkRectangle> fireworkList = new ArrayList<>();
 
     public static void main(String[] args) {
         launch(args);
@@ -39,7 +40,7 @@ public class main extends Application {
         this.model = model;
     }
 
-    public Scene createTable() {
+    public Scene createGame() {
         Table table = model.getGameTable();
         Pane root = new Pane() ;
         Scene scene = new Scene(root, 1200, 800 );
@@ -69,6 +70,16 @@ public class main extends Application {
 
         discardPileButton.setOnMouseClicked((MouseEvent event) -> this.drawDiscardPile());
 
+        createTable(root, table);
+
+        createInfoTokens(root,480);
+
+        createFireworks(root, 470);
+
+        return scene;
+    }
+
+    private void createTable(Pane root, Table table){
         int positionsIndex = 0;
         int seat = 1;
         for (Hand hand : table.playerHands) {
@@ -85,53 +96,41 @@ public class main extends Application {
                 positionsIndex++;
             }
         }
-        int x = 480;
-        for (int i = 0 ; i < model.getInfoTokens() ; i++){
-            Circle circle = new Circle();
-
-            //Setting the properties of the circle;
-            circle.setCenterX(x);
-            circle.setCenterY(500);
-            circle.setRadius(10);
-            circle.setFill(Color.WHITE);
-            circle.setStroke(Color.BLACK);
-            root.getChildren().add(circle);
-            System.out.println(x);
-            x += 25;
-        }
-        x = 470;
+    }
+    private void createFireworks(Pane root, int panePosition) {
+        int x = panePosition;
         for (Object colour : model.getFireworks().keySet()){
-            Rectangle rect = new Rectangle();
             char c = (char) colour;
-            Paint fill = Color.BLACK;
-            switch (c) {
-                case 'r':
-                    fill = Color.RED;
-                    break;
-                case 'b':
-                    fill = Color.BLUE;
-                    break;
-                case 'g':
-                    fill = Color.GREEN;
-                    break;
-                case 'w':
-                    fill = Color.WHITE;
-                    break;
-                case 'y':
-                    fill = Color.YELLOW;
-                    break;
-            }
-            rect.setX(x);
-            rect.setY(450);
-            rect.setWidth(30);
-            rect.setHeight(5+(50*model.getFireworkHeight(c)));
-            rect.setFill(fill);
-            root.getChildren().add(rect);
+            int height = model.getFireworkHeight(c);
+            FireworkRectangle fireworkMeter = new FireworkRectangle(c, height);
+            Paint fill = fireworkMeter.getPaint();
+            fireworkMeter.setX(x);
+            fireworkMeter.setY(450);
+            fireworkMeter.setWidth(30);
+            fireworkMeter.setHeight(5+(50*height));
+            fireworkMeter.setFill(fill);
+            fireworkMeter.setStroke(Color.BLACK);
+            root.getChildren().add(fireworkMeter);
             x+= 40;
+            fireworkList.add(fireworkMeter);
         }
+    }
 
+    private void createInfoTokens(Pane root, int panePosition) {
+        int x = panePosition;
+        for (int i = 0 ; i < model.getInfoTokens() ; i++){
+            Circle token = new Circle();
 
-        return scene;
+            //Setting the properties of the token;
+            token.setCenterX(x);
+            token.setCenterY(500);
+            token.setRadius(10);
+            token.setFill(Color.WHITE);
+            token.setStroke(Color.BLACK);
+            root.getChildren().add(token);
+            x += 25;
+            tokenList.add(token);
+        }
     }
 
     private void drawDiscardPile() {
@@ -235,6 +234,7 @@ public class main extends Application {
         } else {
             this.state = STATE_INFORMING_COLOUR;
             ArrayList<CardButton> raised = new ArrayList<>();
+
             for (HandBox hand : handList) {
                 if (hand.getHand() == table.playerHands[model.playerSeat() - 1]) {
                     hand.setDisable(true);
@@ -341,18 +341,75 @@ public class main extends Application {
         return h;
     }
 
-    public CardButton createCardButton(Card ncard) {
-        CardButton c = new CardButton(ncard);
+    public CardButton createCardButton(Card card) {
+        CardButton c = new CardButton(card);
         ImageView image = new ImageView(new Image(c.getImageString()));
-        image.setFitHeight(75);
-        image.setFitWidth(50);
+        image.setFitHeight(this.cardHeight);
+        image.setFitWidth(this.cardWidth);
         c.setGraphic(image);
+//        c.setBackground(Background.EMPTY);
         return c;
     }
 
-//    public void changeCardButton(Card, Hand) {
+    public void changeCardButton(CardButton cb, Card newCard) {
+        cb.setCard(newCard);
+        ImageView image = new ImageView(new Image(cb.getImageString()));
+        image.setFitHeight(75);
+        image.setFitWidth(50);
+        cb.setGraphic(image);
+    }
 
-//    }
+    public void redrawHands(){
+        for (HandBox hand : handList){
+            int handPos = 1;
+            for (CardButton cb : hand.getCardList()){
+                if (cb.card != hand.getHand().getCard(handPos)){
+                    this.changeCardButton(cb, hand.getHand().getCard(handPos));
+                }
+                handPos++;
+            }
+        }
+    }
+
+    public void redrawTokens(){
+        int i = 0;
+        for (Circle token : tokenList){
+            if (i < model.getInfoTokens()){
+                token.setVisible(true);
+            } else{
+                token.setVisible(false);
+            }
+            i++;
+        }
+    }
+
+    public void redrawFireworks(){
+        for (FireworkRectangle fireworkMeter : fireworkList){
+            char colour = fireworkMeter.colour;
+            double newHeight = 5+(50*model.getFireworkHeight(colour));
+            fireworkMeter.setHeight(newHeight);
+            fireworkMeter.setLayoutY(-newHeight);
+        }
+    }
+
+    private void redrawDiscards() {
+
+    }
+
+    public void update(){
+        redrawHands();
+        redrawTokens();
+        redrawFireworks();
+//        redrawDiscards();
+    }
+
+
+    public void test(){
+        model.removeToken();
+        model.playCardSuccess(1);
+        model.giveCard("uu");
+        this.update();
+    }
 
 
 
@@ -377,8 +434,9 @@ public class main extends Application {
         };
         this.model = model;
         model.dealTable(data);
-        Scene scene = createTable();
+        Scene scene = createGame();
         /*draw the window and scene*/
+        test();
         stage.setScene( scene ) ;
         stage.show() ;
     }
