@@ -80,11 +80,11 @@ public class Table {
      * @param seat the player who was informed.
      * @param type     the type of the inform done.
      * @param info     the information that was informed.
-     * @param positions    the position of the card that was informed.
+     * @param positions    the positions of the cards that were informed.
      */
-    public void informCard(int seat, String type, char info, boolean[] positions) {
+    public void informCard(int seat, String type, char info, String[] positions) {
         for (int i = 0; i < positions.length; i++){
-            if (positions[i]) {
+            if (positions[i].equals("true")) {
                 if (type.equals("colour")) {
                     this.playerHands[seat - 1].informColourUser(i + 1, info);
                 } else {

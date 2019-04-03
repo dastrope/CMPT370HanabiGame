@@ -1,13 +1,9 @@
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 import com.sun.xml.internal.fastinfoset.util.StringArray;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class GameController {
     private GameModel model;        // link to game model
@@ -23,27 +19,83 @@ public class GameController {
         gson = new Gson();
     }
 
-    public String[] startGameNotice(JsonElement notice){
-        JsonParser jreader = new JsonParser();
-        String[] a = gson.fromJson(notice, String[].class);
-        return a;
-    }
-
-    public String cardToJson(Card card){
-        return gson.toJson(card);
-    }
-
-
 //         constructor.  will set up the model, view, and interaction model.
 
-//    public void handleMessage(String jsonMessage){
-//
-//    }
+    public void handleMessage(String jsonMessage){
+        Set<Map.Entry<String,JsonElement>> messageMap = parseJSON(jsonMessage);
+
+        Map.Entry<String,JsonElement> entry = messageMap.iterator().next();
+
+        switch(entry.getKey()){
+            case "notice":
+                handleNotifyMessage(messageMap);
+                break;
+
+            case "reply":
+                handleReplyMessage(messageMap);
+                break;
+        }
+    }
+
+    public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap){
+        Map.Entry<String,JsonElement> entry = messageMap.iterator().next();
+        switch (entry.getValue().toString()){
+            case "invalid":
+                break;
+            case "accepted":
+                break;
+            case "built":
+                break;
+            case "burned":
+                break;
+        }
+
+    }
+
+    public void handleNotifyMessage(Set<Map.Entry<String,JsonElement>> messageMap){
+        Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
+        Map.Entry<String,JsonElement> entry = iter.next();
+        switch (entry.getValue().getAsString()){
+            case "your turn":
+                model.nextTurn();
+                break;
+            case "discarded":
+                model.discardCard(iter.next().getValue().getAsInt());
+                model.giveCard(iter.next().getValue().getAsString());
+                model.nextTurn();
+                break;
+            case "played":
+                model.playCardSuccess(iter.next().getValue().getAsInt());
+                model.giveCard(iter.next().getValue().getAsString());
+                model.nextTurn();
+                break;
+            case "inform":
+                System.out.println(messageMap);
+                Map.Entry<String,JsonElement> infoChar = iter.next();
+                Map.Entry<String,JsonElement> cardBools = iter.next();
+
+                if (model.currentTurn() == model.playerSeat()){
+                    model.informSelf(infoChar.getValue().getAsCharacter(),  cardBools.getValue().getAsString());
+                } else {
+                    model.informOther(infoChar.getValue().getAsCharacter(), cardBools.getValue().getAsCharacter());
+                }
+                model.nextTurn();
+                break;
+            case "game ends":
+                break;
+        }
+
+    }
         // handles a message from the server, adjusting the model as needed.
 
-//    public Dictionary parseJSON(String jsonMessage){
-//        return null;
-//    }
+    public Set<Map.Entry<String,JsonElement>> parseJSON(String jsonMessage){
+        JsonParser parser = new JsonParser();
+        JsonObject array = parser.parse(jsonMessage).getAsJsonArray().get(0).getAsJsonObject();
+
+        Set<Map.Entry<String,JsonElement>> messageMap = array.entrySet();
+
+        return messageMap;
+    }
         // parses a message from the server into a collection of usable information.
         
 //    public void sendJSON(Collection move){
@@ -51,19 +103,19 @@ public class GameController {
 //    }
         // converts a collection of information into a json message and sends that message to the server
 
-//    public void setModel(GameModel model){
-//
-//    }
+    public void setModel(GameModel model){
+        this.model = model;
+    }
         // sets up the game model
     
-//    public void setiModel(GameInteractionModel iModel){
-//
-//    }
+    public void setiModel(GameInteractionModel iModel){
+        this.iModel = iModel;
+    }
         // sets up the interaction model
     
-//    public void setView(GameView newView){
-//
-//    }
+    public void setView(GameView newView){
+        this.view = newView;
+    }
         // sets up the game view
         
 //    public void endGame(){
@@ -71,18 +123,31 @@ public class GameController {
 //    }
         // ends the game, and creates a new window with endgame information
 
-    static class Event {
-        private String name;
-        private int source;
+    static class gameStartEvent {
+        private String notice;
+        private String[][] startHands;
 
-        private Event(String name, int source) {
-            this.name = name;
-            this.source = source;
+        private gameStartEvent(String notice, String[][] startHands) {
+            this.notice = notice;
+            this.startHands = startHands;
         }
 
         @Override
         public String toString() {
-            return String.format("(name=%s, source=%s)", name, source);
+            return String.format("(notice=%s, startHands=%s)", notice, startHands.toString());
+        }
+    }
+
+    static class SelfInformEvent {
+        private Boolean[] cardArr;
+
+        private SelfInformEvent(Boolean[] cardArr) {
+            this.cardArr = cardArr;
+        }
+
+        @Override
+        public String toString() {
+            return Arrays.toString(cardArr);
         }
     }
 
@@ -90,28 +155,31 @@ public class GameController {
         GameController c = new GameController();
         Card card = new Card('b', '2');
 
+        String[][] initHands = {{},{"b1","b3","b5","g2"},{"b1","b3","g1","g2"},{"b2","b4","g1","g3"}};
+
         Gson gson = new Gson();
         Collection collection = new ArrayList();
-        collection.add("hello");
-        collection.add(5);
-        collection.add(new Event("GREETINGS", 1));
-        String json = gson.toJson(collection);
-        System.out.println("Using Gson.toJson() on a raw collection: " + json);
 
-        JsonParser parser = new JsonParser();
-        JsonArray array = parser.parse(json).getAsJsonArray();
-        String message = gson.fromJson(array.get(0), String.class);
-        int number = gson.fromJson(array.get(1), int.class);
-        Event event = gson.fromJson(array.get(2), Event.class);
-        System.out.printf("Using Gson.fromJson() to get: %s, %d, %s", message, number, event);
+        collection.add(new gameStartEvent("gameStart", initHands));
+        String json1 = gson.toJson(collection);
 
-//        JsonElement j = new JsonParser().parse(c.cardToJson(card));
-//        HashMap<String, String> map = new HashMap<String, String>();
-//        map.put("notice", "game starts");
-////        System.out.println(c.cardToJson(card));
-////        String json = c.cardToJson(card);
-////        c.gson;
-//        System.out.println(c.gson.fromJson(j, Card.class));
+        JsonArray item = new JsonArray();
+        JsonObject e = new JsonObject();
 
+        Boolean[] cardArr = {true,false,false,true};
+        SelfInformEvent sie = new SelfInformEvent(cardArr);
+
+        e.addProperty("notice","inform");
+        e.addProperty("rank",1);
+        e.addProperty("cards","[true,false,false,true]");
+
+        item.add(e);
+
+        String json2 = gson.toJson(item);
+
+        System.out.println("Using Gson.toJson() on a raw collection: " + json1);
+
+        c.handleMessage(json1);
+        c.handleMessage(json2);
     }
 }

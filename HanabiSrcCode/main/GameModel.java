@@ -16,7 +16,7 @@ public class GameModel {
     /**
      * Purpose: Instantiates the game model to the appropriate start state based on timeout, numOfPlayer and gameType.
      *
-     * @param timeout the turn time limit in seconds for each player. Must be 1 =<.
+     * @param timeout the turn time limit in seconds for each player. Must be 1 <=.
      * @param numOfPlayers the number of players in the game. Must be 2-5
      * @param gameType the type of game to be played. Must be "default", "extended", and "wild".
      */
@@ -161,10 +161,11 @@ public class GameModel {
      * Purpose: Update the user's cards at the given indexes with the given information.
      *
      * @param info the information the player was informed about.
-     * @param positions the position of the card that was informed.
+     * @param positionString the positions of the cards that were informed.
      */
-    public void informSelf(char info, boolean[] positions) {
+    public void informSelf(char info, String positionString) {
         String numarray = "12345";
+        String[] positions = positionString.split(",");
         if (numarray.contains(Character.toString(info))){
             this.gameTable.informCard(this.playerSeat(), "number", info, positions);
         } else {
