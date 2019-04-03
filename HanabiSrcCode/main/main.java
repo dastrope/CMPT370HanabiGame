@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -13,6 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class main extends Application {
     private double[] xHandPositions = {50, 50, 850, 850}; //client is first in array, clockwise order after
@@ -27,6 +29,7 @@ public class main extends Application {
     private final int STATE_DISCARDING = 3;
     private final int STATE_INFORMING_COLOUR = 4;
     private final int STATE_INFORMING_NUMBER = 5;
+    private ArrayList<HandBox> handList= new ArrayList<>();
 
     public static void main(String[] args) {
         launch(args);
@@ -40,19 +43,20 @@ public class main extends Application {
         Table table = model.getGameTable();
         Pane root = new Pane() ;
         Scene scene = new Scene(root, 1200, 800 );
-        ArrayList<HandBox> handList= new ArrayList<>();
 
         /*create background and groups for buttons*/
         scene.setFill( Color.DARKGREEN ) ;
         root.setBackground( null );
 
-        Button playButton = new Button("Play a card");
-        Button discardButton = new Button("Discard a card");
-        Button informColourButton = new Button("Inform colour");
-        Button informNumberButton = new Button("Inform number");
+        Button playButton = new Button("Play a Card");
+        Button discardButton = new Button("Discard a Card");
+        Button informColourButton = new Button("Inform Colour");
+        Button informNumberButton = new Button("Inform Number");
+        Button discardPileButton = new Button("View Discarded Cards");
         HBox pane_for_buttons = new HBox( 10 ) ;
-        pane_for_buttons.setLayoutX(350);
-        pane_for_buttons.getChildren().addAll(playButton,discardButton,informColourButton,informNumberButton);
+        pane_for_buttons.setLayoutX(300);
+        pane_for_buttons.getChildren().addAll(playButton, discardButton, informColourButton,
+                informNumberButton, discardPileButton);
         root.getChildren().add(pane_for_buttons);
 
         playButton.setOnMouseClicked((MouseEvent event) -> this.setPlayState(handList, table));
@@ -63,10 +67,13 @@ public class main extends Application {
 
         informNumberButton.setOnMouseClicked((MouseEvent event) ->this.setInformNumberState(handList, table));
 
-        int positionsIndex = 0;
-        for (Hand hand : table.playerHands) {
-            HandBox h = createHandBox(hand);
+        discardPileButton.setOnMouseClicked((MouseEvent event) -> this.drawDiscardPile());
 
+        int positionsIndex = 0;
+        int seat = 1;
+        for (Hand hand : table.playerHands) {
+            HandBox h = createHandBox(hand, seat);
+            seat++;
             root.getChildren().add(h);
             handList.add(h);
             if (hand == table.playerHands[model.playerSeat()-1]) {
@@ -125,6 +132,45 @@ public class main extends Application {
 
 
         return scene;
+    }
+
+    private void drawDiscardPile() {
+        LinkedHashMap<String, Integer> discards = model.getDiscards().getDiscards();
+        Pane root = new Pane();
+        VBox reds = new VBox();
+        VBox blues = new VBox();
+        VBox greens = new VBox();
+        VBox whites = new VBox();
+        VBox yellows = new VBox();
+        HBox discardGrid = new HBox();
+
+        for (String cName : discards.keySet()){
+            Card card = new Card(cName.charAt(0), cName.charAt(1));
+            CardButton cb = createCardButton(card);
+            cb.setText(discards.get(cName).toString());
+            switch(cName.charAt(0)) {
+                case 'b':
+                    blues.getChildren().add(cb);
+                    break;
+                case 'r':
+                    reds.getChildren().add(cb);
+                    break;
+                case 'g':
+                    greens.getChildren().add(cb);
+                    break;
+                case 'w':
+                    whites.getChildren().add(cb);
+                    break;
+                case 'y':
+                    yellows.getChildren().add(cb);
+                    break;
+            }
+        }
+        discardGrid.getChildren().addAll(reds, blues, greens, whites, yellows);
+        root.getChildren().add(discardGrid);
+        Stage secondStage = new Stage();
+        secondStage.setScene(new Scene(root, 500, 500));
+        secondStage.show();
     }
 
     public void disableAllCards(ArrayList<HandBox> hands){
@@ -285,8 +331,8 @@ public class main extends Application {
         card.setOnMouseEntered((MouseEvent e) ->{});
     }
 
-    public HandBox createHandBox(Hand hand){
-        HandBox h = new HandBox(hand,5);
+    public HandBox createHandBox(Hand hand, int seat){
+        HandBox h = new HandBox(hand, seat, 5);
         for (Card card : hand.cards) {
             CardButton c = createCardButton(card);
             h.getChildren().add(c);
@@ -303,6 +349,10 @@ public class main extends Application {
         c.setGraphic(image);
         return c;
     }
+
+//    public void changeCardButton(Card, Hand) {
+
+//    }
 
 
 
