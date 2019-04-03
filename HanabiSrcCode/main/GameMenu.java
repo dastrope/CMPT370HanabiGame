@@ -1,13 +1,17 @@
 import com.google.gson.*;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
@@ -21,11 +25,6 @@ import java.math.*;
 import java.time.Instant;
 
 public class GameMenu extends Application{
-    private Button createGameButton;
-    private Button joinGameButton;
-    private Button howToPlayButton;
-    private Button exitButton;
-        // These buttons are used to call their respective methods in the class.
 
     private int gameId;
     private String token;
@@ -60,6 +59,46 @@ public class GameMenu extends Application{
         howToPlayLabel.setFont(new Font("Century Gothic",CANVAS_HEIGHT/18));
         exitLabel.setFont(new Font("Century Gothic",CANVAS_HEIGHT/18));
 
+        createLabel.setOnMouseEntered((MouseEvent e) -> {
+            createLabel.setScaleX(1.1);
+            createLabel.setScaleY(1.1);
+        });
+
+        createLabel.setOnMouseExited((MouseEvent e) -> {
+            createLabel.setScaleX(1);
+            createLabel.setScaleY(1);
+        });
+
+        joinLabel.setOnMouseEntered((MouseEvent e) -> {
+            joinLabel.setScaleX(1.1);
+            joinLabel.setScaleY(1.1);
+        });
+
+        joinLabel.setOnMouseExited((MouseEvent e) -> {
+            joinLabel.setScaleX(1);
+            joinLabel.setScaleY(1);
+        });
+
+        howToPlayLabel.setOnMouseEntered((MouseEvent e) -> {
+            howToPlayLabel.setScaleX(1.1);
+            howToPlayLabel.setScaleY(1.1);
+        });
+
+        howToPlayLabel.setOnMouseExited((MouseEvent e) -> {
+            howToPlayLabel.setScaleX(1);
+            howToPlayLabel.setScaleY(1);
+        });
+
+        exitLabel.setOnMouseEntered((MouseEvent e) -> {
+            exitLabel.setScaleX(1.1);
+            exitLabel.setScaleY(1.1);
+        });
+
+        exitLabel.setOnMouseExited((MouseEvent e) -> {
+            exitLabel.setScaleX(1);
+            exitLabel.setScaleY(1);
+        });
+
         VBox selectionsBox = new VBox();
         selectionsBox.getChildren().addAll(createLabel,joinLabel,howToPlayLabel,exitLabel);
         selectionsBox.setAlignment(Pos.CENTER_RIGHT);
@@ -76,6 +115,7 @@ public class GameMenu extends Application{
                                "-fx-border-width: 2;");
         createInfoBox.setLayoutX(CANVAS_WIDTH*0.35);
         createInfoBox.setLayoutY(CANVAS_HEIGHT*0.49);
+        createInfoBox.setVisible(false);
 
         TextField createNsid = new TextField();
         TextField createPlayers = new TextField();
@@ -98,6 +138,7 @@ public class GameMenu extends Application{
                              "-fx-border-width: 2;");
         joinInfoBox.setLayoutX(CANVAS_WIDTH*0.35);
         joinInfoBox.setLayoutY((CANVAS_HEIGHT*0.49)+75);
+        joinInfoBox.setVisible(false);
 
         TextField joinNsid = new TextField();
         TextField joinGameID = new TextField();
@@ -109,6 +150,23 @@ public class GameMenu extends Application{
         joinToken.setPromptText("Enter the secret token.");
 
         joinInfoBox.getChildren().addAll(joinNsid,joinGameID,joinToken,joinOK);
+
+        createLabel.setOnMouseClicked(event -> {
+            joinInfoBox.setVisible(false);
+            createInfoBox.setVisible(true);
+        });
+
+        joinLabel.setOnMouseClicked(event -> {
+            createInfoBox.setVisible(false);
+            joinInfoBox.setVisible(true);
+        });
+
+        exitLabel.setOnMouseClicked(event -> {
+            System.exit(0);
+        });
+
+        createOK.setOnMouseClicked(event -> createGame());
+        joinOK.setOnMouseClicked(event -> joinGame());
 
         Group root = new Group();
         root.getChildren().addAll(t,selectionsBox,createInfoBox,joinInfoBox);
