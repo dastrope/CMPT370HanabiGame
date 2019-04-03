@@ -180,6 +180,6 @@ public class GameController {
         System.out.println("Using Gson.toJson() on a raw collection: " + json1);
 
         c.handleMessage(json1);
-        c.handleMessage(json2);
+        //c.handleMessage(json2);
     }
 }
