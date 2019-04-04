@@ -42,7 +42,7 @@ public class GameMenu extends Application{
 
 
 
-       // These fields will be set by createGame() or joinGame(), these are the main instances of our in-game program.
+       // These fields will be set by createGame() or joinGame(), these are the GameView instances of our in-game program.
 
     public void start(Stage aStage) throws Exception {
 
@@ -237,7 +237,7 @@ public class GameMenu extends Application{
         aStage.setScene( aScene );
         aStage.show();
     }
-        // Constructs the main game menu
+        // Constructs the GameView game menu
 
     public void howToPlay() {
         Stage stage = new Stage();
