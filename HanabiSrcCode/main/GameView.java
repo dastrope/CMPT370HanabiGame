@@ -53,10 +53,9 @@ public class GameView {
         this.model = model;
     }
 
-    public void createGame(Scene scene) {
+    public Scene createGame() {
         Table table = model.getGameTable();
-//        Scene scene = new Scene(root, 1200, 800 );
-
+        Scene scene = new Scene(root, 1200, 800 );
         /*create background and groups for buttons*/
         scene.setFill( Color.DARKGREEN ) ;
         root.setBackground( null );
@@ -87,6 +86,7 @@ public class GameView {
         createInfoTokens(root,480);
 
         createFireworks(root, 470);
+        return scene;
     }
 
     private void createTable(Pane root, Table table){

@@ -539,7 +539,7 @@ public class GameMenu extends Application{
 
         this.aController.setModel(this.aModel);
         this.aController.setView(this.aView);
-        this.aView.createGame(this.scene);
+        stage.setScene(this.aView.createGame());
     }
 
     public static void main(String[] args){
