@@ -19,6 +19,7 @@ import java.net.Socket;
 import java.security.*;
 import java.math.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -346,9 +347,9 @@ public class GameMenu extends Application{
         int i = 0;
 
         try {
-            while(this.inGame) {
-                if (inFromServer.available()!= 0) {
-                    message[i] = (char)inFromServer.readByte();
+            while (this.inGame) {
+                if (inFromServer.available() != 0) {
+                    message[i] = (char) inFromServer.readByte();
                     if (message[i] == '}') {
                         JsonStreamParser parser = new JsonStreamParser(new CharArrayReader(message));
                         handleJSON(parser.next());
@@ -360,8 +361,8 @@ public class GameMenu extends Application{
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getCause());
-            inGame = false;
+            e.printStackTrace();
+            this.inGame = false;
         }
     }
 
@@ -385,8 +386,8 @@ public class GameMenu extends Application{
     public void handleNotifyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
-
-        switch (entry.getValue().toString()){
+        System.out.println(entry.getValue().getAsString());
+        switch (entry.getValue().getAsString()){
             case "player joined":
                 this.needed = iter.next().getValue().getAsInt();
                 break;
@@ -394,10 +395,7 @@ public class GameMenu extends Application{
                 this.needed = iter.next().getValue().getAsInt();
                 break;
             case "game starts":
-                this.numOfPlayers = entry.getValue().getAsString().length();
-                System.out.println(this.numOfPlayers);
-                this.aController.handleNotifyMessage(messageMap);
-                this.startGame();
+                this.startGame(iter.next().getValue().getAsJsonArray());
                 break;
             case "game cancelled":
                 this.aController.handleNotifyMessage(messageMap);
@@ -415,6 +413,7 @@ public class GameMenu extends Application{
     public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
+
         switch (entry.getValue().getAsString()){
             case "created":
                 this.gameId = iter.next().getValue().getAsInt();
@@ -531,9 +530,10 @@ public class GameMenu extends Application{
         }
     }
 
-    public void startGame() {
+    public void startGame(JsonArray startHands) {
+        ArrayList<String[]> hands = new ArrayList<>();
 
-        this.aModel = new GameModel(this.timeout,this.numOfPlayers,this.gameType);
+        this.aModel = new GameModel(this.timeout, this.gameType, hands);
         this.aController = new GameController();
         this.aView = new GameView();
 

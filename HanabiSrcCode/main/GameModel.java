@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GameModel {
@@ -17,17 +18,18 @@ public class GameModel {
      * Purpose: Instantiates the game model to the appropriate start state based on timeout, numOfPlayer and gameType.
      *
      * @param timeout the turn time limit in seconds for each player. Must be 1 <=.
-     * @param numOfPlayers the number of players in the game. Must be 2-5
+     * @param startingHands hands of cards for all the current players.
      * @param gameType the type of game to be played. Must be "default", "extended", and "wild".
      */
-    public GameModel(int timeout, int numOfPlayers, String gameType){
+    public GameModel(int timeout, String gameType, ArrayList<String[]> startingHands){
         this.infoTokens = 8;
         this.fuses = 3;
         this.timeLimit = timeout * 1000;
-        this.playerCount = numOfPlayers;
+        this.playerCount = startingHands.size();
         this.turn = 1;
 
-        this.gameTable = new Table(numOfPlayers);
+        this.gameTable = new Table(playerCount);
+        this.dealTable(startingHands);
         this.discards = new DiscardPile();
         this.fireworks = new Fireworks(gameType);
 
@@ -43,9 +45,9 @@ public class GameModel {
      *
      * @param startinghands Array of Array of strings representing each player's hand.
      */
-    public void dealTable(String[][] startinghands){
+    public void dealTable(ArrayList<String[]> startinghands){
         for (int i = 0; i < this.playerCount; i++){
-            if (startinghands[i].length == 0){
+            if (startinghands.get(i).length == 0){
                 for (int j = 0; j < 4; j++) {
                     this.gameTable.giveCard(i+1);
                 }
@@ -54,7 +56,7 @@ public class GameModel {
                 }
                 this.userID = i + 1;
             } else{
-                for( String card : startinghands[i]){
+                for( String card : startinghands.get(i)){
                     this.gameTable.giveCard(i+1, card.charAt(0), card.charAt(1));
                 }
             }

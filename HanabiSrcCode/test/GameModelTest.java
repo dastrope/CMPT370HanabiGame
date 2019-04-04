@@ -2,6 +2,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,8 +12,16 @@ class GameModelTest {
     GameModel game;
     @BeforeEach
     void setUp() {
-        game = new GameModel(60, 4, "none");
-        String[][] data = {{"b1", "b2", "b4", "g1"} , {} , {"b1", "b3", "g1", "g2"} , {"b2", "b4", "g1", "g3"}};
+        ArrayList<String[]> data = new ArrayList<>();
+        String[] hand1 = {"b1", "b2", "b4", "g1"};
+        String[] hand2 = {};
+        String[] hand3 = {"b1", "b3", "g1", "g2"};
+        String[] hand4 =  {"b2", "b4", "g1", "g3"};
+        data.add(hand1);
+        data.add(hand2);
+        data.add(hand3);
+        data.add(hand4);
+        game = new GameModel(60, "none", data);
         game.dealTable(data);
     }
 
