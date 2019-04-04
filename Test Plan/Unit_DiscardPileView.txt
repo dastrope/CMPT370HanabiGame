@@ -1,0 +1,9 @@
+DiscardPileView class unit testing from DesignDocument
+
+DiscardPileView constructor - verify that the view is correctly instantiated and a separate window opens with the discard pile visible
+
+method setModel - verify that the model field for the object is successfully set to the GameModel
+
+method drawCard - verify that a card can be drawn with the expected appearance
+
+method drawDiscardPile - verify that all cards are drawn in their expected position in the grid with the correct number of each 

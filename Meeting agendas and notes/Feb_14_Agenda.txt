@@ -1,0 +1,11 @@
+Jan 31, 2019
+1:50 pm
+Spinks S371
+Meeting Agenda for group G3
+
+1. Inform - If the TA has anything to go over with us regarding issues with our requirements document that will be first priority, need to know if we're designing the right system before we can design it properly.
+
+2. Inform - Assuming no significant changes are necessary from TA feedback if any is given, any additional information about software architectures that members have learned should be shared. Any opinions for which we should go with and why should also be discussed.
+
+3. Decide - Assuming again no significant changes and time allows, we should decide on a software architecture and discuss how we will design our system with it in mind. 
+

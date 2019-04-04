@@ -1,0 +1,28 @@
+End to end Test
+Join a Game (Use case 2)
+
+
+Tests the different inputs to join a game from the main menu.
+
+Test 1a: Given the appropriate game ID and signature (with a lobby which isn't full)
+	-Then the the lobby is joined, user is shown the waiting for player message
+
+Test 1b: Given the appropriate game ID and signature (with a lobby which is one away from full)
+	-The lobby is joined, the game starts.
+
+Test 1c: Given the appropriate game ID and signature (with a lobby which is full)
+	-The lobby is not joined
+	-Error message appears
+
+
+Test 2: Giving innapropriate game ID and signature
+	-Lobby is not joined
+	-Error message appears
+	-Back to main menu screen
+
+Test 3: No active connection
+	-Error message appears
+	-Back to main menu
+
+
+

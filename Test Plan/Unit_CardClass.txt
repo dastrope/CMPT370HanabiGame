@@ -1,0 +1,19 @@
+Card class unit testing from Design Document
+
+Card constructor - verify that a valid object is instantiated whether it is given no arguments, number and null, null and colour, or both. Test the values of the initialized fields in each case. 
+
+method getNumber - verify that calling the method returns the card's rank or number
+
+method getColour - verify that calling the method returns the card's suit or colour
+
+method setNumber - verify that calling the method correctly sets the card's number field to the number provided
+
+method setColour - verify that calling the method correctly sets the card's colour field to the colour provided
+
+method checkNumberKnown - verify that calling the method returns the boolean in the numberKnown field
+
+method checkColourKnown - verify that calling the method returns the boolean in the colourKnown field
+
+method numberGiven - verify that calling the method results in the numberKnown field being set to True for the card object
+
+method colourGiven - verify that calling the method results in the colourKnown field being set to True for the card object

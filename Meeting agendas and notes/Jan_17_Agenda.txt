@@ -1,0 +1,24 @@
+Jan 17, 2019
+1:50 pm
+Spinks S371
+Meeting Agenda for group G3
+
+
+1. "Hi, i'm _____"
+	introductions, including areas of interest and focus
+
+2. communications status
+	get everyone onto the same system, Discord is already up and running
+	check into getting git hook, if we think we need it
+	
+3. time for TA (if needed)
+	
+4. double-check that everyone understands Hanabi, and what we need to do
+
+-- time permitting... --
+	
+5. sort out a language in which to do the project
+	based on what we have confidence in, and what fits well with the
+	server code we're being given
+	
+6. general mockup of planned UI / features

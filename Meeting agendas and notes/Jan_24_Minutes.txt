@@ -1,0 +1,21 @@
+Jan 24, 2019
+1:50 pm
+S371 - Spinks lab
+Meeting Minutes
+
+
+1. Ask about an example requirements document
+
+	Nope, everything has changed, it would be less than helpful
+	Add Parker(pdn844) to the discord for asking for help, @ him for more immediate help
+	Read through the assignment posting and the IEEE SES
+
+2. Check if a command line version is required?
+	
+	deeply optional
+
+3. Start looking at UI layout
+
+	everyone put together sketches and ideas, share at tuesday's meeting
+	once we have an idea, put it in a GUI drawer
+	

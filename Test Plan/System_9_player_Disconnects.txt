@@ -1,0 +1,9 @@
+End to end Test
+Player Disconnects (Use case 9)
+
+
+Tests how the system reponds to a player disconnecting from the game. 
+
+Test 1: A player seperate from the user disconnects from the game.
+	-This should show the game end screen to the user
+

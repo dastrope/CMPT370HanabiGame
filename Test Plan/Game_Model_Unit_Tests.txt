@@ -1,0 +1,78 @@
+Tests for class GameModel
+
+public GameModel(int timeout) //constructor
+	- verify that timeLimit variable is set according to timeout. Incorrect values should be impossible since timeout should be given by the server.
+
+
+public void dealTable(int playerCount, Collection startingHands);
+	- Verify that cards dealt are correct for the number of players (4 for four or five players, 5 for two or three players).
+	- Verify that the cards in each hand are in the right locations.
+	- Check that tokens and fuses have been initialized to the correct values (3 and 8 respectively)
+
+
+public void addToken();
+	- verify that the token count is increased by one.
+	- verify that the token count cannot move above 8.
+
+
+public void removeToken();
+	- verify that the token count is decremented by one.
+	- verify that the token count cannot move below 0.
+
+
+public int getInfoTokens();
+	- verify that the method returns the correct number of information tokens available.
+
+
+public void removeFuse();
+	- verify that fuse count is decremented by one.
+	- verify that if fuse count reaches zero, game end is triggered.
+
+public int getFuses();
+	- verify that the number returned is the current number of fuses remaining.
+
+
+public void giveCard(String newCard);
+	- verify that the new card given by the string newCard is created and placed in the first available position in the current player's hand.
+	- verify that the number of remaining cards in the deck is decremented by one.
+	- verify that a card without information is created in the user's hand when the game deals a card to the user.
+
+
+public void discardCard(int player, int handPosition);
+	- verify that the card is removed from the correct location in the correct hand
+	- verify that the card removed is placed in the Discard Pile object
+	- verify that addToken() is called
+
+
+public void informCard(int player, char info);
+	- verify that the correct player is targeted
+	- verify that each card with the given information in that player's hand is marked as known
+	- verify that removeToken() is called
+
+
+public void playCard(int player, int handPosition);
+	- verify that the correct player is chosen and that the correct card is removed from their hand
+	- verify that the game adds a card to the appropriate fireworks stack if the card can be added
+	- verify that the game burns a fuse and sends the chosen card to the discard pile if the card cannot be added to the fireworks stack
+	- verify that the replacement card given by the server is placed into the player's hand via giveCard()
+
+
+public int getFireworkHeight();
+	- verify that the correct height is returned for the given firework colour
+
+
+public void nextTurn();
+	- verify that the current player counter is incremented.
+	- verify that when the new turn counter is moved to above the current number of players, the turn counter is reset to 1.
+
+
+public int currentTurn();
+	- verify that the number returned is the number of the player whose turn it is.
+
+
+public int getTime();
+	- verify that the remaining time for the current turn is accurately returned based on the currennt game's timeout.
+
+
+public int playerSeat();
+	- verify that the method returns the correct player seat number for the user's current game.

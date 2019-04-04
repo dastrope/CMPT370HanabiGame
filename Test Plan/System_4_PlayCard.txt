@@ -1,0 +1,9 @@
+End to end testing
+Use case 3.2.1.4 play a card
+
+If this is the first turn of the game the player should receive and correctly interpret a JSON message from the server telling them it is their turn. Otherwise, in later turns the player client should infer it is their turn from the turn order of the game. Controller and interaction model should be set to active state. Play a card action button should initially be clickable, once clicked the player's view should be redrawn with their cards made clickable. All other player action buttons (from section 3.2.1 , use cases 5, 6, and 7) should also be clickable so the player may switch their state to those actions. 
+
+When any of the active player's cards are clicked, the card should be played. The server will inform the player if the play was successful or not, and all players will be notified as to which card was played. Their client programs will individually determine if the play was successful or not and these should all come to the same conclusion. If successful the correct firework should be added to on all clients, potentially ending the game if it is the final firework to be built. If the play was unsuccessful all clients should remove one fuse token and the card should be added to the discard pile. If any cards are left in the deck, all clients except the active player should be notified of the new card given to the player as a replacement for the played card. 
+
+This test will be done through visual inspection of the UI elements throughout the use case, ensuring interactability and visibility changes at each point described. Because it is a MVC system, seeing the cards change in the view should confirm that the model was successfully updated as expected. 
+

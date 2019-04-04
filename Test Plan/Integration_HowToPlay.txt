@@ -1,0 +1,9 @@
+Integration tests for Use Case: Reading the rules
+
+Applicable to the Software Requirement Specification section: 3.2.1.3
+
+1-2. Verify that when the Rules button is clicked, the rules window is opened. - Visual confirmation.
+
+3-4. Verify that when the different Rules section tabs are clicked that the appropriate information is shown. - Visual confirmation.
+
+5-6. Verify that discard pile window can be closed and re-opened. - Visual confirmation

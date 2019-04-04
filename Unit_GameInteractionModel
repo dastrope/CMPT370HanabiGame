@@ -1,0 +1,7 @@
+GameInteractionModel class unit testing from Design Document
+
+method setState(int state)
+verify that the appropriate state is selected based on the respective trigger. - Visual confirmation.
+
+method setSelected(Card selectedCard)
+verify that other players cards are able to be selected via hovering over them in the view. - Visual confirmation.

@@ -1,0 +1,15 @@
+General Plan for product design
+
+Our plan is to build the program using a model-view-controller to separate visual code and game state code from working and AI code behind the scenes. The controller will be a state-based system altered by an event system that will listen for events from both the server and the user.  This is the best choice of system for this particular problem because it most closely resembles the passage of play of Hanabi, and card/board games at large, in that nothing in the game happens until a player causes it to happen (an event). 
+
+
+The model will contain the information about the game, including what cards are in each hand and what hints have been given about those cards, as well as the remaining time tokens and fuse tokens, the current firework stacks, the remaining turn time, and the discard pile.  The view will use this information to build the UI, as well as respond to the player when they are hovering over cards during their turn to decide what to do.
+
+The controller will... [do a lot of things, to be written once my brain works again]
+
+
+A dataflow architecture doesn't make a lot of sense in this situation because each thing our program does doesn't require several methods to be chained together using each others' outputs.  It might be possible to use such an architecture for our AI, with various options for moves feeding into one deciding function that tries to choose the best from among them.
+
+A call and return architecture isn't really necessary for this program because we don't need to wait for the results of an action to know what that action has done to the game state (unless it is our own turn, since we don't know the cards in our own hand), and the server does not need input from our client to progress the game.  The server might operate under a style of call and return, since the game cannot progress until the person whose turn it is responds, but that isn't within the purview of our project.
+
+A data-centered system might make sense if our game was operating as both server and client, since we could tell each client to trigger its turn when a turn marker got to the client's player number for that particular game, and it would be easy to go looking for what information was needed.  It would also, however, necessitate some level of honesty since a player's own hand would also be on the blackboard, and they would just have to be trusted not to look at it.  Because the server is set up at arm's length for this project, and would not look at the blackboard, there is no compelling reason to use this architecture.

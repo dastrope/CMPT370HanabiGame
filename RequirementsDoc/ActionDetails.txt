@@ -1,0 +1,93 @@
+*** Actions ***
+
+<Name of Action> - <Preconditions>
+	-<Post Conditions>
+	...
+	
+Start Application -
+	-Main application menu is displayed
+	
+	Click "Exit" button -
+		-Application is closed
+		
+	Click "How to play" button -
+		-Pop up with rule explainations/how to play
+		
+		Click "Close" button -
+			-Pop up is closed
+		
+	Click "Join Game" button - Input in text box for server address
+		
+					
+	Click "Host Game" button - Connection to the server - Input in text box for timeout limit, NSID and # of players.
+			
+
+*** Game Screen Actions ***
+
+	Click "Escape" -
+		-Game is ended for all players
+		-Other players are returned to lobby screen
+		-Pop up with game over/score screen is displayed to all players
+		
+		Click "Close" button -
+			-Pop up is closed
+			
+	Click "Play a card" - Must be player's turn
+		-Player is now able to click a card to play from their own hand
+		
+		Click a game card -
+			-Card is removed from the player's hand
+			-If card can be properly placed, the appropriate firework pile is increased by 1
+			-If card cannot be properly placed, card is added to the discard pile and the fuse is burnt one stage
+			-Card(s) remaining in hand are shifted right if necessary
+			-If deck is not empty, top most card from deck is removed and enters the left most spot on the hand
+	
+	Click "Discard a card" - Must be player's turn, Cannot have 8 info tokens
+		-Player is now able to click a card to display from their hand
+		
+		Click a game card -
+			-Card is removed from player's hand
+			-Card is added to the discard pile
+			-Card(s) remaining in hand are shifted right if necessary
+			-If deck is not empty, top most card from deck is removed and enters the left most spot on the hand
+			-One info token is returned
+			
+	Click "Give Colour Info" - Must be player's turn, must have at least one token
+		-Ability to mouse of cards is enabled
+		
+		Mouse over card - Must be cards in other players' hands, colour information about moused over card must 
+						  not have already been shared
+			-Other cards in the same player's hand which have the same colour as the one moused over one are 'raised'
+			
+		Click card - Must be cards in the other players' hands, colour information about moused over card must 
+			     not have already been shared
+			-Player whose card was clicked has all cards in their hand with the matching colour flagged to be known
+				to have that colour
+			-Player holding card: All cards in hand with the matching colour visually change to indicate 
+				what information is known
+			-Other players in game: All cards in the hand of the player whose card was clicked with the matching
+				colour visually change to indicate the information has already been shared with player.
+			-Info token is used
+			
+	Click "Give Number Info" - Must be player's turn, must have at least one token
+		-Ability to mouse of cards is enabled
+		
+		Mouse over card - Must be cards in other players' hands, Number information about moused over card must 
+						  not have already been shared
+			-Other cards in the same player's hand which have the same number as the one moused over one are 'raised'
+			
+		Click card - Must be cards in the other players' hands, number information about moused over card must 
+					 not have already been shared
+			-Player whose card was clicked has all cards in their hand with the matching number flagged to be known
+				to have that number
+			-Player holding card: All cards in hand with the matching number visually change to indicate 
+				what information is known
+			-Other players in game: All cards in the hand of the player whose card was clicked with the matching
+				number visually change to indicate the information has already been shared with player.
+			-Info token is used
+		
+	Click "View Discard Pile"
+		-Pop up with the discarded cards organized is displayed
+		
+		Click "Escape"
+			-Closes the discard pile pop up

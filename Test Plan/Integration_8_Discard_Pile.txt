@@ -1,0 +1,13 @@
+Integration tests for Use Case: Look at Discard Pile
+
+Applicable to the Software Requirement Specification section: 3.2.1.8
+
+1-2. Verify that when the discard pile button is clicked, the View brings up the discard pile window, with the information of the discard pile's contents correctly displayed. - Visual confirmation.
+
+2a. When a card is discarded by a player, either by discarding or via a failed attempt to play the card, the discard pile object should be updated with the new information.  Check to see that the discard pile contains the card that was discarded, in the appropriate amount.  Check that the discard pile view window updates when the action is complete. - Assert that discard pile size is increased using a mock.  Check that the contents match expected contents.
+
+2b. When the user discards or fails to play a card, ensure that the information returned by the server is passed on to the discard pile, and ensure that the card is added to the discard pile.  Check to see that the discard pile window updates when the action is complete. - Assert that discard pile size is increased using a mock.  Check that the contents match expected contents.
+
+2c. After any game view state change, the discard pile button should still be usable. - Assert that the discard pile button remains clickable.
+
+3-4. Verify that discard pile window can be closed and re-opened. - Visual confirmation

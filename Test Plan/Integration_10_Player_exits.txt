@@ -1,0 +1,5 @@
+Integration tests for Use Case: Player Exits the Game
+
+Applicable to the Software Requirement Specification section: 3.2.1.10
+
+1-2. When the user closes the game window, the game should close down. - Visual Check.  Ensure that all game windows close down when the main game window is closed.

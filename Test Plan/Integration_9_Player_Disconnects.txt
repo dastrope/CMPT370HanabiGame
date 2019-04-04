@@ -1,0 +1,9 @@
+Integration tests for Use Case: Player Disconnects
+
+Applicable to the Software Requirement Specification section: 3.2.1.9
+
+1. When a the server informs the player that another player has disconnected ending the game, display the Game End screen with score. - Visual check to ensure that the game end screen is displayed correctly.
+
+2. Ensure that the game has been successfully closed and cleaned up. - Validate that the game model, view, and controller have been cleaned up.
+
+3-4. Verify end game screen is shown to all users, ensure that the user can return to the main menu from the game end screen.  - Visual check, ensure that the menu is visible and usable.
