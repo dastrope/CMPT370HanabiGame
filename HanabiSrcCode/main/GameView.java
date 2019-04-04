@@ -423,19 +423,9 @@ public class GameView extends Application {
          * I don't think that is necessary at the moment, as those are entirely clientside view only changes.
          * Optimization may also be possible for things like image drawing, should look at that
          */
-        this.state = STATE_READY;
-        this.model = new GameModel(15,5,"default");
 
-        String[][] data = {{"b1", "b2", "b4", "g1"}
-                , {}
-                , {"r1", "b3", "g1", "g2"}
-                , {"b2", "b4", "y2", "w3"}
-                , {"r2", "w4", "y5", "g4"}
-        };
-        this.model.dealTable(data);
         Scene scene = createGame();
         /*draw the window and scene*/
-        test();
         stage.setScene( scene ) ;
         stage.show() ;
     }

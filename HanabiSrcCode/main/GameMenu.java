@@ -19,9 +19,15 @@ import java.net.Socket;
 import java.security.*;
 import java.math.*;
 import java.time.Instant;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class GameMenu extends Application{
 
+    private boolean inGame = true;
+
+    private int needed;
     private String nsid;
     private int numOfPlayers;
     private int gameId;
@@ -239,6 +245,7 @@ public class GameMenu extends Application{
     }
         // Constructs the GameView game menu
 
+
     public void howToPlay() {
         Stage stage = new Stage();
 
@@ -335,24 +342,103 @@ public class GameMenu extends Application{
     }
 
     public void runHanabi(){
-        boolean inGame = true;
         char[] message = new char[256];
         int i = 0;
 
         try {
-            while(inGame) {
-                if (inFromServer.available() != 0) {
+            while(this.inGame) {
+                if (inFromServer.available()!= 0) {
                     message[i] = (char)inFromServer.readByte();
                     if (message[i] == '}') {
-                        System.out.println(new String(message));
+                        JsonStreamParser parser = new JsonStreamParser(new CharArrayReader(message));
+                        handleJSON(parser.next());
                         message = new char[256];
+                        i = 0;
+                    } else {
+                        i++;
                     }
-                    i++;
                 }
             }
         } catch (Exception e) {
+            System.out.println(e.getCause());
             inGame = false;
-            System.out.println("Zoinks");
+        }
+    }
+
+    public void handleJSON (JsonElement jsonMessage){
+        System.out.println(jsonMessage);
+        Set<Map.Entry<String,JsonElement>> messageMap = jsonMessage.getAsJsonObject().entrySet();
+        Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
+        Map.Entry<String,JsonElement> entry = iter.next();
+
+        switch(entry.getKey()){
+            case "notice":
+                handleNotifyMessage(messageMap);
+                break;
+
+            case "reply":
+                handleReplyMessage(messageMap);
+                break;
+        }
+    }
+
+    public void handleNotifyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
+        Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
+        Map.Entry<String,JsonElement> entry = iter.next();
+
+        switch (entry.getValue().toString()){
+            case "player joined":
+                this.needed = iter.next().getValue().getAsInt();
+                break;
+            case "player left":
+                this.needed = iter.next().getValue().getAsInt();
+                break;
+            case "game starts":
+                this.numOfPlayers = entry.getValue().getAsString().length();
+                System.out.println(this.numOfPlayers);
+                this.aController.handleNotifyMessage(messageMap);
+                this.startGame();
+                break;
+            case "game cancelled":
+                this.aController.handleNotifyMessage(messageMap);
+                break;
+            case "game ends":
+                this.aController.handleNotifyMessage(messageMap);
+                break;
+            default:
+                this.aController.handleNotifyMessage(messageMap);
+                break;
+
+        }
+    }
+
+    public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
+        Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
+        Map.Entry<String,JsonElement> entry = iter.next();
+        switch (entry.getValue().getAsString()){
+            case "created":
+                this.gameId = iter.next().getValue().getAsInt();
+                this.token = iter.next().getValue().getAsString();
+                break;
+            case "joined":
+                this.needed = iter.next().getValue().getAsInt();
+                this.timeout = iter.next().getValue().getAsInt();
+                this.gameType = iter.next().getValue().getAsString();
+                break;
+            case "extant":
+                this.gameId = iter.next().getValue().getAsInt();
+                this.token = iter.next().getValue().getAsString();
+                break;
+            case "no such game":
+                break;
+            case "game full":
+                break;
+            case "invalid":
+
+                break;
+            default:
+                this.aController.handleReplyMessage(messageMap);
+                break;
         }
     }
 
@@ -364,6 +450,14 @@ public class GameMenu extends Application{
         } catch (NoSuchAlgorithmException e) {
             return ("MD5 ... what's MD5?");
         }
+    }
+
+    public boolean isInGame() {
+        return inGame;
+    }
+
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
     }
 
     static class CreateGameEvent {
@@ -384,7 +478,6 @@ public class GameMenu extends Application{
             this.timeout = timeout;
             this.force = force;
             this.rainbow = rainbow;
-            //this.timestamp = System.currentTimeMillis()/1000L;
             this.timestamp = (int) Instant.now().getEpochSecond();
             this.md5hash = md5hash;
         }
@@ -436,6 +529,18 @@ public class GameMenu extends Application{
                     ", token='" + token + '\'' +
                     '}';
         }
+    }
+
+    public void startGame() {
+
+        this.aModel = new GameModel(this.timeout,this.numOfPlayers,this.gameType);
+        this.aController = new GameController();
+        this.aView = new GameView();
+
+        this.aController.setModel(this.aModel);
+        this.aController.setView(this.aView);
+
+        this.aView.setModel(this.aModel);
     }
 
     public static void main(String[] args){
