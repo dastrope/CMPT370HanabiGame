@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class GameView extends Application {
+public class GameView {
     private double[] xHandPositions = {50, 50, 850, 850}; //client is first in array, clockwise order after
     private double[] yHandPositions = {500, 200, 200, 500}; //client is first in array, clockwise order after
     private double userPositionX = 450;
@@ -29,12 +29,22 @@ public class GameView extends Application {
     private final int STATE_INFORMING_NUMBER = 5;
     private double cardHeight = 75;
     private double cardWidth = 50;
-    private ArrayList<HandBox> handList = new ArrayList<>();
-    private ArrayList<Circle> tokenList = new ArrayList<>();
-    private ArrayList<FireworkRectangle> fireworkList = new ArrayList<>();
+    private ArrayList<HandBox> handList;
+    private ArrayList<Circle> tokenList;
+    private ArrayList<FireworkRectangle> fireworkList;
+    private Pane root;
 
-    public static void main(String[] args) {
-        launch(args);
+//    public static void main(String[] args) {
+//        launch(args);
+//    }
+
+    public GameView(GameModel aModel, GameController aController){
+        this.model = aModel;
+        this.cont = aController;
+        this.handList = new ArrayList<>();
+        this.tokenList = new ArrayList<>();
+        this.fireworkList = new ArrayList<>();
+        this.root = new Pane();
     }
 
     public void setCont(GameController cont) { this.cont = cont; }
@@ -43,10 +53,9 @@ public class GameView extends Application {
         this.model = model;
     }
 
-    public Scene createGame() {
+    public void createGame(Scene scene) {
         Table table = model.getGameTable();
-        Pane root = new Pane() ;
-        Scene scene = new Scene(root, 1200, 800 );
+//        Scene scene = new Scene(root, 1200, 800 );
 
         /*create background and groups for buttons*/
         scene.setFill( Color.DARKGREEN ) ;
@@ -78,8 +87,6 @@ public class GameView extends Application {
         createInfoTokens(root,480);
 
         createFireworks(root, 470);
-
-        return scene;
     }
 
     private void createTable(Pane root, Table table){
@@ -446,24 +453,5 @@ public class GameView extends Application {
         model.playCardSuccess(1);
         model.giveCard("uu");
         this.update();
-    }
-
-
-
-    @Override
-    public void start(Stage stage) {
-        /*
-         * This is all just code for testing certain functionality, much of it is janky and should not be replicated
-         * for the final product. No states are present so things are always drawn/done the same way, and objects are all
-         * hardcoded in and completely exist only in the view itself, so of course that will require changing.
-         * Some of the event handlers will also need to be moved to controller, although for hovering events
-         * I don't think that is necessary at the moment, as those are entirely clientside view only changes.
-         * Optimization may also be possible for things like image drawing, should look at that
-         */
-
-        Scene scene = createGame();
-        /*draw the window and scene*/
-        stage.setScene( scene ) ;
-        stage.show() ;
     }
 }

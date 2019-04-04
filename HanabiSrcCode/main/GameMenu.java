@@ -48,6 +48,7 @@ public class GameMenu extends Application{
     private GameInteractionModel iModel;
     private GameView aView;
     private GameController aController;
+    private Scene scene;
 
 
 
@@ -55,7 +56,7 @@ public class GameMenu extends Application{
 
     public void start(Stage aStage) throws Exception {
 
-        final double CANVAS_WIDTH = 1024;
+        final double CANVAS_WIDTH = 1376;
         final double CANVAS_HEIGHT = 768;
 
         this.stage = aStage;
@@ -244,6 +245,7 @@ public class GameMenu extends Application{
         root.getChildren().addAll(t,selectionsBox,createInfoBox,joinInfoBox);
 
         Scene aScene = new Scene( root, CANVAS_WIDTH, CANVAS_HEIGHT, Color.WHITESMOKE );
+        this.scene = aScene;
         aStage.setScene( aScene );
         aStage.show();
     }
@@ -533,15 +535,11 @@ public class GameMenu extends Application{
 
         this.aModel = new GameModel(this.timeout, this.gameType, hands);
         this.aController = new GameController(outToServer);
-        this.aView = new GameView();
+        this.aView = new GameView(this.aModel, this.aController);
 
         this.aController.setModel(this.aModel);
         this.aController.setView(this.aView);
-
-        this.aView.setCont(this.aController);
-        this.aView.setModel(this.aModel);
-
-        this.aView.start(this.stage);
+        this.aView.createGame(this.scene);
     }
 
     public static void main(String[] args){
