@@ -3,50 +3,57 @@ import com.google.gson.stream.JsonReader;
 import com.sun.xml.internal.fastinfoset.util.StringArray;
 
 import java.awt.*;
+import java.io.PrintStream;
 import java.util.*;
 
 public class GameController {
     private GameModel model;        // link to game model
     private GameView view;          // link to game view
     private GameInteractionModel iModel; // link to interaction model
+    private PrintStream outToServer;
 
     private int state; // current game state, whether or not it is the user's turn
     private final int STATE_INACTIVE = 0;   // not the user's turn
     private final int STATE_ACTIVE = 1;     // the user's turn
+    private String[] userMove;
     public Gson gson;
 
-    public GameController(){
+    public GameController(PrintStream ps){
         gson = new Gson();
+        this.outToServer = ps;
     }
 
 //         constructor.  will set up the model, view, and interaction model.
 
-    public void handleMessage(String jsonMessage){
-        Set<Map.Entry<String,JsonElement>> messageMap = parseJSON(jsonMessage);
-
-        Map.Entry<String,JsonElement> entry = messageMap.iterator().next();
+    public void handleMessage(Set<Map.Entry<String,JsonElement>> jsonMessage){
+        Map.Entry<String,JsonElement> entry = jsonMessage.iterator().next();
 
         switch(entry.getKey()){
             case "notice":
-                handleNotifyMessage(messageMap);
+                handleNotifyMessage(jsonMessage);
                 break;
 
             case "reply":
-                handleReplyMessage(messageMap);
+                handleReplyMessage(jsonMessage);
                 break;
         }
     }
 
     public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap){
-        Map.Entry<String,JsonElement> entry = messageMap.iterator().next();
+        Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
+        Map.Entry<String,JsonElement> entry = iter.next();
         switch (entry.getValue().toString()){
             case "invalid":
                 break;
             case "accepted":
+                this.model.userDiscardCard(Integer.parseInt(this.userMove[1]),iter.next().getValue().getAsString());
+                this.model.giveCard("uu");
                 break;
             case "built":
+                this.model.userPlayCardSuccess(Integer.parseInt(this.userMove[1]),iter.next().getValue().getAsString());
                 break;
             case "burned":
+                this.model.userDiscardCard(Integer.parseInt(this.userMove[1]),iter.next().getValue().getAsString());
                 break;
         }
 
@@ -56,8 +63,10 @@ public class GameController {
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
         switch (entry.getValue().getAsString()){
-            case "your turn":
+            case "your move":
                 model.nextTurn();
+                userMove = this.view.getMove();
+                sendJSON(userMove);
                 break;
             case "discarded":
                 model.discardCard(iter.next().getValue().getAsInt());
@@ -98,9 +107,28 @@ public class GameController {
     }
         // parses a message from the server into a collection of usable information.
         
-//    public void sendJSON(Collection move){
-//
-//    }
+    public void sendJSON(String[] move){
+        JsonArray item = new JsonArray();
+        JsonObject e = new JsonObject();
+        if (move[0].equals("play")) {
+            e.addProperty("action", "play");
+            e.addProperty("position",Integer.parseInt(move[1]));
+        } else if (move[0].equals("discard")) {
+            e.addProperty("action", "discard");
+            e.addProperty("position",Integer.parseInt(move[1]));
+        } else if (move[0].equals("informNumber")) {
+            e.addProperty("action","inform");
+            e.addProperty("player",Integer.parseInt(move[1]));
+            e.addProperty("rank",Integer.parseInt(move[2]));
+        } else if (move[0].equals("informColour")) {
+            e.addProperty("action","inform");
+            e.addProperty("player",Integer.parseInt(move[1]));
+            e.addProperty("suit",move[2]);
+        }
+        item.add(e);
+        String json = gson.toJson(item);
+        outToServer.println(json);
+    }
         // converts a collection of information into a json message and sends that message to the server
 
     public void setModel(GameModel model){
@@ -151,8 +179,9 @@ public class GameController {
         }
     }
 
+
     public static void main(String[] args){
-        GameController c = new GameController();
+//        GameController c = new GameController(new PrintStream(System.out.format()));
         Card card = new Card('b', '2');
 
         String[][] initHands = {{},{"b1","b3","b5","g2"},{"b1","b3","g1","g2"},{"b2","b4","g1","g3"}};
@@ -179,7 +208,7 @@ public class GameController {
 
         System.out.println("Using Gson.toJson() on a raw collection: " + json1);
 
-        c.handleMessage(json1);
+        //c.handleMessage(json1);
         //c.handleMessage(json2);
     }
 }

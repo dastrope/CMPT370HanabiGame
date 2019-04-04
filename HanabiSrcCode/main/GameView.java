@@ -31,6 +31,7 @@ public class GameView extends Application {
     private ArrayList<HandBox> handList = new ArrayList<>();
     private ArrayList<Circle> tokenList = new ArrayList<>();
     private ArrayList<FireworkRectangle> fireworkList = new ArrayList<>();
+    private String[] move = null;
 
     public static void main(String[] args) {
         launch(args);
@@ -181,6 +182,7 @@ public class GameView extends Application {
         }
     }
 
+
     public void setPlayState(ArrayList<HandBox> handList, Table table){
         this.resetAllCards(handList);
         if (this.state == STATE_PLAYING) {
@@ -195,6 +197,9 @@ public class GameView extends Application {
                         CardButton cb = hand.getCardList().get(i);
                         int position = i + 1;
                         cb.setOnMouseClicked((MouseEvent e) -> {
+                            this.move = new String[2];
+                            this.move[0] = "play";
+                            this.move[1] = String.valueOf(position);
                             System.out.println("Player " + model.playerSeat() + " played " + cb.card +
                                     " from position " + position);
                         });
@@ -218,6 +223,9 @@ public class GameView extends Application {
                         CardButton cb = hand.getCardList().get(i);
                         int position = i + 1;
                         cb.setOnMouseClicked((MouseEvent e) -> {
+                            this.move = new String[2];
+                            this.move[0] = "discard";
+                            this.move[1] = String.valueOf(position);
                             System.out.println("Player " + model.playerSeat() + " discarded " + cb.card +
                                     " from position " + position);
                         });
@@ -263,6 +271,10 @@ public class GameView extends Application {
                             for (CardButton c : raised) {
                                 informedCards += " position " + (hand.getCardList().indexOf(c) + 1);
                             }
+                            this.move = new String[3];
+                            this.move[0] = "informColour";
+                            this.move[1] = String.valueOf(informedPlayer);
+                            this.move[2] = String.valueOf(cb.card.getColour());
                             System.out.println("Player " + model.playerSeat() + " informed player " + informedPlayer +
                                     informedCards);
                         });
@@ -307,6 +319,10 @@ public class GameView extends Application {
                             for (CardButton c : raised) {
                                 informedCards += " position " + (hand.getCardList().indexOf(c) + 1);
                             }
+                            this.move = new String[3];
+                            this.move[0] = "informNumber";
+                            this.move[1] = String.valueOf(informedPlayer);
+                            this.move[2] = String.valueOf(cb.card.getNumber());
                             System.out.println("Player " + model.playerSeat() + " informed player " + informedPlayer +
                                     informedCards);
                         });
@@ -396,10 +412,28 @@ public class GameView extends Application {
 
     }
 
+    public void setState() {
+        if (this.model.playerSeat() != this.model.currentTurn()){
+            this.state = STATE_WAITING;
+            this.disableAllCards(handList);
+        } else {
+            this.state = STATE_READY;
+            this.resetAllCards(handList);
+        }
+    }
+
+    public String[] getMove() {
+        while(this.move == null){
+        }
+        return this.move;
+    }
+
     public void update(){
+        setState();
         redrawHands();
         redrawTokens();
         redrawFireworks();
+        this.move = null;
 //        redrawDiscards();
     }
 

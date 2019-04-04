@@ -1,3 +1,4 @@
+import java.io.PrintStream;
 import java.util.Collection;
 
 public class AIController extends GameController {
@@ -5,8 +6,8 @@ public class AIController extends GameController {
     private Boolean canDiscard;// true if there are <8 info tokens
     private GameModel model;
     
-    public AIController(){
-
+    public AIController(PrintStream outputStream){
+        super(outputStream);
     } //constructor, will initialize canInform, canDiscard
 
     public void checkAvailableMoves(){

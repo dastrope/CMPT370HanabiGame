@@ -1,5 +1,7 @@
 import com.google.gson.*;
 
+import com.google.gson.reflect.TypeToken;
+import com.sun.tracing.dtrace.ArgsAttributes;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -15,6 +17,7 @@ import javafx.stage.Stage;
 import jdk.nashorn.internal.parser.JSONParser;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.Socket;
 import java.security.*;
 import java.math.*;
@@ -27,6 +30,7 @@ import java.util.Set;
 public class GameMenu extends Application{
 
     private boolean inGame = true;
+    private Stage stage;
 
     private int needed;
     private String nsid;
@@ -56,6 +60,7 @@ public class GameMenu extends Application{
         final double CANVAS_WIDTH = 1024;
         final double CANVAS_HEIGHT = 768;
 
+        this.stage = aStage;
         aStage.setTitle( "HANABI" );
 
         Text t = new Text (CANVAS_WIDTH*0.375,CANVAS_HEIGHT*0.25,"HANABI");
@@ -433,7 +438,6 @@ public class GameMenu extends Application{
             case "game full":
                 break;
             case "invalid":
-
                 break;
             default:
                 this.aController.handleReplyMessage(messageMap);
@@ -532,15 +536,21 @@ public class GameMenu extends Application{
 
     public void startGame(JsonArray startHands) {
         ArrayList<String[]> hands = new ArrayList<>();
+        Type type = new TypeToken<ArrayList<String[]>>(){}.getType();
+        hands = gson.fromJson(startHands,type);
+
+        System.out.println(hands.toString());
 
         this.aModel = new GameModel(this.timeout, this.gameType, hands);
-        this.aController = new GameController();
+        this.aController = new GameController(outToServer);
         this.aView = new GameView();
 
         this.aController.setModel(this.aModel);
         this.aController.setView(this.aView);
 
         this.aView.setModel(this.aModel);
+
+        this.aView.start(this.stage);
     }
 
     public static void main(String[] args){

@@ -137,7 +137,20 @@ public class GameModel {
      *
      * @param handPosition the position of the card to be removed
      */
-    public void discardCard(int handPosition){
+    public void discardCard(int handPosition) {
+        this.discards.addDiscard(this.gameTable.getPlayersCard(this.currentTurn(), handPosition));
+        this.gameTable.removeCard(this.currentTurn(), handPosition);
+        this.addToken();
+    }
+
+    /**
+     * Purpose: remove a card from the users player's hand from the specified location
+     *
+     * @param handPosition the position of the card to be removed
+     */
+    public void userDiscardCard(int handPosition,String card){
+        this.gameTable.getPlayersCard(this.currentTurn(),handPosition).setColour(card.charAt(0));
+        this.gameTable.getPlayersCard(this.currentTurn(),handPosition).setColour(card.charAt(1));
         this.discards.addDiscard(this.gameTable.getPlayersCard(this.currentTurn(),handPosition));
         this.gameTable.removeCard(this.currentTurn(), handPosition);
         this.addToken();
@@ -188,6 +201,19 @@ public class GameModel {
     }
 
     /**
+     * Purpose: Update a user's card after a successful play.
+     *
+     * @param handPosition the Position of the card that was played
+     */
+    public void userPlayCardSuccess(int handPosition,String card){
+        this.gameTable.getPlayersCard(this.currentTurn(),handPosition).setColour(card.charAt(0));
+        this.gameTable.getPlayersCard(this.currentTurn(),handPosition).setColour(card.charAt(1));
+        Card played = this.gameTable.getPlayersCard(this.currentTurn(), handPosition);
+        this.fireworks.addFirework(played.getColour());
+        this.gameTable.removeCard(this.currentTurn(), handPosition);
+    }
+
+    /**
      * Purpose: returns the height of the requested firework stack as an integer
      * @param colour the colour of the fireworks stack in question
      * @return the height of the firework stack
@@ -220,7 +246,7 @@ public class GameModel {
      * @return the current player's seat number
      */
     public int currentTurn(){
-        return this.turn % this.playerCount;
+        return (this.turn % this.playerCount)+1;
     }
         // returns the seat number of the player whose turn it is currently.
 
@@ -251,5 +277,22 @@ public class GameModel {
 
     public DiscardPile getDiscards(){
         return this.discards;
+    }
+
+    @Override
+    public String toString() {
+        return "GameModel{" +
+                "infoTokens=" + infoTokens +
+                ", fuses=" + fuses +
+                ", turn=" + turn +
+                ", userID=" + userID +
+                ", playerCount=" + playerCount +
+                ", cardsInDeck=" + cardsInDeck +
+                ", gameTable=" + gameTable +
+                ", discards=" + discards +
+                ", fireworks=" + fireworks +
+                ", timeLimit=" + timeLimit +
+                ", turnStart=" + turnStart +
+                '}';
     }
 }
