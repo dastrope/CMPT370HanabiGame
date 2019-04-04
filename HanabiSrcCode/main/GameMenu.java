@@ -20,10 +20,7 @@ import java.net.Socket;
 import java.security.*;
 import java.math.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class GameMenu extends Application{
 
@@ -49,6 +46,7 @@ public class GameMenu extends Application{
     private GameView aView;
     private GameController aController;
     private Scene scene;
+    public boolean x = true;
 
 
 
@@ -352,7 +350,7 @@ public class GameMenu extends Application{
         int i = 0;
 
         try {
-            while (this.inGame) {
+            while (this.inGame && x) {
                 if (inFromServer.available() != 0) {
                     message[i] = (char) inFromServer.readByte();
                     if (message[i] == '}') {
@@ -526,6 +524,7 @@ public class GameMenu extends Application{
         }
     }
 
+
     public void startGame(JsonArray startHands) {
         ArrayList<String[]> hands = new ArrayList<>();
         Type type = new TypeToken<ArrayList<String[]>>(){}.getType();
@@ -539,7 +538,25 @@ public class GameMenu extends Application{
 
         this.aController.setModel(this.aModel);
         this.aController.setView(this.aView);
-        stage.setScene(this.aView.createGame());
+//        System.out.println(x);
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask()
+        {
+            public void run()
+            {
+                if (x){
+                    runHanabi();
+                    x = false;
+                } else{
+                    x = true;
+                }
+            }
+        };
+        timer.schedule(task, 3000l);
+        Stage newStage = new Stage();
+        newStage.setScene(this.aView.createGame());
+        newStage.show();
+
     }
 
     public static void main(String[] args){

@@ -8,6 +8,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -29,9 +31,12 @@ public class GameView {
     private final int STATE_INFORMING_NUMBER = 5;
     private double cardHeight = 75;
     private double cardWidth = 50;
+    private double canvasHeight;
+    private double canvasWidth;
     private ArrayList<HandBox> handList;
     private ArrayList<Circle> tokenList;
     private ArrayList<FireworkRectangle> fireworkList;
+    private ArrayList<Button> actionButtons;
     private Pane root;
 
 //    public static void main(String[] args) {
@@ -45,6 +50,8 @@ public class GameView {
         this.tokenList = new ArrayList<>();
         this.fireworkList = new ArrayList<>();
         this.root = new Pane();
+        this.canvasHeight = 800;
+        this.canvasWidth = 1200;
     }
 
     public void setCont(GameController cont) { this.cont = cont; }
@@ -55,16 +62,24 @@ public class GameView {
 
     public Scene createGame() {
         Table table = model.getGameTable();
-        Scene scene = new Scene(root, 1200, 800 );
+        Scene scene = new Scene(root, canvasWidth, canvasHeight );
         /*create background and groups for buttons*/
         scene.setFill( Color.DARKGREEN ) ;
         root.setBackground( null );
-
         Button playButton = new Button("Play a Card");
         Button discardButton = new Button("Discard a Card");
         Button informColourButton = new Button("Inform Colour");
         Button informNumberButton = new Button("Inform Number");
         Button discardPileButton = new Button("View Discarded Cards");
+        playButton.setFont(Font.font("Century Gothic", FontWeight.THIN, canvasHeight/50));
+        discardButton.setFont(Font.font("Century Gothic", FontWeight.THIN, canvasHeight/50));
+        informColourButton.setFont(Font.font("Century Gothic", FontWeight.THIN, canvasHeight/50));
+        informNumberButton.setFont(Font.font("Century Gothic", FontWeight.THIN, canvasHeight/50));
+        discardPileButton.setFont(Font.font("Century Gothic", FontWeight.THIN, canvasHeight/50));
+        actionButtons.add(playButton);
+        actionButtons.add(discardButton);
+        actionButtons.add(informColourButton);
+        actionButtons.add(informNumberButton);
         HBox pane_for_buttons = new HBox( 10 ) ;
         pane_for_buttons.setLayoutX(300);
         pane_for_buttons.getChildren().addAll(playButton, discardButton, informColourButton,
@@ -428,13 +443,24 @@ public class GameView {
     public void setState() {
         if (this.model.playerSeat() != this.model.currentTurn()){
             this.state = STATE_WAITING;
-            this.disableAllCards(handList);
+            actionsToggle();
         } else {
             this.state = STATE_READY;
-            this.resetAllCards(handList);
+            actionsToggle();
         }
     }
 
+    public void actionsToggle() {
+        if (state == STATE_WAITING) {
+            for (Button btn : this.actionButtons) {
+                btn.setDisable(true);
+            }
+        } else {
+            for (Button btn : this.actionButtons) {
+                btn.setDisable(false);
+            }
+        }
+    }
     public void sendMove(String[] move) {
         this.cont.setMove(move);
     }
