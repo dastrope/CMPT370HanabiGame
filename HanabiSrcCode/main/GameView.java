@@ -99,7 +99,7 @@ public class GameView extends Application {
     }
     private void createFireworks(Pane root, int panePosition) {
         int x = panePosition;
-        for (Object colour : model.getFireworks().keySet()){
+        for (Object colour : model.getFireworks().getFireworks().keySet()){
             char c = (char) colour;
             int height = model.getFireworkHeight(c);
             FireworkRectangle fireworkMeter = new FireworkRectangle(c, height);

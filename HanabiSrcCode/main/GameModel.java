@@ -199,8 +199,8 @@ public class GameModel {
      * Purpose: Returns
      * @return
      */
-    public HashMap getFireworks() {
-        return fireworks.getFireworks();
+    public Fireworks getFireworks() {
+        return fireworks;
     }
 
     /**
