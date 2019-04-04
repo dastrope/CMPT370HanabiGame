@@ -1,9 +1,10 @@
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class DiscardPile {
     private int discardCount;
     //tracks the number of cards in the discard pile
-    private HashMap<String,Integer> discards;
+    private LinkedHashMap<String,Integer> discards;
     //A collection to store the discarded cards and how many of each card has been discarded
 
     /**
@@ -13,16 +14,30 @@ public class DiscardPile {
     public DiscardPile()
     {
         this.discardCount = 0;
-        this.discards = new HashMap<>();
+        this.discards = new LinkedHashMap<>();
+        this.generatePile();
     }
     //Constructor method instantiates the collection and sets the discardcount to 0
 
+    /**
+     * Purpose: adds all cards to the discard pile without adding to their totals - so they can be viewed
+     * 
+     */
+    private void generatePile(){
+        char[] colours = {'b', 'r', 'g', 'w', 'y'};
+        for (char c : colours){
+            for (int i = 1 ; i < 6 ; i++){
+                String card = Character.toString(c)+Integer.toString(i);
+                this.discards.put(card, 0);
+            }
+        }
+    }
     /**
      * Purpose: returns the current state of the discard pile.
      *
      * @return the discard pile hashmap
      */
-    public HashMap<String,Integer> getDiscards(){
+    public LinkedHashMap<String,Integer> getDiscards(){
         return this.discards;
     }
 

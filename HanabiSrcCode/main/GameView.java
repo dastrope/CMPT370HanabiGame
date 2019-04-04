@@ -424,7 +424,7 @@ public class GameView extends Application {
          * Optimization may also be possible for things like image drawing, should look at that
          */
         this.state = STATE_READY;
-        model = new GameModel(15,5,"default");
+        this.model = new GameModel(15,5,"default");
 
         String[][] data = {{"b1", "b2", "b4", "g1"}
                 , {}
@@ -432,8 +432,7 @@ public class GameView extends Application {
                 , {"b2", "b4", "y2", "w3"}
                 , {"r2", "w4", "y5", "g4"}
         };
-        this.model = model;
-        model.dealTable(data);
+        this.model.dealTable(data);
         Scene scene = createGame();
         /*draw the window and scene*/
         test();
