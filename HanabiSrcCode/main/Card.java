@@ -66,7 +66,7 @@ public class Card {
      * Purpose: sets colourKnown to true, when a number is revealed to the card's owner
      */
     public void colourInformed() {
-        this.colourKnown = true;
+        this.numberKnown = true;
     }
 
     /**

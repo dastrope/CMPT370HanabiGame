@@ -1,8 +1,0 @@
-End to end testing
-Use case 3.2.1.7 Give number info
-
-If this is the first turn of the game the player should receive and correctly interpret a JSON message from the server telling them it is their turn. Otherwise, in later turns the player client should infer it is their turn from the turn order of the game. Controller and interaction model should be set to active state. If there is at least one info token in the pool, the give number info action button should be interactable. All other player action buttons (from section 3.2.1 , use cases 4, 6, and 7) should also be clickable so the player may switch their state to those actions. After selecting the give number info action, if the active player hovers their cursor over another player's cards, that card and all others in that player's hand matching that number should be raised. If the cursor leaves that card the cards should again be lowered. 
-
-If the active player selects one of those cards from another player's hand to inform about, that player will receive a message from the server indicating which cards match that number. Those cards should be redrawn with the correct number. Other players are also notified of the inform action and will flag the same cards with a number token to indicate that the number has been informed. The information token pool will be reduced by one in all client programs. 
-
-This test will be done through visual inspection of the UI elements throughout the use case, ensuring interactability and visibility changes at each point described. Because it is a MVC system, seeing the cards change in the view should confirm that the model was successfully updated as expected. 

@@ -1,6 +1,0 @@
-EndGameView() {
-    display();
-    //gathers game end state information and congratulatory message to display to all players
-    closeGame();
-    //takes player back to the main menu and closes connection to the game and server
-}

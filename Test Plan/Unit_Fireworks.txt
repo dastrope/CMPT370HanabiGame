@@ -1,9 +1,0 @@
-Fireworks class unit testing from Design Document
-
-Fireworks constructor - verify that the collection is insantiated with the height value for each firework set to 0
-
-method addFirework - verify that any firework is properly incremented by 1 when its colour is given as an argument
-
-method checkBuildValid - verify that plays are accurately determined as valid when they should be, that the card is actually playable
-
-method getFireworks - verify that the collection in the fireworks field is successfully returned and can be accessed

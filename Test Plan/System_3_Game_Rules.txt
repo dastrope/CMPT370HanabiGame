@@ -1,5 +1,0 @@
-Use Case 3: Reading the Rules (Requirements Document page 19)
-
-Clicking the rules button should summon the rules screen, and clicking the "close" choice on the rules screen should banish it.  The rules will be in a separate window from the main game.
-
-Test 1: Clicking the "rules" button on the main menu should bring up the Hanabi rules in their own window.  This will be a visual check.
