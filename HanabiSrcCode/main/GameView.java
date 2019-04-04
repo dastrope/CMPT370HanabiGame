@@ -49,6 +49,7 @@ public class GameView {
         this.handList = new ArrayList<>();
         this.tokenList = new ArrayList<>();
         this.fireworkList = new ArrayList<>();
+        this.actionButtons = new ArrayList<>();
         this.root = new Pane();
         this.canvasHeight = 800;
         this.canvasWidth = 1200;
