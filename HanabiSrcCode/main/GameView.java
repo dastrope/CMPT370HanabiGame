@@ -18,6 +18,7 @@ public class GameView extends Application {
     private double[] yHandPositions = {500, 200, 200, 500}; //client is first in array, clockwise order after
     private double userPositionX = 450;
     private double userPositionY = 600;
+    private GameController cont;
     private GameModel model;
     private int state;
     private final int STATE_WAITING = 0;
@@ -31,11 +32,12 @@ public class GameView extends Application {
     private ArrayList<HandBox> handList = new ArrayList<>();
     private ArrayList<Circle> tokenList = new ArrayList<>();
     private ArrayList<FireworkRectangle> fireworkList = new ArrayList<>();
-    private String[] move = null;
 
     public static void main(String[] args) {
         launch(args);
     }
+
+    public void setCont(GameController cont) { this.cont = cont; }
 
     public void setModel(GameModel model){
         this.model = model;
@@ -197,9 +199,10 @@ public class GameView extends Application {
                         CardButton cb = hand.getCardList().get(i);
                         int position = i + 1;
                         cb.setOnMouseClicked((MouseEvent e) -> {
-                            this.move = new String[2];
-                            this.move[0] = "play";
-                            this.move[1] = String.valueOf(position);
+                            String[] move = new String[2];
+                            move[0] = "play";
+                            move[1] = String.valueOf(position);
+                            sendMove(move);
                             System.out.println("Player " + model.playerSeat() + " played " + cb.card +
                                     " from position " + position);
                         });
@@ -223,9 +226,10 @@ public class GameView extends Application {
                         CardButton cb = hand.getCardList().get(i);
                         int position = i + 1;
                         cb.setOnMouseClicked((MouseEvent e) -> {
-                            this.move = new String[2];
-                            this.move[0] = "discard";
-                            this.move[1] = String.valueOf(position);
+                            String[] move = new String[2];
+                            move[0] = "discard";
+                            move[1] = String.valueOf(position);
+                            sendMove(move);
                             System.out.println("Player " + model.playerSeat() + " discarded " + cb.card +
                                     " from position " + position);
                         });
@@ -271,10 +275,11 @@ public class GameView extends Application {
                             for (CardButton c : raised) {
                                 informedCards += " position " + (hand.getCardList().indexOf(c) + 1);
                             }
-                            this.move = new String[3];
-                            this.move[0] = "informColour";
-                            this.move[1] = String.valueOf(informedPlayer);
-                            this.move[2] = String.valueOf(cb.card.getColour());
+                            String[] move = new String[3];
+                            move[0] = "informColour";
+                            move[1] = String.valueOf(informedPlayer);
+                            move[2] = String.valueOf(cb.card.getColour());
+                            sendMove(move);
                             System.out.println("Player " + model.playerSeat() + " informed player " + informedPlayer +
                                     informedCards);
                         });
@@ -319,10 +324,11 @@ public class GameView extends Application {
                             for (CardButton c : raised) {
                                 informedCards += " position " + (hand.getCardList().indexOf(c) + 1);
                             }
-                            this.move = new String[3];
-                            this.move[0] = "informNumber";
-                            this.move[1] = String.valueOf(informedPlayer);
-                            this.move[2] = String.valueOf(cb.card.getNumber());
+                            String[] move = new String[3];
+                            move[0] = "informNumber";
+                            move[1] = String.valueOf(informedPlayer);
+                            move[2] = String.valueOf(cb.card.getNumber());
+                            sendMove(move);
                             System.out.println("Player " + model.playerSeat() + " informed player " + informedPlayer +
                                     informedCards);
                         });
@@ -422,10 +428,8 @@ public class GameView extends Application {
         }
     }
 
-    public String[] getMove() {
-        while(this.move == null){
-        }
-        return this.move;
+    public void sendMove(String[] move) {
+        this.cont.setMove(move);
     }
 
     public void update(){
@@ -433,7 +437,6 @@ public class GameView extends Application {
         redrawHands();
         redrawTokens();
         redrawFireworks();
-        this.move = null;
 //        redrawDiscards();
     }
 

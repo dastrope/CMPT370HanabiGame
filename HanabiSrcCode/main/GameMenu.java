@@ -1,7 +1,6 @@
 import com.google.gson.*;
 
 import com.google.gson.reflect.TypeToken;
-import com.sun.tracing.dtrace.ArgsAttributes;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -14,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import jdk.nashorn.internal.parser.JSONParser;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -455,14 +453,6 @@ public class GameMenu extends Application{
         }
     }
 
-    public boolean isInGame() {
-        return inGame;
-    }
-
-    public void setInGame(boolean inGame) {
-        this.inGame = inGame;
-    }
-
     static class CreateGameEvent {
         private String cmd;
         private String nsid;
@@ -548,6 +538,7 @@ public class GameMenu extends Application{
         this.aController.setModel(this.aModel);
         this.aController.setView(this.aView);
 
+        this.aView.setCont(this.aController);
         this.aView.setModel(this.aModel);
 
         this.aView.start(this.stage);

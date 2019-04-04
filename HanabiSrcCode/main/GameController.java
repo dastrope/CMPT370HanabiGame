@@ -25,20 +25,6 @@ public class GameController {
 
 //         constructor.  will set up the model, view, and interaction model.
 
-    public void handleMessage(Set<Map.Entry<String,JsonElement>> jsonMessage){
-        Map.Entry<String,JsonElement> entry = jsonMessage.iterator().next();
-
-        switch(entry.getKey()){
-            case "notice":
-                handleNotifyMessage(jsonMessage);
-                break;
-
-            case "reply":
-                handleReplyMessage(jsonMessage);
-                break;
-        }
-    }
-
     public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap){
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
@@ -65,7 +51,7 @@ public class GameController {
         switch (entry.getValue().getAsString()){
             case "your move":
                 model.nextTurn();
-                userMove = this.view.getMove();
+                waitForMove();
                 sendJSON(userMove);
                 break;
             case "discarded":
@@ -131,16 +117,20 @@ public class GameController {
     }
         // converts a collection of information into a json message and sends that message to the server
 
+    public void setMove(String[] move) {
+        this.userMove = move;
+    }
+
+    public void waitForMove() {
+        while (this.userMove == null) {
+        }
+    }
+
     public void setModel(GameModel model){
         this.model = model;
     }
         // sets up the game model
-    
-    public void setiModel(GameInteractionModel iModel){
-        this.iModel = iModel;
-    }
-        // sets up the interaction model
-    
+
     public void setView(GameView newView){
         this.view = newView;
     }

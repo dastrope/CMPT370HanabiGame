@@ -1,5 +1,4 @@
 import java.io.PrintStream;
-import java.util.Collection;
 
 public class AIController extends GameController {
     private Boolean canInform; // true if there are >0 info tokens
@@ -9,11 +8,7 @@ public class AIController extends GameController {
     public AIController(PrintStream outputStream){
         super(outputStream);
     } //constructor, will initialize canInform, canDiscard
-
-    public void checkAvailableMoves(){
-
-    } //updates the booleans
-
+    
     public String bestPlay(){
         Hand hand = model.getGameTable().playerHands[model.playerSeat()-1];
         int handPosition = 1;
