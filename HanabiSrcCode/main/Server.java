@@ -23,10 +23,15 @@ public class Server implements Runnable {
     private LinkedList<JsonElement> messages;
     private HanabiClient parent;
 
+    public Server(HanabiClient parent) {
+        this.parent = parent;
+    }
+
     @Override
     public void run() {
         establishConnection();
         messages = new LinkedList<>();
+        watchForMessages();
     }
 
     public void watchForMessages() {
@@ -51,6 +56,8 @@ public class Server implements Runnable {
                             }
                         }
                     }
+                    parent.handleJSON(messages.poll());
+                    watchForMessages();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

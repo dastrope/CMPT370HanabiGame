@@ -35,17 +35,17 @@ public class HanabiClient extends Application {
     }
 
     public void createGameRequest(String nsid, String hash, int numOfPlayers, int timeout, String gameType) {
-        server = new Server();
+        server = new Server(this);
         server.run();
         server.createGame(nsid,hash,numOfPlayers,timeout,gameType);
-        handleJSON(server.getMessage());
+        //handleJSON(server.getMessage());
     }
 
     public void joinGameRequest(String nsid, String hash, int gameId, String token) {
-        server = new Server();
+        server = new Server(this);
         server.run();
         server.joinGame(nsid,hash,gameId,token);
-        handleJSON(server.getMessage());
+        //handleJSON(server.getMessage());
     }
 
     public void sendMsgToServer(String msg) {
@@ -110,7 +110,7 @@ public class HanabiClient extends Application {
                 this.aController.handleNotifyMessage(messageMap);
                 break;
         }
-        handleJSON(server.getMessage());
+        //handleJSON(server.getMessage());
     }
 
     public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
@@ -141,7 +141,7 @@ public class HanabiClient extends Application {
                 this.aController.handleReplyMessage(messageMap);
                 break;
         }
-        handleJSON(server.getMessage());
+        //handleJSON(server.getMessage());
     }
 
     public static void main(String[] args){
