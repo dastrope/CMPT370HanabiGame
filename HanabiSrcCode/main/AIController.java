@@ -5,8 +5,8 @@ public class AIController extends GameController {
     private Boolean canDiscard;// true if there are <8 info tokens
     private GameModel model;
     
-    public AIController(PrintStream outputStream){
-        super(outputStream);
+    public AIController(HanabiClient c){
+        super(c);
     } //constructor, will initialize canInform, canDiscard
     
     public String bestPlay(){

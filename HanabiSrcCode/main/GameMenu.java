@@ -1,7 +1,3 @@
-import com.google.gson.*;
-
-import com.google.gson.reflect.TypeToken;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -14,19 +10,10 @@ import javafx.scene.text.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.*;
-import java.lang.reflect.Type;
-import java.net.Socket;
-import java.security.*;
-import java.math.*;
-import java.time.Instant;
-import java.util.*;
+public class GameMenu {
 
-public class GameMenu extends Application{
-
-    private boolean inGame = true;
     private Stage stage;
-
+    private HanabiClient parent;
     private int needed;
     private String nsid;
     private int numOfPlayers;
@@ -37,28 +24,18 @@ public class GameMenu extends Application{
     private String gameType;
         // These fields are user entered data used for establishing a server connection.
 
-    private Gson gson = new Gson();
-    private Socket serversSocket;
-    private DataInputStream inFromServer;
-    private PrintStream outToServer;
-    private GameModel aModel;
-    private GameInteractionModel iModel;
-    private GameView aView;
-    private GameController aController;
-    private Scene scene;
-    public boolean x = true;
-
-
-
        // These fields will be set by createGame() or joinGame(), these are the GameView instances of our in-game program.
 
-    public void start(Stage aStage) throws Exception {
+    public GameMenu(HanabiClient parent, Stage aStage) {
+        this.parent = parent;
+        this.stage = aStage;
+    }
 
+    public void start() {
         final double CANVAS_WIDTH = 1376;
         final double CANVAS_HEIGHT = 768;
 
-        this.stage = aStage;
-        aStage.setTitle( "HANABI" );
+        stage.setTitle( "HANABI" );
 
         Text t = new Text (CANVAS_WIDTH*0.375,CANVAS_HEIGHT*0.25,"HANABI");
         t.setId("MenuTitle");
@@ -210,7 +187,7 @@ public class GameMenu extends Application{
                 nullAlert.show();
                 return;
             }
-            createGame();
+            parent.createGameRequest(this.nsid,this.hash,this.numOfPlayers,this.timeout,this.gameType);
         });
 
         joinOK.setOnMouseClicked(event -> {
@@ -236,16 +213,15 @@ public class GameMenu extends Application{
                 nullAlert.show();
                 return;
             }
-            joinGame();
+            parent.joinGameRequest(this.nsid,this.hash,this.gameId,this.token);
         });
 
         Group root = new Group();
         root.getChildren().addAll(t,selectionsBox,createInfoBox,joinInfoBox);
 
         Scene aScene = new Scene( root, CANVAS_WIDTH, CANVAS_HEIGHT, Color.WHITESMOKE );
-        this.scene = aScene;
-        aStage.setScene( aScene );
-        aStage.show();
+        this.stage.setScene( aScene );
+        this.stage.show();
     }
         // Constructs the GameView game menu
 
@@ -288,281 +264,4 @@ public class GameMenu extends Application{
     public void exit(){
         System.exit(0);
     }
-
-    public void createGame(){
-        try {
-            establishConnection();
-        } catch (Exception e) {
-            return;
-        }
-        CreateGameEvent cge = new CreateGameEvent("create", this.nsid, this.numOfPlayers, this.timeout, true, this.gameType.toLowerCase(), this.hash);
-        cge.setMd5hash(computeHash(gson.toJson(cge)));
-        attemptToCreate(cge);
-        System.out.println(gson.toJson(cge));
-        runHanabi();
-    }
-        // Creates a connection with the server and creates a game as well as instantiates aModel, iModel, aView, aController, game-id and token.
-
-    public void joinGame(){
-        try {
-            establishConnection();
-        } catch (Exception e) {
-            return;
-        }
-        JoinGameEvent jge = new JoinGameEvent("join",this.nsid,this.gameId,this.token,this.hash);
-        String json = gson.toJson(jge);
-        json = json.replace("gameid","game-id");
-        jge.setMd5hash(computeHash(json));
-        attemptToJoin(jge);
-        runHanabi();
-    }
-        // Creates a connection with the server as well as instantiates aModel, iModel, aView and aController.
-
-    public void establishConnection() throws Exception {
-        try {
-            this.serversSocket = new Socket("gpu2.usask.ca", 10219);
-            this.inFromServer = new DataInputStream(serversSocket.getInputStream());
-            this.outToServer = new PrintStream(serversSocket.getOutputStream());
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Server Error");
-            alert.setHeaderText("Cannot establish connection with Server");
-            alert.setContentText(null);
-            throw new Exception(e);
-        }
-        System.out.println("Success");
-        System.out.println(this.serversSocket.getRemoteSocketAddress());
-    }
-
-    public void attemptToCreate(CreateGameEvent cge) {
-        outToServer.println(gson.toJson(cge));
-    }
-
-    public void attemptToJoin(JoinGameEvent jge){
-        String json = gson.toJson(jge);
-        json = json.replace("gameid","game-id");
-        System.out.println(json);
-        outToServer.println(json);
-    }
-
-    public void runHanabi(){
-        char[] message = new char[256];
-        int i = 0;
-
-        try {
-            while (this.inGame && x) {
-                if (inFromServer.available() != 0) {
-                    message[i] = (char) inFromServer.readByte();
-                    if (message[i] == '}') {
-                        JsonStreamParser parser = new JsonStreamParser(new CharArrayReader(message));
-                        handleJSON(parser.next());
-                        message = new char[256];
-                        i = 0;
-                    } else {
-                        i++;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.inGame = false;
-        }
-    }
-
-    public void handleJSON (JsonElement jsonMessage){
-        System.out.println(jsonMessage);
-        Set<Map.Entry<String,JsonElement>> messageMap = jsonMessage.getAsJsonObject().entrySet();
-        Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
-        Map.Entry<String,JsonElement> entry = iter.next();
-
-        switch(entry.getKey()){
-            case "notice":
-                handleNotifyMessage(messageMap);
-                break;
-
-            case "reply":
-                handleReplyMessage(messageMap);
-                break;
-        }
-    }
-
-    public void handleNotifyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
-        Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
-        Map.Entry<String,JsonElement> entry = iter.next();
-        System.out.println(entry.getValue().getAsString());
-        switch (entry.getValue().getAsString()){
-            case "player joined":
-                this.needed = iter.next().getValue().getAsInt();
-                break;
-            case "player left":
-                this.needed = iter.next().getValue().getAsInt();
-                break;
-            case "game starts":
-                this.startGame(iter.next().getValue().getAsJsonArray());
-                break;
-            case "game cancelled":
-                this.aController.handleNotifyMessage(messageMap);
-                break;
-            case "game ends":
-                this.aController.handleNotifyMessage(messageMap);
-                break;
-            default:
-                this.aController.handleNotifyMessage(messageMap);
-                break;
-
-        }
-    }
-
-    public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
-        Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
-        Map.Entry<String,JsonElement> entry = iter.next();
-
-        switch (entry.getValue().getAsString()){
-            case "created":
-                this.gameId = iter.next().getValue().getAsInt();
-                this.token = iter.next().getValue().getAsString();
-                break;
-            case "joined":
-                this.needed = iter.next().getValue().getAsInt();
-                this.timeout = iter.next().getValue().getAsInt();
-                this.gameType = iter.next().getValue().getAsString();
-                break;
-            case "extant":
-                this.gameId = iter.next().getValue().getAsInt();
-                this.token = iter.next().getValue().getAsString();
-                break;
-            case "no such game":
-                break;
-            case "game full":
-                break;
-            case "invalid":
-                break;
-            default:
-                this.aController.handleReplyMessage(messageMap);
-                break;
-        }
-    }
-
-    private static String computeHash(String msg) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(msg.getBytes());
-            return new BigInteger(1,md.digest()).toString(16);
-        } catch (NoSuchAlgorithmException e) {
-            return ("MD5 ... what's MD5?");
-        }
-    }
-
-    static class CreateGameEvent {
-        private String cmd;
-        private String nsid;
-        private int players;
-        private int timeout;
-        private boolean force;
-        private String rainbow;
-        private long timestamp;
-        private String md5hash;
-
-
-        public CreateGameEvent(String cmd, String nsid, int players, int timeout, boolean force, String rainbow, String md5hash) {
-            this.cmd = cmd;
-            this.nsid = nsid;
-            this.players = players;
-            this.timeout = timeout;
-            this.force = force;
-            this.rainbow = rainbow;
-            this.timestamp = (int) Instant.now().getEpochSecond();
-            this.md5hash = md5hash;
-        }
-
-        private void setMd5hash(String newMd5){
-            this.md5hash = newMd5;
-        }
-
-        @Override
-        public String toString() {
-            return "createGameEvent{" +
-                    "cmd='" + cmd + '\'' +
-                    ", nsid='" + nsid + '\'' +
-                    ", players=" + players +
-                    ", timeout=" + timeout +
-                    ", force=" + force +
-                    ", rainbow='" + rainbow + '\'' +
-                    '}';
-        }
-    }
-
-    static class JoinGameEvent {
-        private String cmd;
-        private String nsid;
-        private int gameid;
-        private String token;
-        private long timestamp;
-        private String md5hash;
-
-        private JoinGameEvent(String cmd, String nsid, int gameid, String token, String md5hash) {
-            this.cmd = cmd;
-            this.nsid = nsid;
-            this.gameid = gameid;
-            this.token = token;
-            this.timestamp = (int) Instant.now().getEpochSecond();
-            this.md5hash = md5hash;
-        }
-
-        private void setMd5hash(String newMd5){
-            this.md5hash = newMd5;
-        }
-
-        @Override
-        public String toString() {
-            return "joinGameEvent{" +
-                    "cmd='" + cmd + '\'' +
-                    ", nsid='" + nsid + '\'' +
-                    ", gameid=" + gameid +
-                    ", token='" + token + '\'' +
-                    '}';
-        }
-    }
-
-
-    public void startGame(JsonArray startHands) {
-        ArrayList<String[]> hands = new ArrayList<>();
-        Type type = new TypeToken<ArrayList<String[]>>(){}.getType();
-        hands = gson.fromJson(startHands,type);
-
-        System.out.println(hands.toString());
-
-        this.aModel = new GameModel(this.timeout, this.gameType, hands);
-        this.aController = new GameController(outToServer);
-        this.aView = new GameView(this.aModel, this.aController);
-
-        this.aController.setModel(this.aModel);
-        this.aController.setView(this.aView);
-//        System.out.println(x);
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask()
-        {
-            public void run()
-            {
-                if (x){
-                    runHanabi();
-                    x = false;
-                } else{
-                    x = true;
-                }
-            }
-        };
-        timer.schedule(task, 3000l);
-        Stage newStage = new Stage();
-        newStage.setScene(this.aView.createGame());
-        newStage.show();
-
-    }
-
-    public static void main(String[] args){
-
-        launch();
-    }
-
-    // Closes the entire program.
 }
