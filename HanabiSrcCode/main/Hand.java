@@ -30,7 +30,7 @@ public class Hand {
      * @param colour the colour of the card
      * @param number the rank of the card
      */
-    public void addCard(char colour, char number) throws HandFullException{
+    public void addCard(char colour, char number) /*throws HandFullException*/{
         Card newCard = new Card(colour,number);
         for (int i = 0; i < this.cards.length; i++){
             if ((this.cards[i] == null) ){
@@ -38,13 +38,13 @@ public class Hand {
                 break;
             }
         }
-        throw new HandFullException("Attempted to addCard to a full hand");
+        //throw new HandFullException("Attempted to addCard to a full hand");
     }
 
     /**
      * adds a card with unknown colour and number to cards at the leftmost null
      */
-    public void addCard() throws HandFullException {
+    public void addCard() /*throws HandFullException*/ {
         Card newCard = new Card();
         for (int i = 0; i < this.cards.length; i++){
             if ((this.cards[i] == null) ){
@@ -52,18 +52,19 @@ public class Hand {
                 break;
             }
         }
-        throw new HandFullException("Attempted to addCard to a full hand");
+        //throw new HandFullException("Attempted to addCard to a full hand");
     }
 
     /**
      * remove the card at a given position in cards
      * @param position the postion of the card to be removed
      */
-    public void removeCard(int position) throws CardNotFoundException {
+    public void removeCard(int position) /*throws CardNotFoundException*/ {
         if (this.cards[position - 1] == null){
-            throw new CardNotFoundException("There was no card at" + position);
+            //throw new CardNotFoundException("There was no card at" + position);
         }
-        this.cards[position - 1] = null;
+        else
+            this.cards[position - 1] = null;
 
     }
 
