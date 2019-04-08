@@ -1,25 +1,73 @@
 import com.google.gson.*;
 import java.util.*;
-
+/**
+ * A class that acts as the game controller. It controls the in-game state.
+ */
 public class GameController {
-    private GameModel model;        // link to game model
-    private GameView view;          // link to game view
+
+    /**
+     * A reference to the model of the player.
+     */
+    private GameModel model;
+
+    /**
+     * A reference to the view that the user will see.
+     */
+    private GameView view;
+
+    /**
+     * A reference to the interaction model.
+     */
     private GameInteractionModel iModel; // link to interaction model
 
-    private int state; // current game state, whether or not it is the user's turn
-    private final int STATE_INACTIVE = 0;   // not the user's turn
-    private final int STATE_ACTIVE = 1;     // the user's turn
+    /**
+     * The current game state, that represents if it is the user's turn.
+     * 0: not the user's turn.
+     * 1: the user's turn.
+     */
+    private int state;
+
+    /**
+     * A constant to be assigned to state
+     * Inactive represents it is not the user's turn.
+     */
+    private final int STATE_INACTIVE = 0;
+
+    /**
+     * A constant to be assigned to state.
+     * Active represents the user's turn.
+     */
+    private final int STATE_ACTIVE = 1;
+
+    /**
+     * A string reprenting a user move to be passed to the server.
+     */
     private String[] userMove;
+
+    /**
+     *
+     */
     public Gson gson;
+
+    /**
+     * A reference to the Hanabi Client that this controller belongs to.
+     */
     private HanabiClient parent;
 
+    /**
+     * A constructor for the Game Controller. It will instantiate gson and patent.
+     * The constructor will also set up the model, view, and interaction model.
+     * @param parent A reference to the Hanabi Client that this Game Controller is linked to.
+     */
     public GameController(HanabiClient parent){
-        gson = new Gson();
+        this.gson = new Gson();
         this.parent = parent;
     }
 
-//         constructor.  will set up the model, view, and interaction model.
-
+    /**
+     * A function that handles messages returning from the server after performing a move.
+     * @param messageMap A valid parsed JSON message.
+     */
     public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap){
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
@@ -40,6 +88,10 @@ public class GameController {
 
     }
 
+    /**
+     * A function that will interpret server messages and notify the model and update all required fields.
+     * @param messageMap A valid parsed JSON message.
+     */
     public void handleNotifyMessage(Set<Map.Entry<String,JsonElement>> messageMap){
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
@@ -76,8 +128,11 @@ public class GameController {
         }
 
     }
-        // handles a message from the server, adjusting the model as needed.
 
+    /**
+     * A function that will parse incoming JSON messages into a collection of usable and interpretable information.
+     * @param jsonMessage A JSON message received from the server.
+     */
     public Set<Map.Entry<String,JsonElement>> parseJSON(String jsonMessage){
         JsonParser parser = new JsonParser();
         JsonObject array = parser.parse(jsonMessage).getAsJsonArray().get(0).getAsJsonObject();
@@ -86,8 +141,11 @@ public class GameController {
 
         return messageMap;
     }
-        // parses a message from the server into a collection of usable information.
-        
+
+    /**
+     * A function that will create a JSON message and send it to the server.
+     * @param move A String array representing a move to perform.
+     */
     public void sendJSON(String[] move){
         JsonArray item = new JsonArray();
         JsonObject e = new JsonObject();
@@ -110,36 +168,66 @@ public class GameController {
         String json = gson.toJson(item);
         parent.sendMsgToServer(json);
     }
-        // converts a collection of information into a json message and sends that message to the server
 
+    /**
+     * A function that sets the current move to the input move.
+     * @param move A representaion of a move as an array of Strings
+     */
     public void setMove(String[] move) {
         this.userMove = move;
     }
 
+    /**
+     * A function that sets the current move to null, indicating that the controller is waiting for a move.
+     */
     public void waitForMove() {
         while (this.userMove == null) {
         }
     }
 
+    /**
+     * A function that will set up the game model.
+     * @param model A valid Hanabi GameModel.
+     */
     public void setModel(GameModel model){
         this.model = model;
     }
-        // sets up the game model
 
+    /**
+     * A function that will set up the game view.
+     * @param newView A valid Hanabi GameView.
+     */
     public void setView(GameView newView){
         this.view = newView;
     }
-        // sets up the game view
-        
+
+//    /**
+//     * A function that will end the game and show an end game window with statistics.
+//     */
 //    public void endGame(){
 //
 //    }
-        // ends the game, and creates a new window with endgame information
 
+    /**
+     * A class that declares the game start even and will set the GameController accordingly.
+     */
     static class gameStartEvent {
+
+        /**
+         * A String that represents the notice of a game start event.
+         */
         private String notice;
+
+        /**
+         * An array of arrays of Strings that represents the starting hands of the other players.
+         */
         private String[][] startHands;
 
+        /**
+         * A constructor for gameStartEvent.
+         * @param notice A valid notice String
+         * @param startHands A valid set of starting hands.
+         */
         private gameStartEvent(String notice, String[][] startHands) {
             this.notice = notice;
             this.startHands = startHands;
@@ -151,9 +239,19 @@ public class GameController {
         }
     }
 
+    /**
+     * A class that keeps track of which cards can be informed.
+     */
     static class SelfInformEvent {
+        /**
+         * An array of booleans representing each card..
+         */
         private Boolean[] cardArr;
 
+        /**
+         * A function that updates the card array.
+         * @param cardArr The updated card array
+         */
         private SelfInformEvent(Boolean[] cardArr) {
             this.cardArr = cardArr;
         }
