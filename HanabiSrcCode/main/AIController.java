@@ -1,14 +1,37 @@
 import java.io.PrintStream;
-
+/**
+ * The class extending the GameController into a usable AI.
+ */
 public class AIController extends GameController {
-    private Boolean canInform; // true if there are >0 info tokens
-    private Boolean canDiscard;// true if there are <8 info tokens
+
+    /**
+     * Represents the AI player's ability to Inform,
+     * true if there are >0 info tokens
+     */
+    private Boolean canInform;
+
+    /**
+     *  Represents the AI player's ability to discard.
+     *   true if there are <8 info tokens
+     */
+    private Boolean canDiscard;
+
+    /**
+     *  The game model that will store game data for the AI player.
+     */
     private GameModel model;
-    
-    public AIController(HanabiClient c){
-        super(c);
-    } //constructor, will initialize canInform, canDiscard
-    
+
+    /**
+     * A class constructor, will initialize canInform, canDiscard.
+     * @param client The Hanabi client that the AI is started with.
+     */
+    public AIController(HanabiClient client){
+        super(client);
+    }
+
+    /**
+     *  Function that finds the best play card move, returns info about the play and null if no good plays are found.
+     */
     public String bestPlay(){
         Hand hand = model.getGameTable().playerHands[model.playerSeat()-1];
         int handPosition = 1;
@@ -32,8 +55,11 @@ public class AIController extends GameController {
             handPosition++;
         }
         return null;
-    } //finds the best play card move, returns info about the play
+    }
 
+    /**
+     *  Function that finds the best inform move, returns info about the inform and null if no good informs are found.
+     */
     public String bestInform(){
         if (model.getInfoTokens() == 0){
             return null;
@@ -63,8 +89,11 @@ public class AIController extends GameController {
             seat++;
         }
         return null;
-    } //finds the best Inform move
+    }
 
+    /**
+     *  Function that finds the best discaed move, returns info about the discard and null if no good discards are found.
+     */
     public String bestDiscard(){
         if (model.getInfoTokens() == 8) {
             return null;
@@ -81,6 +110,7 @@ public class AIController extends GameController {
         }
         return null;
     } //finds the best Discard move
+
 
     public String findFirstMove(){
         if (model.getInfoTokens() > 0){
@@ -114,6 +144,9 @@ public class AIController extends GameController {
         return null;
     }
 
+    /**
+     *   Finds and executes the best move between inform, discard, and play card.
+     */
     public void performBestMove(){
         String action;
         action = bestPlay();
@@ -127,9 +160,14 @@ public class AIController extends GameController {
             }
         }
         System.out.println(action);
-    } //finds the best move between info, discard, and play card.
+    }
 
+    /**
+     *  Function that sets the current model to the input.
+     * @param model A valid Hanabi game Model.
+     */
     public void setModel(GameModel model){
         this.model = model;
     }
+
 }
