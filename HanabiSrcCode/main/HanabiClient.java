@@ -20,7 +20,7 @@ public class HanabiClient extends Application {
     private int needed;
 
     /**
-     * The user's NSIDé
+     * The user's NSID.
      */
     private String nsid;
 
@@ -102,7 +102,6 @@ public class HanabiClient extends Application {
         server = new Server(this);
         server.run();
         server.createGame(nsid,hash,numOfPlayers,timeout,gameType);
-        //handleJSON(server.getMessage());
     }
 
     /**
@@ -116,7 +115,6 @@ public class HanabiClient extends Application {
         server = new Server(this);
         server.run();
         server.joinGame(nsid,hash,gameId,token);
-        //handleJSON(server.getMessage());
     }
 
     /**
@@ -198,7 +196,6 @@ public class HanabiClient extends Application {
                 this.aController.handleNotifyMessage(messageMap);
                 break;
         }
-        //handleJSON(server.getMessage());
     }
 
     /**
@@ -233,7 +230,6 @@ public class HanabiClient extends Application {
                 this.aController.handleReplyMessage(messageMap);
                 break;
         }
-        //handleJSON(server.getMessage());
     }
 
     /**

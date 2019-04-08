@@ -29,11 +29,6 @@ public class GameMenu {
     private HanabiClient parent;
 
     /**
-     * The number of players still needed to start a game.
-     */
-    private int needed;
-
-    /**
      *
      * A string representation of a U of S student's NSID. This is required to connect to the server and is input by the user.
      */
@@ -99,6 +94,7 @@ public class GameMenu {
     /**
      * A function to start and display the game menu to the user.
      */
+    @SuppressWarnings("unchecked")
     public void start() {
         final double CANVAS_WIDTH = 1376;
         final double CANVAS_HEIGHT = 768;
