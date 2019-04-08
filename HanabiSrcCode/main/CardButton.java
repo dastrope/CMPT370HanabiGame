@@ -41,7 +41,6 @@ public class CardButton extends Button {
      * Generates an image address based on the suit and rank of the card, if not available sets it to the unknown card
      */
     public String getImageString(){
-
         String address = "cards/";
         address+= this.card.toString() + ".png";
         return address;
