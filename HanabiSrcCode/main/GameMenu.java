@@ -3,6 +3,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -379,17 +380,37 @@ public class GameMenu {
 
         TabPane helpTabs = new TabPane();
 
-        Tab goalTab = new Tab();
-        Tab giveTab = new Tab();
-        Tab playTab = new Tab();
-        Tab discardTab = new Tab();
+        Tab page1 = new Tab();
+        Tab page2 = new Tab();
+        Tab page3 = new Tab();
+        Tab page4 = new Tab();
+        Tab page5 = new Tab();
+        Tab page6 = new Tab();
+        Tab page7 = new Tab();
+        Tab page8 = new Tab();
+        Tab page9 = new Tab();
 
-        goalTab.setText("Goal of Hanabi");
-        giveTab.setText("Giving info");
-        playTab.setText("Playing cards");
-        discardTab.setText("Discarding cards");
+        page1.setText("Page 1");
+        page2.setText("Page 2");
+        page3.setText("Page 3");
+        page4.setText("Page 4");
+        page5.setText("Page 5");
+        page6.setText("Page 6");
+        page7.setText("Page 7");
+        page8.setText("Page 8");
+        page9.setText("Page 9");
 
-        helpTabs.getTabs().addAll(goalTab,giveTab,playTab,discardTab);
+        page1.setContent(new ImageView("rules/page1.png"));
+        page2.setContent(new ImageView("rules/page2.png"));
+        page3.setContent(new ImageView("rules/page3.png"));
+        page4.setContent(new ImageView("rules/page4.png"));
+        page5.setContent(new ImageView("rules/page5.png"));
+        page6.setContent(new ImageView("rules/page6.png"));
+        page7.setContent(new ImageView("rules/page7.png"));
+        page8.setContent(new ImageView("rules/page8.png"));
+        page9.setContent(new ImageView("rules/page9.png"));
+
+        helpTabs.getTabs().addAll(page1,page2,page3,page4,page5,page6,page7,page8,page9);
 
         box.getChildren().addAll(labelTitle,helpTabs,exitButton);
 
