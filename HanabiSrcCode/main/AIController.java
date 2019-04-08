@@ -109,9 +109,11 @@ public class AIController extends GameController {
             handPosition++;
         }
         return null;
-    } //finds the best Discard move
+    }
 
-
+    /**
+     *  Function that finds a valid move when no good moves were found.
+     */
     public String findFirstMove(){
         if (model.getInfoTokens() > 0){
             int seat = 1;
