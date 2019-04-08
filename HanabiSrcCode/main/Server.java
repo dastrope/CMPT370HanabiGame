@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonStreamParser;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -95,7 +96,8 @@ public class Server implements Runnable {
      * A function and sends JSON messages
      * @param msg A valid JSON message.
      */
-    public void sendMessage(String msg){
+    public void sendMessage(JsonObject msg){
+        System.out.println(msg);
         outToServer.println(msg);
     }
 

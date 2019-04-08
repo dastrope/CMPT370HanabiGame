@@ -134,6 +134,9 @@ public class HanabiClient extends Application {
         msgTimer.play();
     }
 
+    /**
+     * Attempted to pull a message from the server and handle it.
+     */
     public void checkForMessage() {
         server.watchForMessages();
         JsonElement msg = server.getMessage();
@@ -146,7 +149,7 @@ public class HanabiClient extends Application {
      * A function that will send a message to the server.
      * @param msg The message to send to the server.
      */
-    public void sendMsgToServer(String msg) {
+    public void sendMsgToServer(JsonObject msg) {
         server.sendMessage(msg);
     }
 

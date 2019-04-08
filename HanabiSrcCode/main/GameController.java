@@ -166,8 +166,8 @@ public class GameController {
             e.addProperty("suit",move[2]);
         }
         item.add(e);
-        String json = gson.toJson(item);
-        parent.sendMsgToServer(json);
+        System.out.println(e);
+        parent.sendMsgToServer(e);
     }
 
     /**
@@ -176,6 +176,7 @@ public class GameController {
      */
     public void setMove(String[] move) {
         this.userMove = move;
+        sendJSON(this.userMove);
     }
 
     /**
