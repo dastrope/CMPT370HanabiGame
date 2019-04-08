@@ -45,7 +45,7 @@ public class GameView implements GameModelObserver {
             canvasHeight*0.25,
             canvasHeight*0.60
     };
-    private double userPositionX = canvasWidth*0.37;
+    private double userPositionX = canvasWidth*0.355;
     private double userPositionY = canvasHeight*0.80;
     private ArrayList<HandBox> handList;
     private ArrayList<Circle> tokenList;
@@ -137,6 +137,8 @@ public class GameView implements GameModelObserver {
         createFireworks(root, ((int)((canvasWidth/2)-canvasWidth/20*3)));
 
         createFuses(top_pane );
+
+        update();
 
         stage.setScene(scene);
     }
