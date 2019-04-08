@@ -414,7 +414,7 @@ public class GameMenu {
 
         box.getChildren().addAll(labelTitle,helpTabs,exitButton);
 
-        Scene tabScene = new Scene(box,600,450, Color.WHITESMOKE);
+        Scene tabScene = new Scene(box,600,500, Color.WHITESMOKE);
 
         stage.setTitle("How to Play");
         stage.setScene(tabScene);
