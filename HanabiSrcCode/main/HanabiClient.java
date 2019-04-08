@@ -9,24 +9,80 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * A class representing an instance of the HanabiClient Application.
+ */
 public class HanabiClient extends Application {
 
+    /**
+     * The number of players needed to start the game.
+     */
     private int needed;
+
+    /**
+     * The user's NSIDé
+     */
     private String nsid;
+
+    /**
+     * The total number of players in the game.
+     */
     private int numOfPlayers;
+
+    /**
+     * The gameID provided by the server.
+     */
     private int gameId;
+
+    /**
+     * The timeout length of each turn.
+     */
     private int timeout;
+
+    /**
+     * The game token provided by the server.
+     */
     private String token;
+
+    /**
+     * The secret hash associated with an NSID.
+     */
     private String hash;
+
+    /**
+     * The game type, this can be default, wild, and extended.
+     */
     private String gameType;
 
+    /**
+     * The server instance.
+     */
     private Server server;
+
+    /**
+     * The JSON interpreter.
+     */
     private Gson gson;
 
+    /**
+     * A valid Hanabi gameModel
+     */
     private GameModel aModel;
+
+    /**
+     * A valid Hanabi GameView.
+     */
     private GameView aView;
+
+    /**
+     * A valid Hanabi gameController
+     */
     private GameController aController;
 
+    /**
+     * A function that start the gameMenu and sets up the GSON.
+     * @param primaryStage The stage for the gameMenu.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.gson = new Gson();
@@ -34,6 +90,14 @@ public class HanabiClient extends Application {
         menu.start();
     }
 
+    /**
+     * A function that will create a create game request.
+     * @param nsid A valid U of S NSID.
+     * @param hash A valid hash associated with the NSID.
+     * @param numOfPlayers The number of player in the game selected by the user.
+     * @param timeout The time for the timeout for one move selected by the user.
+     * @param gameType The game type selected by the user.
+     */
     public void createGameRequest(String nsid, String hash, int numOfPlayers, int timeout, String gameType) {
         server = new Server(this);
         server.run();
@@ -41,6 +105,13 @@ public class HanabiClient extends Application {
         //handleJSON(server.getMessage());
     }
 
+    /**
+     * A function that will create a join game request.
+     * @param nsid A valid U of S NSID.
+     * @param hash A valid hash associated with the NSID.
+     * @param token A secret token provided by the server to the game host.
+     * @param gameId The gameID provided by the server to the host.
+     */
     public void joinGameRequest(String nsid, String hash, int gameId, String token) {
         server = new Server(this);
         server.run();
@@ -48,10 +119,18 @@ public class HanabiClient extends Application {
         //handleJSON(server.getMessage());
     }
 
+    /**
+     * A function that will send a message to the server.
+     * @param msg The message to send to the server.
+     */
     public void sendMsgToServer(String msg) {
         server.sendMessage(msg);
     }
 
+    /**
+     * A function that starts the game once a server connection has been established and all players have joined..
+     * @param startHands The cards of the other Hanabi players.
+     */
     public void startGame(JsonArray startHands) {
         ArrayList<String[]> hands = new ArrayList<>();
         Type type = new TypeToken<ArrayList<String[]>>(){}.getType();
@@ -69,6 +148,10 @@ public class HanabiClient extends Application {
         stage.show();
     }
 
+    /**
+     * A function that will parse and handle the JSON message received from the server.
+     * @param jsonMessage A valid json message sent by the server..
+     */
     public void handleJSON (JsonElement jsonMessage){
         System.out.println(jsonMessage);
         Set<Map.Entry<String,JsonElement>> messageMap = jsonMessage.getAsJsonObject().entrySet();
@@ -86,6 +169,10 @@ public class HanabiClient extends Application {
         }
     }
 
+    /**
+     * A function that handles how the Client should proceed with the received JSON message.
+     * @param messageMap A valid parsed JSON message.
+     */
     public void handleNotifyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
@@ -113,6 +200,10 @@ public class HanabiClient extends Application {
         //handleJSON(server.getMessage());
     }
 
+    /**
+     * A function that will dictate how the client should proceed after getting a reply about a message that was sent.
+     * @param messageMap A valid parsed JSON message.
+     */
     public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
@@ -144,6 +235,10 @@ public class HanabiClient extends Application {
         //handleJSON(server.getMessage());
     }
 
+    /**
+     * The main method to start the game.
+     * @param args Arguments provided by the command line.
+     */
     public static void main(String[] args){
         launch();
     }
