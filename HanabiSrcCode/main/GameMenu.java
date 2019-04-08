@@ -13,29 +13,79 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+/**
+ *  The class that contains the Game Menu. This menu contains a GUI, and launches the game for users.
+ */
 public class GameMenu {
 
+    /**
+     * A stage that will contain the elements of game menu.
+     */
     private Stage stage;
+
+    /**
+     * The HanabiClient that this GameMenu belongs to.
+     */
     private HanabiClient parent;
+
+    /**
+     * The number of players still needed to start a game.
+     */
     private int needed;
+
+    /**
+     *
+     * A string representation of a U of S student's NSID. This is required to connect to the server and is input by the user.
+     */
     private String nsid;
+
+    /**
+     * The number of players that will be in the game. THis is input by the user.
+     */
     private int numOfPlayers;
+
+    /**
+     * A number returned by the server that represent a unique game instance.
+     */
     private int gameId;
+
+    /**
+     * The time for each turn during the Hanabi. This must be input by the user and is passed to the server.
+     */
     private int timeout;
+
+    /**
+     * A unique token provided by the server that must be passed to users to join the game.
+     */
     private String token;
+
+    /**
+     * A secret hash unique to every NSID, and must be entered in order to join the game.
+     */
     private String hash;
+
+    /**
+     * The game type chosen by the user. This can be se to default, wild, and extended.
+     */
     private String gameType;
 
         // These fields are user entered data used for establishing a server connection.
 
        // These fields will be set by createGame() or joinGame(), these are the GameView instances of our in-game program.
 
+    /**
+     * The contructor of the game menu.
+     * @param parent A valid HanabiClient to set as the parent.
+     * @param aStage A valid state to set as the stage for the GameMenu.
+     */
     public GameMenu(HanabiClient parent, Stage aStage) {
         this.parent = parent;
         this.stage = aStage;
     }
 
+    /**
+     * A function that will auto fill NSID and secret hash for the user in order to simplify the ability to play the game.
+     */
     public void getProfile(){
         try{
             String content = new String(Files.readAllBytes(Paths.get("./HanabiSrcCode/main/userprofile.txt")));
@@ -46,6 +96,9 @@ public class GameMenu {
         }
     }
 
+    /**
+     * A function to start and display the game menu to the user.
+     */
     public void start() {
         final double CANVAS_WIDTH = 1376;
         final double CANVAS_HEIGHT = 768;
@@ -313,7 +366,9 @@ public class GameMenu {
     }
         // Constructs the GameView game menu
 
-
+    /**
+     * A function that will display the How To Play window to the user
+     */
     public void howToPlay() {
         Stage stage = new Stage();
 
@@ -349,6 +404,9 @@ public class GameMenu {
         stage.show();
     }
 
+    /**
+     * A function that will let the user exit the game.
+     */
     public void exit(){
         System.exit(0);
     }
