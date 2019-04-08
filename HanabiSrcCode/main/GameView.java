@@ -50,7 +50,7 @@ public class GameView implements GameModelObserver {
     private ArrayList<Circle> tokenList;    //list of tokens on scene
     private ArrayList<FireworkRectangle> fireworkList;  //list of fireworks
     private ArrayList<Button> actionButtons;    //list of action buttons
-    private ArrayList<Circle> fuseList; q   //list of fuses on scene
+    private ArrayList<Circle> fuseList;   //list of fuses on scene
     private ArrayList<CardButton> discardedCardList;    //list of discarded
     private Label fuseLabel;    //label for fuse count
     private Label tokenLabel;   //label for token count

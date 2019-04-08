@@ -42,7 +42,9 @@ public class AIController extends GameController {
                     return "play " + handPosition;
                 }
                 else {
-                    if (model.getInfoTokens() < 8){
+                    if (model.getInfoTokens() < 8 &&
+                            model.getFireworks().stackSize(card.getColour()) >
+                                    Character.getNumericValue(card.getNumber())){
                         return "discard " + handPosition;
                     }
                 }
@@ -145,6 +147,10 @@ public class AIController extends GameController {
                     }
                     handPosition++;
                 }
+            } else{
+                Hand hand = model.getGameTable().playerHands[model.playerSeat()-1];
+                int handPosition = 1;
+                return "play " + hand.getCard(handPosition);
             }
         }
         return null;
