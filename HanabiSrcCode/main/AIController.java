@@ -31,6 +31,7 @@ public class AIController extends GameController {
 
     /**
      *  Function that finds the best play card move, returns info about the play and null if no good plays are found.
+     *  @return A String representing a move or null.
      */
     public String bestPlay(){
         Hand hand = model.getGameTable().playerHands[model.playerSeat()-1];
@@ -59,6 +60,7 @@ public class AIController extends GameController {
 
     /**
      *  Function that finds the best inform move, returns info about the inform and null if no good informs are found.
+     *  @return A String representing a move or null.
      */
     public String bestInform(){
         if (model.getInfoTokens() == 0){
@@ -93,6 +95,7 @@ public class AIController extends GameController {
 
     /**
      *  Function that finds the best discaed move, returns info about the discard and null if no good discards are found.
+     *  @return A String representing a move or null.
      */
     public String bestDiscard(){
         if (model.getInfoTokens() == 8) {
@@ -113,6 +116,7 @@ public class AIController extends GameController {
 
     /**
      *  Function that finds a valid move when no good moves were found.
+     * @return A String representing a move or null.
      */
     public String findFirstMove(){
         if (model.getInfoTokens() > 0){

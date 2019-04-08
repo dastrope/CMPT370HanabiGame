@@ -45,7 +45,7 @@ public class GameController {
     private String[] userMove;
 
     /**
-     *
+     * The GSON instance, used to create JSON messages.
      */
     public Gson gson;
 
@@ -132,6 +132,7 @@ public class GameController {
     /**
      * A function that will parse incoming JSON messages into a collection of usable and interpretable information.
      * @param jsonMessage A JSON message received from the server.
+     * @return return a parsed message map.
      */
     public Set<Map.Entry<String,JsonElement>> parseJSON(String jsonMessage){
         JsonParser parser = new JsonParser();
