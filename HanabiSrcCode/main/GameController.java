@@ -1,26 +1,21 @@
 import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
-import com.sun.xml.internal.fastinfoset.util.StringArray;
-
-import java.awt.*;
-import java.io.PrintStream;
 import java.util.*;
 
 public class GameController {
     private GameModel model;        // link to game model
     private GameView view;          // link to game view
     private GameInteractionModel iModel; // link to interaction model
-    private PrintStream outToServer;
 
     private int state; // current game state, whether or not it is the user's turn
     private final int STATE_INACTIVE = 0;   // not the user's turn
     private final int STATE_ACTIVE = 1;     // the user's turn
     private String[] userMove;
     public Gson gson;
+    private HanabiClient parent;
 
-    public GameController(PrintStream ps){
+    public GameController(HanabiClient parent){
         gson = new Gson();
-        this.outToServer = ps;
+        this.parent = parent;
     }
 
 //         constructor.  will set up the model, view, and interaction model.
@@ -113,7 +108,7 @@ public class GameController {
         }
         item.add(e);
         String json = gson.toJson(item);
-        outToServer.println(json);
+        parent.sendMsgToServer(json);
     }
         // converts a collection of information into a json message and sends that message to the server
 
@@ -170,35 +165,35 @@ public class GameController {
     }
 
 
-    public static void main(String[] args){
-//        GameController c = new GameController(new PrintStream(System.out.format()));
-        Card card = new Card('b', '2');
-
-        String[][] initHands = {{},{"b1","b3","b5","g2"},{"b1","b3","g1","g2"},{"b2","b4","g1","g3"}};
-
-        Gson gson = new Gson();
-        Collection collection = new ArrayList();
-
-        collection.add(new gameStartEvent("gameStart", initHands));
-        String json1 = gson.toJson(collection);
-
-        JsonArray item = new JsonArray();
-        JsonObject e = new JsonObject();
-
-        Boolean[] cardArr = {true,false,false,true};
-        SelfInformEvent sie = new SelfInformEvent(cardArr);
-
-        e.addProperty("notice","inform");
-        e.addProperty("rank",1);
-        e.addProperty("cards","[true,false,false,true]");
-
-        item.add(e);
-
-        String json2 = gson.toJson(item);
-
-        System.out.println("Using Gson.toJson() on a raw collection: " + json1);
-
-        //c.handleMessage(json1);
-        //c.handleMessage(json2);
-    }
+//    public static void main(String[] args){
+////        GameController c = new GameController(new PrintStream(System.out.format()));
+//        Card card = new Card('b', '2');
+//
+//        String[][] initHands = {{},{"b1","b3","b5","g2"},{"b1","b3","g1","g2"},{"b2","b4","g1","g3"}};
+//
+//        Gson gson = new Gson();
+//        Collection collection = new ArrayList();
+//
+//        collection.add(new gameStartEvent("gameStart", initHands));
+//        String json1 = gson.toJson(collection);
+//
+//        JsonArray item = new JsonArray();
+//        JsonObject e = new JsonObject();
+//
+//        Boolean[] cardArr = {true,false,false,true};
+//        SelfInformEvent sie = new SelfInformEvent(cardArr);
+//
+//        e.addProperty("notice","inform");
+//        e.addProperty("rank",1);
+//        e.addProperty("cards","[true,false,false,true]");
+//
+//        item.add(e);
+//
+//        String json2 = gson.toJson(item);
+//
+//        System.out.println("Using Gson.toJson() on a raw collection: " + json1);
+//
+//        //c.handleMessage(json1);
+//        //c.handleMessage(json2);
+//    }
 }
