@@ -71,6 +71,7 @@ public class GameController {
     public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap){
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
+        System.out.println("ControllerR: " + entry.getValue().getAsString());
         switch (entry.getValue().toString()){
             case "invalid":
                 break;
@@ -84,6 +85,7 @@ public class GameController {
             case "burned":
                 this.model.userDiscardCard(Integer.parseInt(this.userMove[1]),iter.next().getValue().getAsString());
                 break;
+
         }
 
     }
@@ -95,9 +97,11 @@ public class GameController {
     public void handleNotifyMessage(Set<Map.Entry<String,JsonElement>> messageMap){
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
+        System.out.println("ControllerN: " + entry.getValue().getAsString());
         switch (entry.getValue().getAsString()){
             case "your move":
                 model.nextTurn();
+                view.update();
                 waitForMove();
                 sendJSON(userMove);
                 break;

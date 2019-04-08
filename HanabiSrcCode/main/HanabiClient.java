@@ -178,7 +178,7 @@ public class HanabiClient extends Application {
      * @param jsonMessage A valid json message sent by the server..
      */
     public void handleJSON (JsonElement jsonMessage){
-        System.out.println(jsonMessage);
+        System.out.println("ClientH: " + jsonMessage);
         Set<Map.Entry<String,JsonElement>> messageMap = jsonMessage.getAsJsonObject().entrySet();
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
@@ -201,7 +201,7 @@ public class HanabiClient extends Application {
     public void handleNotifyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
-        System.out.println(entry.getValue().getAsString());
+        System.out.println("ClientN: " + entry.getValue().getAsString());
         switch (entry.getValue().getAsString()){
             case "player joined":
                 this.needed = iter.next().getValue().getAsInt();
@@ -231,7 +231,7 @@ public class HanabiClient extends Application {
     public void handleReplyMessage(Set<Map.Entry<String,JsonElement>> messageMap) {
         Iterator<Map.Entry<String,JsonElement>> iter = messageMap.iterator();
         Map.Entry<String,JsonElement> entry = iter.next();
-
+        System.out.println("ClientR: " + entry.getValue().getAsString());
         switch (entry.getValue().getAsString()) {
             case "created":
                 this.gameId = iter.next().getValue().getAsInt();

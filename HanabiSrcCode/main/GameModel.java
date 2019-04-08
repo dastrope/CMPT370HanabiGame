@@ -27,7 +27,7 @@ public class GameModel {
         this.fuses = 3;
         this.timeLimit = timeout * 1000;
         this.playerCount = startingHands.size();
-        this.turn = 1;
+        this.turn = 0;
 
         this.gameTable = new Table(playerCount);
         this.dealTable(startingHands);
