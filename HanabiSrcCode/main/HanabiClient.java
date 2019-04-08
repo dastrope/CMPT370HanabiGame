@@ -170,7 +170,7 @@ public class HanabiClient extends Application {
         this.aController.setView(this.aView);
         this.aModel.addSubscriber(this.aView);
 
-        this.aView.createGame(this.stage);
+        stage.setScene(this.aView.createGame());
     }
 
     /**
