@@ -14,19 +14,52 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.LinkedList;
 
+/**
+ * A class that represents the server. It will establish a connection and communicate with the server.
+ */
 public class Server implements Runnable {
 
+    /**
+     * The GSON instance, used to create JSON messages.
+     */
     private Gson gson = new Gson();
+
+    /**
+     * The server socket.
+     */
     private Socket serversSocket;
+
+    /**
+     * The data that is incoming from the server.
+     */
     private DataInputStream inFromServer;
+
+    /**
+     * The data that is outgoing to the server.
+     */
     private PrintStream outToServer;
+
+    /**
+     * A linked list of JSON messages.
+     */
     private LinkedList<JsonElement> messages;
+
+    /**
+     * A Reference to the parent HanabiClient that this server belongs to.
+     */
     private HanabiClient parent;
 
+    /**
+     * A constructor for Server.
+     * @param parent The parent HanabiClient.
+     */
     public Server(HanabiClient parent) {
         this.parent = parent;
     }
 
+    /**
+     * A function that starts Server and establishes a connection.
+     */
     @Override
     public void run() {
         establishConnection();
@@ -34,6 +67,9 @@ public class Server implements Runnable {
         watchForMessages();
     }
 
+    /**
+     * A function a waits for messages and handles them.
+     */
     public void watchForMessages() {
         Platform.runLater(new Runnable() {
             @Override
@@ -65,16 +101,26 @@ public class Server implements Runnable {
         });
     }
 
-
+    /**
+     * A function and sends JSON messages
+     * @param msg A valid JSON message.
+     */
     public void sendMessage(String msg){
         outToServer.println(msg);
     }
 
+    /**
+     * A function that will get the message if there is one.
+     * @return A JSON message.
+     */
     public JsonElement getMessage(){
         watchForMessages();
         return messages.poll();
     }
 
+    /**
+     * A function that establishes a connection to the server.
+     */
     public void establishConnection() {
         try {
             this.serversSocket = new Socket("gpu2.usask.ca", 10219);
@@ -90,14 +136,28 @@ public class Server implements Runnable {
         System.out.println(this.serversSocket.getRemoteSocketAddress());
     }
 
+    /**
+     * A function that creates a connection with the server and creates a game as well as instantiates aModel, iModel, aView, aController, game-id and token.
+     * @param nsid A valid U of S NSID.
+     * @param hash A valid hash associated with the NSID.
+     * @param numOfPlayers he number of player in the game selected by the user.
+     * @param timeout The time for the timeout for one move selected by the user.
+     * @param gameType The game type selected by the user.
+     */
     public void createGame(String nsid, String hash, int numOfPlayers, int timeout, String gameType){
         CreateGameEvent cge = new CreateGameEvent("create", nsid, numOfPlayers, timeout, true, gameType.toLowerCase(), hash);
         cge.setMd5hash(computeHash(gson.toJson(cge)));
         attemptToCreate(cge);
         System.out.println(gson.toJson(cge));
     }
-    // Creates a connection with the server and creates a game as well as instantiates aModel, iModel, aView, aController, game-id and token.
 
+    /**
+     * A function that creates a connection with the server and joins a game as well as instantiates aModel, iModel, aView, aController, game-id and token.
+     * @param nsid A valid U of S NSID.
+     * @param hash A valid hash associated with the NSID.
+     * @param token A secret token provided by the server to the game host.
+     * @param gameId The gameID provided by the server to the host.
+     */
     public void joinGame(String nsid, String hash, int gameId, String token){
         JoinGameEvent jge = new JoinGameEvent("join",nsid,gameId,token,hash);
         String json = gson.toJson(jge);
@@ -106,10 +166,18 @@ public class Server implements Runnable {
         attemptToJoin(jge);
     }
 
+    /**
+     * A function that attempts to create a game by sending create game data to the server.
+     * @param cge A valid createGameEvent that contains data about the new game.
+     */
     public void attemptToCreate(CreateGameEvent cge) {
         outToServer.println(gson.toJson(cge));
     }
 
+    /**
+     * A function that attempts to create a game by sending join game data to the server.
+     * @param jge A valid joinGameEvent containing info about the join game command.
+     */
     public void attemptToJoin(JoinGameEvent jge){
         String json = gson.toJson(jge);
         json = json.replace("gameid","game-id");
@@ -117,8 +185,11 @@ public class Server implements Runnable {
         outToServer.println(json);
     }
 
-
-
+    /**
+     * A function that computes the MD5 hash.
+     * @param msg A message encoded in MD5.
+     * @return The MD5 hash or an error String.
+     */
     private static String computeHash(String msg) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -129,17 +200,62 @@ public class Server implements Runnable {
         }
     }
 
+    /**
+     * A class representing a CreateGameEvent.
+     */
     static class CreateGameEvent {
+
+        /**
+         * The command of for create game.
+         */
         private String cmd;
+
+        /**
+         * A valid U of S NSID.
+         */
         private String nsid;
+
+        /**
+         * The number of player in the game selected by the user.
+         */
         private int players;
+
+        /**
+         * The time for the timeout for one move selected by the user.
+         */
         private int timeout;
+
+        /**
+         * A boolean value where true will cancel the game.
+         */
         private boolean force;
+
+        /**
+         * A string that represents the rainbow status that represents the game mode.
+         */
         private String rainbow;
+
+        /**
+         * A timestamp of the current time.
+         */
         private long timestamp;
+
+        /**
+         * The MD5 hash.
+         */
         private String md5hash;
 
 
+        /**
+         * A constructor that instantiate a CreateGameEvent
+         * @param cmd The command of for create game.
+         * @param nsid The number of player in the game selected by the user.
+         * @param players The time for the timeout for one move selected by the user.
+         * @param timeout A boolean value where true will cancel the game.
+         * @param force  A boolean value where true will cancel the game.
+         * @param rainbow A string that represents the rainbow status that represents the game mode.
+         * @param md5hash  The MD5 hash.
+         */
         public CreateGameEvent(String cmd, String nsid, int players, int timeout, boolean force, String rainbow, String md5hash) {
             this.cmd = cmd;
             this.nsid = nsid;
@@ -151,6 +267,10 @@ public class Server implements Runnable {
             this.md5hash = md5hash;
         }
 
+        /**
+         * A function that updates the MD5 hash.
+         * @param newMd5 The new MD5 hash.
+         */
         private void setMd5hash(String newMd5){
             this.md5hash = newMd5;
         }
@@ -168,14 +288,49 @@ public class Server implements Runnable {
         }
     }
 
+    /**
+     * A class representing a JoinGameEvent.
+     */
     static class JoinGameEvent {
+
+        /**
+         * The command of for create game.
+         */
         private String cmd;
+
+        /**
+         * A valid U of S NSID.
+         */
         private String nsid;
+
+        /**
+         * A valid gameID, that is provided to the host by the server.
+         */
         private int gameid;
+
+        /**
+         * A secret token that is provided to the host by the server.
+         */
         private String token;
+
+        /**
+         * A timestamp of the current time.
+         */
         private long timestamp;
+
+        /**
+         * The MD5 hash.
+         */
         private String md5hash;
 
+        /**
+         *  A constructor of the JoinGameEvent
+         * @param cmd A command of for create game.
+         * @param nsid A valid U of S NSID.
+         * @param gameid  A valid gameID, that is provided to the host by the server.
+         * @param token A secret token that is provided to the host by the server.
+         * @param md5hash The MD5 hash.
+         */
         private JoinGameEvent(String cmd, String nsid, int gameid, String token, String md5hash) {
             this.cmd = cmd;
             this.nsid = nsid;
@@ -185,6 +340,10 @@ public class Server implements Runnable {
             this.md5hash = md5hash;
         }
 
+        /**
+         * A function that updates the MD5 hash.
+         * @param newMd5 The new MD5 hash.
+         */
         private void setMd5hash(String newMd5){
             this.md5hash = newMd5;
         }
