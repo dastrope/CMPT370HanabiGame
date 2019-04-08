@@ -16,6 +16,9 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+/**
+ * This class represents an instance of the Game View. The game view is Displayed to the user as a GUI.
+ */
 public class GameView implements GameModelObserver {
     private GameController cont;    //Controller for sending moves to
     private GameModel model;    //Model to retrieve info from
