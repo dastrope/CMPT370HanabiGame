@@ -57,7 +57,7 @@ public class GameView implements GameModelObserver {
     private ArrayList<CardButton> discardedCardList;    //list of discarded
     private Label fuseLabel;    //label for fuse count
     private Label tokenLabel;   //label for token count
-    private Label turnLabel;
+    private Label turnLabel;    //label for turn indicator
     private Stage discardStage; //stage for the discard view
     private Pane root;          //main pane on the scene
 
@@ -179,15 +179,22 @@ public class GameView implements GameModelObserver {
         /*Logic to draw the hands in their correct positions*/
         for (Hand hand : table.playerHands) {
             HandBox h = createHandBox(hand, seat);
+            Label playerLabel = new Label("Player " + seat);
+            playerLabel.setFont(Font.font("Century Gothic", FontWeight.THIN, canvasHeight/50));
+            playerLabel.setTextFill(Color.WHITE);
             seat++;
-            root.getChildren().add(h);
+            root.getChildren().addAll(h,playerLabel);
             handList.add(h);
             if (hand == table.playerHands[model.playerSeat()-1]) {
                 h.setLayoutX(userPositionX);
                 h.setLayoutY(userPositionY);
+                playerLabel.setLayoutX(userPositionX+cardWidth*3);
+                playerLabel.setLayoutY(userPositionY+cardHeight+10);
             } else {
                 h.setLayoutX(xHandPositions[positionsIndex]);
                 h.setLayoutY(yHandPositions[positionsIndex]);
+                playerLabel.setLayoutX(xHandPositions[positionsIndex]+cardWidth*3);
+                playerLabel.setLayoutY(yHandPositions[positionsIndex]+cardHeight+10);
                 positionsIndex++;
             }
         }
@@ -631,6 +638,9 @@ public class GameView implements GameModelObserver {
         }
     }
 
+    /**
+     * Purpose: Redraw the turn indicator label it's a new turn
+     */
     private void redrawTurnLabel() {
         this.turnLabel.setText("Player " + model.currentTurn() + "'s turn!");
     }
