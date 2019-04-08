@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.LinkedList;
+import java.util.Timer;
 
 /**
  * A class that represents the server. It will establish a connection and communicate with the server.
@@ -64,41 +65,30 @@ public class Server implements Runnable {
     public void run() {
         establishConnection();
         messages = new LinkedList<>();
-        watchForMessages();
     }
 
     /**
      * A function a waits for messages and handles them.
      */
     public void watchForMessages() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                char[] incomingMsg = new char[256];
-                int i = 0;
-
-                try {
-                    while (messages.isEmpty()) {
-                        if (inFromServer.available() != 0) {
-                            incomingMsg[i] = (char) inFromServer.readByte();
-                            if (incomingMsg[i] == '}') {
-                                JsonStreamParser parser = new JsonStreamParser(new CharArrayReader(incomingMsg));
-                                JsonElement msg = parser.next();
-                                messages.add(msg);
-                                incomingMsg = new char[256];
-                                i = 0;
-                            } else {
-                                i++;
-                            }
-                        }
-                    }
-                    parent.handleJSON(messages.poll());
-                    watchForMessages();
-                } catch (Exception e) {
-                    e.printStackTrace();
+        char[] incomingMsg = new char[256];
+        int i = 0;
+        try {
+            while (inFromServer.available() != 0) {
+                incomingMsg[i] = (char) inFromServer.readByte();
+                if (incomingMsg[i] == '}') {
+                    JsonStreamParser parser = new JsonStreamParser(new CharArrayReader(incomingMsg));
+                    JsonElement msg = parser.next();
+                    messages.add(msg);
+                    incomingMsg = new char[256];
+                    i = 0;
+                } else {
+                    i++;
                 }
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -114,8 +104,11 @@ public class Server implements Runnable {
      * @return A JSON message.
      */
     public JsonElement getMessage(){
-        watchForMessages();
-        return messages.poll();
+        if (messages.isEmpty()) {
+            return null;
+        } else {
+            return messages.poll();
+        }
     }
 
     /**

@@ -1,18 +1,24 @@
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A class representing an instance of the HanabiClient Application.
  */
 public class HanabiClient extends Application {
+
+    /**
+     * The stage for entire client
+     */
+    private Stage stage;
 
     /**
      * The number of players needed to start the game.
@@ -86,7 +92,8 @@ public class HanabiClient extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.gson = new Gson();
-        GameMenu menu = new GameMenu(this,primaryStage);
+        this.stage = primaryStage;
+        GameMenu menu = new GameMenu(this,this.stage);
         menu.start();
     }
 
@@ -102,6 +109,11 @@ public class HanabiClient extends Application {
         server = new Server(this);
         server.run();
         server.createGame(nsid,hash,numOfPlayers,timeout,gameType);
+        Timeline msgTimer = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                e ->  checkForMessage()));
+        msgTimer.setCycleCount(Animation.INDEFINITE);
+        msgTimer.play();
     }
 
     /**
@@ -115,6 +127,19 @@ public class HanabiClient extends Application {
         server = new Server(this);
         server.run();
         server.joinGame(nsid,hash,gameId,token);
+        Timeline msgTimer = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                e ->  checkForMessage()));
+        msgTimer.setCycleCount(Animation.INDEFINITE);
+        msgTimer.play();
+    }
+
+    public void checkForMessage() {
+        server.watchForMessages();
+        JsonElement msg = server.getMessage();
+        if (msg != null) {
+            handleJSON(msg);
+        }
     }
 
     /**
@@ -142,9 +167,7 @@ public class HanabiClient extends Application {
         this.aController.setView(this.aView);
         this.aModel.addSubscriber(this.aView);
 
-        Stage stage = new Stage();
-        stage.setScene(this.aView.createGame());
-        stage.show();
+        this.aView.createGame(this.stage);
     }
 
     /**
