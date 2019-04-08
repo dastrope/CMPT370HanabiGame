@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -15,11 +16,8 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class GameView {
-    private double[] xHandPositions = {50, 50, 850, 850}; //client is first in array, clockwise order after
-    private double[] yHandPositions = {500, 200, 200, 500}; //client is first in array, clockwise order after
-    private double userPositionX = 450;
-    private double userPositionY = 600;
+
+public class GameView implements GameModelObserver {
     private GameController cont;
     private GameModel model;
     private int state;
@@ -29,15 +27,37 @@ public class GameView {
     private final int STATE_DISCARDING = 3;
     private final int STATE_INFORMING_COLOUR = 4;
     private final int STATE_INFORMING_NUMBER = 5;
-    private double cardHeight = 75;
-    private double cardWidth = 50;
-    private double canvasHeight;
-    private double canvasWidth;
+    private double canvasHeight = 800;
+    private double canvasWidth = 1200;
+    private double cardHeight = canvasHeight/10;
+    private double cardWidth = cardHeight*0.66;
+    private double handSpacing = 5;
+    private double handSize;
+    private double[] xHandPositions = {
+            canvasWidth*0.02,
+            canvasWidth*0.02,
+            canvasWidth*0.73,
+            canvasWidth*0.73,
+    };
+    private double[] yHandPositions = {
+            canvasHeight*0.60,
+            canvasHeight*0.25,
+            canvasHeight*0.25,
+            canvasHeight*0.60
+    };
+    private double userPositionX = canvasWidth*0.37;
+    private double userPositionY = canvasHeight*0.80;
     private ArrayList<HandBox> handList;
     private ArrayList<Circle> tokenList;
     private ArrayList<FireworkRectangle> fireworkList;
     private ArrayList<Button> actionButtons;
+    private ArrayList<Circle> fuseList;
+    private ArrayList<CardButton> discardedCardList;
+    private Label fuseLabel;
+    private Label tokenLabel;
+    private Stage discardStage;
     private Pane root;
+
 
 //    public static void main(String[] args) {
 //        launch(args);
@@ -50,15 +70,20 @@ public class GameView {
         this.tokenList = new ArrayList<>();
         this.fireworkList = new ArrayList<>();
         this.actionButtons = new ArrayList<>();
+        this.fuseList = new ArrayList<>();
+        this.discardedCardList = new ArrayList<>();
         this.root = new Pane();
-        this.canvasHeight = 800;
-        this.canvasWidth = 1200;
     }
 
     public void setCont(GameController cont) { this.cont = cont; }
 
     public void setModel(GameModel model){
         this.model = model;
+    }
+
+    @Override
+    public void modelChanged() {
+        this.update();
     }
 
     public Scene createGame() {
@@ -82,10 +107,18 @@ public class GameView {
         actionButtons.add(informColourButton);
         actionButtons.add(informNumberButton);
         HBox pane_for_buttons = new HBox( 10 ) ;
-        pane_for_buttons.setLayoutX(300);
+        pane_for_buttons.setLayoutX(canvasWidth/4);
+        pane_for_buttons.setPrefWidth(canvasWidth/2);
+        pane_for_buttons.setMinWidth(canvasWidth/2);
+        pane_for_buttons.setMaxHeight(canvasHeight/50);
+        pane_for_buttons.setLayoutY(canvasHeight-(canvasHeight/20));
+        HBox top_pane = new HBox(10);
+        top_pane.getChildren().add(discardPileButton);
+        top_pane.setLayoutY(10);
+        top_pane.setLayoutX(canvasWidth/4);
         pane_for_buttons.getChildren().addAll(playButton, discardButton, informColourButton,
-                informNumberButton, discardPileButton);
-        root.getChildren().add(pane_for_buttons);
+                informNumberButton);
+        root.getChildren().addAll(pane_for_buttons, top_pane);
 
         playButton.setOnMouseClicked((MouseEvent event) -> this.setPlayState(handList, table));
 
@@ -99,11 +132,15 @@ public class GameView {
 
         createTable(root, table);
 
-        createInfoTokens(root,480);
+        createInfoTokens(top_pane);
 
-        createFireworks(root, 470);
+        createFireworks(root, ((int)((canvasWidth/2)-canvasWidth/20*3)));
+
+        createFuses(top_pane );
+
         return scene;
     }
+
 
     private void createTable(Pane root, Table table){
         int positionsIndex = 0;
@@ -123,41 +160,77 @@ public class GameView {
             }
         }
     }
+
     private void createFireworks(Pane root, int panePosition) {
         int x = panePosition;
+        int y = 450;
+        double fworkWidth = canvasWidth/20;
+        double fworkHeightMult = canvasHeight/20;
+
         for (Object colour : model.getFireworks().getFireworks().keySet()){
             char c = (char) colour;
             int height = model.getFireworkHeight(c);
-            FireworkRectangle fireworkMeter = new FireworkRectangle(c, height);
+            Label lbl = new Label(Integer.toString(height));
+            lbl.setTextFill(Color.WHITE);
+            lbl.setLayoutX(x+fworkWidth*0.45);
+            lbl.setLayoutY(y);
+            FireworkRectangle fireworkMeter = new FireworkRectangle(c, height, lbl);
             Paint fill = fireworkMeter.getPaint();
             fireworkMeter.setX(x);
-            fireworkMeter.setY(450);
-            fireworkMeter.setWidth(30);
-            fireworkMeter.setHeight(5+(50*height));
+            fireworkMeter.setY(y);
+            fireworkMeter.setWidth(fworkWidth);
+            fireworkMeter.setHeight(5+(fworkHeightMult*height));
             fireworkMeter.setFill(fill);
             fireworkMeter.setStroke(Color.BLACK);
-            root.getChildren().add(fireworkMeter);
-            x+= 40;
             fireworkList.add(fireworkMeter);
+            x += fworkWidth+5;
+            root.getChildren().addAll(fireworkMeter, lbl);
         }
     }
 
-    private void createInfoTokens(Pane root, int panePosition) {
-        int x = panePosition;
+    private void createInfoTokens(HBox root) {
+        int tokenCount = 0;
+        HBox tokenBox = new HBox(5);
         for (int i = 0 ; i < model.getInfoTokens() ; i++){
+            tokenCount+=1;
             Circle token = new Circle();
-
             //Setting the properties of the token;
-            token.setCenterX(x);
-            token.setCenterY(500);
             token.setRadius(10);
-            token.setFill(Color.WHITE);
+            token.setFill(Color.LIGHTBLUE);
             token.setStroke(Color.BLACK);
-            root.getChildren().add(token);
-            x += 25;
+            tokenBox.getChildren().add(token);
             tokenList.add(token);
         }
+        tokenLabel = new Label("Info Tokens: " + tokenCount);
+        tokenLabel.setFont(Font.font("Century Gothic", FontWeight.THIN, canvasHeight/50));
+        tokenLabel.setTextFill(Color.WHITE);
+        VBox tokenInfo = new VBox(5);
+        tokenInfo.getChildren().addAll(tokenBox, tokenLabel);
+        root.getChildren().add(tokenInfo);
     }
+
+    private void createFuses(HBox root) {
+        int fuseCount = 0;
+        HBox fuseBox = new HBox(5);
+        for (int i = 0 ; i < model.getFuses() ; i++){
+            Circle fuse = new Circle();
+            fuse.setRadius(10);
+            fuse.setFill(Color.RED);
+            fuse.setStroke(Color.BLACK);
+            fuse.setStyle(Integer.toString(i));
+            fuseList.add(fuse);
+            fuseBox.getChildren().add(fuse);
+            fuseCount+=1;
+        }
+        fuseLabel = new Label("Fuses: " + fuseCount);
+        fuseLabel.setFont(Font.font("Century Gothic", FontWeight.THIN, canvasHeight/50));
+        fuseLabel.setTextFill(Color.WHITE);
+        VBox fuseInfo = new VBox(5);
+        fuseInfo.getChildren().addAll(fuseBox, fuseLabel);
+        root.getChildren().add(fuseInfo);
+
+    }
+
 
     private void drawDiscardPile() {
         LinkedHashMap<String, Integer> discards = model.getDiscards().getDiscards();
@@ -172,7 +245,9 @@ public class GameView {
         for (String cName : discards.keySet()){
             Card card = new Card(cName.charAt(0), cName.charAt(1));
             CardButton cb = createCardButton(card);
-            cb.setText(discards.get(cName).toString());
+            int maxPossible = getTotalPossibleOfCard(Character.getNumericValue(cb.card.getNumber()));
+            cb.setText(discards.get(cName).toString()+"/"+maxPossible);
+            discardedCardList.add(cb);
             switch(cName.charAt(0)) {
                 case 'b':
                     blues.getChildren().add(cb);
@@ -193,19 +268,11 @@ public class GameView {
         }
         discardGrid.getChildren().addAll(reds, blues, greens, whites, yellows);
         root.getChildren().add(discardGrid);
-        Stage secondStage = new Stage();
-        secondStage.setScene(new Scene(root, 500, 500));
-        secondStage.show();
+        discardStage = new Stage();
+        discardStage.setScene(new Scene(root, 500, 500));
+        discardStage.show();
     }
 
-    public void disableAllCards(ArrayList<HandBox> hands){
-        for (HandBox hand : hands){
-            hand.setDisable(true);
-            for (CardButton card : hand.getCardList()){
-                resetCard(card);
-            }
-        }
-    }
 
 
     public void setPlayState(ArrayList<HandBox> handList, Table table){
@@ -418,28 +485,52 @@ public class GameView {
 
     public void redrawTokens(){
         int i = 0;
+        int tokenCount = 0;
         for (Circle token : tokenList){
             if (i < model.getInfoTokens()){
                 token.setVisible(true);
+                tokenCount++;
             } else{
                 token.setVisible(false);
             }
             i++;
         }
+        tokenLabel.setText("Info Tokens: " + tokenCount);
     }
 
+
     public void redrawFireworks(){
+        double fworkHeightMult = canvasHeight/20;
+
         for (FireworkRectangle fireworkMeter : fireworkList){
             char colour = fireworkMeter.colour;
-            double newHeight = 5+(50*model.getFireworkHeight(colour));
+            double newHeight = 5+(fworkHeightMult*model.getFireworkHeight(colour));
             fireworkMeter.setHeight(newHeight);
             fireworkMeter.setLayoutY(-newHeight);
+            fireworkMeter.label.setText(Integer.toString(model.getFireworkHeight(colour)));
         }
     }
 
     private void redrawDiscards() {
-
+        if (discardStage != null){
+            LinkedHashMap<String, Integer> discards = model.getDiscards().getDiscards();
+            for (CardButton cb : discardedCardList) {
+                int maxPossible = getTotalPossibleOfCard(Character.getNumericValue(cb.card.getNumber()));
+                cb.setText(discards.get(cb.card.toString()).toString()+"/"+maxPossible);
+            }
+        }
     }
+
+    private int getTotalPossibleOfCard(int cardNumber) {
+        if (cardNumber == 1){
+            return 3;
+        } else if (cardNumber == 5) {
+            return 1;
+        } else{
+            return 2;
+        }
+    }
+
 
     public void setState() {
         if (this.model.playerSeat() != this.model.currentTurn()){
@@ -471,14 +562,6 @@ public class GameView {
         redrawHands();
         redrawTokens();
         redrawFireworks();
-//        redrawDiscards();
-    }
-
-
-    public void test(){
-        model.removeToken();
-        model.playCardSuccess(1);
-        model.giveCard("uu");
-        this.update();
+        redrawDiscards();
     }
 }

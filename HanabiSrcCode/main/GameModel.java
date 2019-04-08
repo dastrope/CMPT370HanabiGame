@@ -13,6 +13,7 @@ public class GameModel {
     private Fireworks fireworks;    // maintains the firework stacks.
     private long timeLimit;          // turn time limit time for this game
     private long turnStart;          // clock time at start of turn
+    private ArrayList<GameModelObserver> subscribers;   //subscriber list to notify them of changes
 
     /**
      * Purpose: Instantiates the game model to the appropriate start state based on timeout, numOfPlayer and gameType.
@@ -32,6 +33,7 @@ public class GameModel {
         this.dealTable(startingHands);
         this.discards = new DiscardPile();
         this.fireworks = new Fireworks(gameType);
+        this.subscribers = new ArrayList<>();
 
         if (gameType.equals("default")){
             this.cardsInDeck = 50;
@@ -236,6 +238,7 @@ public class GameModel {
      */
     public void nextTurn(){
         this.turn += 1;
+        notifySubscribers();
         this.turnStart = System.currentTimeMillis();
     }
         // increments the current player counter.  must only be called after all results from current turn are completed.
@@ -277,6 +280,16 @@ public class GameModel {
 
     public DiscardPile getDiscards(){
         return this.discards;
+    }
+
+    public void addSubscriber(GameModelObserver sub){
+        this.subscribers.add(sub);
+    }
+
+    public void notifySubscribers(){
+        for (GameModelObserver sub : this.subscribers){
+            sub.modelChanged();
+        }
     }
 
     @Override

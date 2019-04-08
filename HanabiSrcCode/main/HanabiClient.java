@@ -142,6 +142,7 @@ public class HanabiClient extends Application {
 
         this.aController.setModel(this.aModel);
         this.aController.setView(this.aView);
+        this.aModel.addSubscriber(this.aView);
 
         Stage stage = new Stage();
         stage.setScene(this.aView.createGame());

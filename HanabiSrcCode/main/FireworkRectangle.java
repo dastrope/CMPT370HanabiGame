@@ -1,3 +1,4 @@
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -5,10 +6,12 @@ import javafx.scene.shape.Rectangle;
 public class FireworkRectangle extends Rectangle {
     public char colour;
     public int height;
+    public Label label;
 
-    public FireworkRectangle(char colour, int height){
+    public FireworkRectangle(char colour, int height, Label label){
         this.colour = colour;
         this.height = height;
+        this.label = label;
     }
 
     public Paint getPaint(){
